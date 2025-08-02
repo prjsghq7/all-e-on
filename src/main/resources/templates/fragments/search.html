@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div id="search" th:fragment="search">
+    <form id="searchForm">
+        <div class="search-container">
+            <label class="search-label">
+                <select class="search-select" name="searchKeyCode">
+                    <option hidden selected value="-1">검색어 종류</option>
+                    <option value="title">제목</option>  <!--001 제목-->
+                    <option value="content">내용</option>  <!--002 내용-->
+                    <option value="titleContent">제목+내용</option>  <!--003 제목+내용-->
+                </select>
+            </label>
+            <label class="search-label flex-grow">
+                <input class="search-input" type="text" name="keyword" placeholder="검색어를 입력하세요">
+            </label>
+            <button class="search-button" type="submit">
+                <img src="/common/assets/images/search-icon.png" alt="검색" class="icon">
+            </button>
+        </div>
+    </form>
+</div>
+</html>
