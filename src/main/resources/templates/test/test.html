@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>복지 서비스</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 1rem; }
+        .toolbar { display: flex; gap: 8px; margin: 12px 0; align-items: center; }
+        .item { padding: 12px; border-bottom: 1px solid #ddd; }
+        .name { font-weight: bold; }
+        .muted { color: #666; font-size: 0.9rem; }
+        .modal {
+            position: fixed; inset: 0;
+            background-color: rgba(0,0,0,0.6);
+            display: flex; align-items: center; justify-content: center;
+            z-index: 9999;
+        }
+        .modal-content {
+            background: white; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px;
+            text-align: center;
+        }
+        .modal-content button {
+            margin-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="modal" id="introModal" th:if="${#strings.isEmpty(kw)}">
+    <div class="modal-content">
+        <p>이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다.<br>음성으로 이용하시려면 음성으로 검색 버튼을 누르거나, 엔터 키를 눌러 주세요.</p>
+        <button onclick="closeModal()">확인</button>
+    </div>
+</div>
+
+<h1>복지 서비스</h1>
+
+<div class="toolbar">
+    <button id="voice">🎤 음성으로 검색</button>
+    <button id="read" th:if="${summary != null}">요약 읽어주기</button>
+</div>
+
+<div th:if="${#strings.isEmpty(kw)}" class="muted">검색어를 말씀해 주세요. 예: “노인 복지 알려줘”</div>
+
+<div id="list">
+    <div class="item" th:each="it, iStat : ${items}">
+        <div class="name" th:text="${iStat.index + 1} + '. ' + ${it['servNm']}">1. 서비스명</div>
+        <div class="muted" th:text="${it['jurMnofNm']}">소관부처</div>
+        <div th:text="${it['servDgst']}">요약</div>
+        <div class="muted" th:text="'온라인신청: ' + ${it['onapPsbltYn']} + ' | 제공유형: ' + ${it['srvPvsnNm']}">부가정보</div>
+        <a th:href="${it['servDtlLink']}" target="_blank" rel="noopener">상세 바로가기</a>
+    </div>
+    <div th:if="${#lists.isEmpty(items) and not #strings.isEmpty(kw)}">조건에 맞는 복지 서비스가 없습니다.</div>
+</div>
+
+<script th:inline="javascript">
+    // ===== TTS =====
+    function speak(txt) {
+        if (!txt) return;
+        const u = new SpeechSynthesisUtterance(txt);
+        u.lang = 'ko-KR';
+        speechSynthesis.speak(u);
+    }
+    function stopSpeak() { speechSynthesis.cancel(); }
+
+    // ===== 안내 모달 =====
+    function closeModal() {
+        document.getElementById('introModal').style.display = 'none';
+        speak("이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다. 음성으로 이용하시려면 음성으로 검색 버튼을 누르거나, 엔터 키를 눌러 주세요.");
+    }
+
+    // ===== summary 자동 읽기 처리 =====
+    const summary = /*[[${summary}]]*/ '[[${summary}]]';
+
+    document.addEventListener('DOMContentLoaded', () => {
+        if (!summary || summary.trim() === '') {
+            // 검색 전 안내만 읽기
+            setTimeout(() => {
+                speak("이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다. 음성으로 이용하시려면 음성으로 검색 버튼을 누르거나, 엔터 키를 눌러 주세요.");
+            }, 3000);
+        } else {
+            // 검색 결과 있으면 요약 자동 읽기
+            stopSpeak();
+            setTimeout(() => {
+                speak(summary);
+            }, 1000); // 약간 딜레이 줘서 안정적으로 읽게 함
+        }
+    });
+
+    // ===== 수동 읽기 버튼도 유지 =====
+    const readBtn = document.getElementById('read');
+    if (readBtn && summary) {
+        readBtn.addEventListener('click', () => {
+            stopSpeak();
+            speak(summary);
+        });
+    }
+
+    // ===== STT (음성 인식) =====
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    function startSTT() {
+        if (!SpeechRecognition) {
+            alert("이 브라우저는 음성 인식을 지원하지 않습니다.");
+            return;
+        }
+        const r = new SpeechRecognition();
+        r.lang = 'ko-KR';
+        r.interimResults = false;
+        r.continuous = false;
+
+        r.onresult = async (e) => {
+            const transcript = e.results[0][0].transcript;
+            try {
+                const res = await fetch("/test/welfare/voice", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ transcript })
+                });
+                const data = await res.json();
+                if (data.redirectTo) location.href = data.redirectTo;
+            } catch (err) {
+                alert("음성 검색 중 오류 발생");
+            }
+        };
+        r.onerror = () => {};
+        r.start();
+    }
+
+    document.getElementById('voice').addEventListener('click', startSTT);
+    window.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') startSTT();
+    });
+</script>
+
+</body>
+</html>
