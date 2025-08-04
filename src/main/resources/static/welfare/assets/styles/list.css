@@ -1,13 +1,15 @@
-input, select, button {
-  padding: 0;
-  margin: 0;
-  border: none;
+#defaultArea {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 #searchForm {
   align-items: center;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   justify-content: flex-start;
 }
 #searchForm > .search-container {
@@ -47,4 +49,4 @@ input, select, button {
   height: 1.5rem;
 }
 
-/*# sourceMappingURL=search.css.map */
+/*# sourceMappingURL=list.css.map */

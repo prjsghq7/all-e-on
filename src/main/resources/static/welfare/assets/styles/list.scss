@@ -1,3 +1,11 @@
+#defaultArea {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
 $search-box-width: 30rem;
 $search-box-height: 3rem;
 $search-box-left-right-padding: 1rem;
@@ -9,6 +17,7 @@ $text-color: #FFFFFF;
   align-items: center;
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   justify-content: flex-start;
 
   > .search-container {
