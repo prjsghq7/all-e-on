@@ -1,0 +1,58 @@
+@charset "UTF-8";
+
+@import "./_def";
+@import "./common/object";
+@import "./search.scss";
+
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100vh;
+}
+
+body {
+  min-height: 100%;
+  cursor: default;
+  font-family: "Pretendard", sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 1;
+  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  user-select: none;
+}
+
+a{
+  text-decoration: none;
+  color: black;
+}
+
+h1,h2,h3,h4,h5,h6{
+  margin-block: 0;
+  margin-inline: 0;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+button, input, select, textarea {
+  border: none;
+  margin: 0;
+  margin-block: 0;
+  margin-inline: 0;
+  outline: none;
+  padding: 0;
+  padding-block: 0;
+  padding-inline: 0;
+}
+
+ol,ul{
+  list-style-type: none;
+  margin-block: 0;
+  padding-block: 0;
+  margin-inside: 0;
+}

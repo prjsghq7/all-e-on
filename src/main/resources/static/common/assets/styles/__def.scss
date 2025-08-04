@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+@use "sass:color";
+
+@mixin flex($flex-direction, $align-item:center, $justify-content:center , $gap:0, $flex-wrap:nowrap) {
+  align-items: $align-item;
+  display: flex;
+  flex-direction: $flex-direction;
+  flex-wrap: $flex-wrap;
+  gap: $gap;
+  justify-content: $justify-content;
+
+  > * {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  > [data-mt-stretch] {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+}
