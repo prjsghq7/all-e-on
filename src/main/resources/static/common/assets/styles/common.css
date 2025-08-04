@@ -209,4 +209,10 @@ ol, ul {
   margin-inside: 0;
 }
 
+#defaultArea {
+  align-self: center;
+  min-width: 90rem;
+  padding: 2rem;
+}
+
 /*# sourceMappingURL=common.css.map */

@@ -11,7 +11,7 @@
 </head>
 <body>
 
-<div id="search">
+<div id="defaultArea">
     <form id="searchForm">
         <input name="searchType" type="hidden" th:value="${searchVo.getSearchType()}">
         <div class="search-container">
@@ -19,12 +19,13 @@
                 <select class="search-select" name="searchKeyCode">
                     <option th:selected="${searchVo.getSearchKeyCode() == '001'}" value="001">제목</option>  <!--001 제목-->
                     <option th:selected="${searchVo.getSearchKeyCode() == '002'}" value="002">내용</option>  <!--002 내용-->
-                    <option th:selected="${searchVo.getSearchKeyCode() == '003'}" value="003">제목+내용</option>  <!--003 제목+내용-->
+                    <option th:selected="${searchVo.getSearchKeyCode() == '003'}" value="003">제목+내용</option>
+                    <!--003 제목+내용-->
                 </select>
             </label>
             <label class="search-label flex-grow">
                 <input class="search-input" type="text" name="keyword" placeholder="검색어를 입력하세요"
-                th:value="${searchVo.getKeyword()}">
+                       th:value="${searchVo.getKeyword()}">
             </label>
             <button class="search-button" type="submit">
                 <img src="/common/assets/images/search-icon.png" alt="검색" class="icon">
@@ -43,33 +44,34 @@
             </label>
         </div>
     </form>
-</div>
 
-<table>
-    <thead>
-    <tr>
-        <td>서비스 명</td>
-        <td>서비스 요약</td>
-        <td>제공 유형</td>
-        <td>등록일</td>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="welfare : ${welfareList}">
-        <td th:text="${welfare.servNm}"></td>
-        <td th:text="${welfare.servDgst}"></td>
-        <td th:text="${welfare.srvPvsnNm}"></td>
-        <td th:text="${#temporals.format(welfare.svcfrstRegTs, 'yyyy-MM-dd')}"></td>
-    </tr>
-    </tbody>
-</table>
 
-<div id="pageContainer">
-    <a class="page"
-       th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
-       th:text="${pageNum}"
-       th:href="@{/welfare/list (page = ${pageNum})}"
-       th:classappend="${pageNum == pageVo.page}? '-selected'"></a>
+    <table>
+        <thead>
+        <tr>
+            <td>서비스 명</td>
+            <td>서비스 요약</td>
+            <td>제공 유형</td>
+            <td>등록일</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="welfare : ${welfareList}">
+            <td th:text="${welfare.servNm}"></td>
+            <td th:text="${welfare.servDgst}"></td>
+            <td th:text="${welfare.srvPvsnNm}"></td>
+            <td th:text="${#temporals.format(welfare.svcfrstRegTs, 'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div id="pageContainer">
+        <a class="page"
+           th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+           th:text="${pageNum}"
+           th:href="@{/welfare/list (page = ${pageNum})}"
+           th:classappend="${pageNum == pageVo.page}? '-selected'"></a>
+    </div>
 </div>
 </body>
 </html>
