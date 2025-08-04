@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>복지 서비스</title>
     <style>
         body { font-family: sans-serif; line-height: 1.6; margin: 0; padding: 1rem; }
@@ -9,24 +9,29 @@
         .item { padding: 12px; border-bottom: 1px solid #ddd; }
         .name { font-weight: bold; }
         .muted { color: #666; font-size: 0.9rem; }
+
+        /* ✅ 기본은 숨김 */
         .modal {
             position: fixed; inset: 0;
             background-color: rgba(0,0,0,0.6);
-            display: flex; align-items: center; justify-content: center;
+            display: none;
+            align-items: center; justify-content: center;
             z-index: 9999;
         }
+        /* ✅ 보여줄 때만 flex */
+        .modal.visible { display: flex; }
+
         .modal-content {
             background: white; padding: 2rem; border-radius: 8px; width: 90%; max-width: 400px;
             text-align: center;
         }
-        .modal-content button {
-            margin-top: 1rem;
-        }
+        .modal-content button { margin-top: 1rem; }
     </style>
 </head>
 <body>
 
-<div class="modal" id="introModal" th:if="${#strings.isEmpty(kw)}">
+<!-- ✅ 기본은 숨김 상태, JS가 필요 시에만 .visible 추가 -->
+<div class="modal" id="introModal" aria-hidden="true">
     <div class="modal-content">
         <p>이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다.<br>음성으로 이용하시려면 음성으로 검색 버튼을 누르거나, 엔터 키를 눌러 주세요.</p>
         <button onclick="closeModal()">확인</button>
@@ -37,6 +42,7 @@
 
 <div class="toolbar">
     <button id="voice">🎤 음성으로 검색</button>
+    <button id="toggle-stt">🔈 음성인식 끄기</button>
     <button id="read" th:if="${summary != null}">요약 읽어주기</button>
 </div>
 
@@ -54,6 +60,11 @@
 </div>
 
 <script th:inline="javascript">
+    let recognition;
+    let isListening = true;
+
+    const summary = /*[[${summary}]]*/ '[[${summary}]]';
+
     // ===== TTS =====
     function speak(txt) {
         if (!txt) return;
@@ -61,55 +72,19 @@
         u.lang = 'ko-KR';
         speechSynthesis.speak(u);
     }
-    function stopSpeak() { speechSynthesis.cancel(); }
+    function stopSpeak(){ speechSynthesis.cancel(); }
 
-    // ===== 안내 모달 =====
-    function closeModal() {
-        document.getElementById('introModal').style.display = 'none';
-        speak("이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다. 음성으로 이용하시려면 음성으로 검색 버튼을 누르거나, 엔터 키를 눌러 주세요.");
-    }
+    // ===== STT =====
+    function initSTT() {
+        const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+        if (!SR) { alert('이 브라우저는 음성 인식을 지원하지 않습니다.'); return; }
 
-    // ===== summary 자동 읽기 처리 =====
-    const summary = /*[[${summary}]]*/ '[[${summary}]]';
+        recognition = new SR();
+        recognition.lang = 'ko-KR';
+        recognition.interimResults = false;
+        recognition.continuous = false;
 
-    document.addEventListener('DOMContentLoaded', () => {
-        if (!summary || summary.trim() === '') {
-            // 검색 전 안내만 읽기
-            setTimeout(() => {
-                speak("이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다. 음성으로 이용하시려면 음성으로 검색 버튼을 누르거나, 엔터 키를 눌러 주세요.");
-            }, 3000);
-        } else {
-            // 검색 결과 있으면 요약 자동 읽기
-            stopSpeak();
-            setTimeout(() => {
-                speak(summary);
-            }, 1000); // 약간 딜레이 줘서 안정적으로 읽게 함
-        }
-    });
-
-    // ===== 수동 읽기 버튼도 유지 =====
-    const readBtn = document.getElementById('read');
-    if (readBtn && summary) {
-        readBtn.addEventListener('click', () => {
-            stopSpeak();
-            speak(summary);
-        });
-    }
-
-    // ===== STT (음성 인식) =====
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-
-    function startSTT() {
-        if (!SpeechRecognition) {
-            alert("이 브라우저는 음성 인식을 지원하지 않습니다.");
-            return;
-        }
-        const r = new SpeechRecognition();
-        r.lang = 'ko-KR';
-        r.interimResults = false;
-        r.continuous = false;
-
-        r.onresult = async (e) => {
+        recognition.onresult = async (e) => {
             const transcript = e.results[0][0].transcript;
             try {
                 const res = await fetch("/test/welfare/voice", {
@@ -121,15 +96,74 @@
                 if (data.redirectTo) location.href = data.redirectTo;
             } catch (err) {
                 alert("음성 검색 중 오류 발생");
+            } finally {
+                if (isListening) {
+                    try { recognition.start(); } catch(e) {}
+                }
             }
         };
-        r.onerror = () => {};
-        r.start();
+        recognition.onerror = () => {
+            if (isListening) {
+                try { recognition.start(); } catch(e) {}
+            }
+        };
+    }
+    function startSTT(){ if (!recognition) initSTT(); if (!isListening) return; try{ recognition.start(); }catch(e){} }
+    function stopSTT(){ if (recognition) recognition.abort(); }
+    function toggleSTT(){
+        isListening = !isListening;
+        const btn = document.getElementById('toggle-stt');
+        if (isListening) { startSTT(); btn.innerText = '🔈 음성인식 끄기'; }
+        else { stopSTT(); btn.innerText = '🔇 음성인식 켜기'; }
     }
 
-    document.getElementById('voice').addEventListener('click', startSTT);
-    window.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') startSTT();
+    // ===== 모달 제어 =====
+    function showIntroModalIfNeeded() {
+        const seen = localStorage.getItem('hasSeenModal') === 'true';  // ✅ 명시 비교
+        // ✅ "검색 전(요약 없음)"일 때만 모달 고려
+        if (!seen) {
+            const modal = document.getElementById('introModal');
+            modal.classList.add('visible');
+            modal.setAttribute('aria-hidden', 'false');
+            setTimeout(() => {
+                speak('이 페이지는 시각장애인과 노인분들을 위해 음성 인식을 지원합니다. 음성으로 이용하시려면 화면을 터치하시거나 엔터 키를 눌러 주세요.');
+            }, 300);
+        } else {
+            startSTT();  // 이미 본 적 있으면 바로 STT
+        }
+    }
+
+    function closeModal() {
+        const modal = document.getElementById('introModal');
+        modal.classList.remove('visible');          // ✅ 숨김
+        modal.setAttribute('aria-hidden', 'true');
+        localStorage.setItem('hasSeenModal', 'true');  // ✅ 1회 표시
+        speak('음성 인식이 시작됩니다. 검색어를 말씀해 주세요.');
+        startSTT();
+    }
+
+    // ===== 초기화 =====
+    document.addEventListener('DOMContentLoaded', () => {
+        initSTT();
+
+        if (!summary || summary.trim() === '') {
+            showIntroModalIfNeeded();    // 검색 전: 모달 고려
+        } else {
+            startSTT();                  // 검색 결과 페이지: STT 바로 ON
+            stopSpeak();
+            setTimeout(() => speak(summary), 800);
+        }
+
+        // 버튼들
+        document.getElementById('voice').addEventListener('click', startSTT);
+        document.getElementById('toggle-stt').addEventListener('click', toggleSTT);
+
+        const readBtn = document.getElementById('read');
+        if (readBtn && summary) {
+            readBtn.addEventListener('click', () => { stopSpeak(); speak(summary); });
+        }
+
+        window.addEventListener('keydown', (e) => { if (e.key === 'Enter') startSTT(); });
     });
 </script>
 
