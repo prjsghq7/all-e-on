@@ -12,5 +12,12 @@ import lombok.Setter;
 public class WelfareSearchVo {
     private String searchKeyCode;
     private String keyword;
+    private SearchType searchType = SearchType.lifeArray; ;
     private String code;
+
+    public enum SearchType {
+        lifeArray,
+        trgterIndvdlArray,
+        IntrsThemaArray
+    }
 }

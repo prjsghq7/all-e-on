@@ -5,6 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script defer src="/common/assets/scripts/common.js" type="module"></script>
     <title>Document</title>
     <link href="/common/assets/styles/common.css" rel="stylesheet" type="text/css">
 </head>
@@ -12,6 +13,7 @@
 
 <div id="search">
     <form id="searchForm">
+        <input name="searchType" type="hidden" th:value="${searchVo.getSearchType()}">
         <div class="search-container">
             <label class="search-label">
                 <select class="search-select" name="searchKeyCode">
@@ -27,6 +29,18 @@
             <button class="search-button" type="submit">
                 <img src="/common/assets/images/search-icon.png" alt="검색" class="icon">
             </button>
+        </div>
+        <div class="code-container">
+            <label>
+                <input type="radio" name="code" value="" checked>
+                <span class="caption">전체</span>
+            </label>
+            <label th:each="code : ${codes}">
+                <input type="radio" name="code"
+                       th:value="${code.code}"
+                       th:checked="${code.code == searchVo.code}">
+                <span class="caption" th:text="${code.displayText}"></span>
+            </label>
         </div>
     </form>
 </div>

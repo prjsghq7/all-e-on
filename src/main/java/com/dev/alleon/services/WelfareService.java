@@ -2,6 +2,10 @@ package com.dev.alleon.services;
 
 import com.dev.alleon.dtos.welfare.WelfareListDto;
 import com.dev.alleon.dtos.welfare.WelfareListResponse;
+import com.dev.alleon.entities.CodeEntity;
+import com.dev.alleon.mappers.welfare.HouseholdTypeMapper;
+import com.dev.alleon.mappers.welfare.InterestSubMapper;
+import com.dev.alleon.mappers.welfare.LifeCycleMapper;
 import com.dev.alleon.vos.PageVo;
 import com.dev.alleon.vos.WelfareSearchVo;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +44,34 @@ public class WelfareService {
 
     private final RestTemplate restTemplate = new RestTemplate();
 
+    private final LifeCycleMapper lifeCycleMapper;
+    private final HouseholdTypeMapper householdTypeMapper;
+    private final InterestSubMapper interestSubMapper;
+
+    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper) {
+        this.lifeCycleMapper = lifeCycleMapper;
+        this.householdTypeMapper = householdTypeMapper;
+        this.interestSubMapper = interestSubMapper;
+    }
+
+    public List<CodeEntity> getWelfareSearchCodes(WelfareSearchVo.SearchType searchType) {
+        List<CodeEntity> codeEntities;
+        switch (searchType) {
+            case lifeArray:
+                codeEntities = this.lifeCycleMapper.selectAll();
+                break;
+            case trgterIndvdlArray:
+                codeEntities = this.householdTypeMapper.selectAll();
+                break;
+            case IntrsThemaArray:
+                codeEntities = this.interestSubMapper.selectAll();
+                break;
+            default:
+                codeEntities = null;
+        }
+        return codeEntities;
+    }
+
     public WelfareListResponse getWelfareList(WelfareSearchVo welfareSearchVo, int page) {
         if (page <= 0) {
             page = 1;
@@ -50,14 +82,14 @@ public class WelfareService {
         String encodeKeyword = welfareSearchVo.getKeyword() != null
                 ? URLEncoder.encode(welfareSearchVo.getKeyword(), StandardCharsets.UTF_8)
                 : "";
-        URI requestUrl = UriComponentsBuilder.fromHttpUrl(API_URL+LIST_QUERY)
+        URI requestUrl = UriComponentsBuilder.fromHttpUrl(API_URL + LIST_QUERY)
                 .queryParam("serviceKey", encodedServiceKey)
                 .queryParam("pageNo", page)
                 .queryParam("numOfRows", NUMBER_OF_ROWS)
                 .queryParam("callTp", "D")
                 .queryParam("srchKeyCode", welfareSearchVo.getSearchKeyCode())
                 .queryParam("searchWrd", encodeKeyword)
-                .queryParam("lifeArray", "001")
+                .queryParam(welfareSearchVo.getSearchType().toString(), welfareSearchVo.getCode())
                 .build(true)
                 .toUri();
 
@@ -65,7 +97,7 @@ public class WelfareService {
 
         String xmlResponse = restTemplate.getForObject(requestUrl, String.class);
         System.out.println(xmlResponse);
-        
+
         return parseXmlToWelfareResponse(xmlResponse, page);
     }
 
