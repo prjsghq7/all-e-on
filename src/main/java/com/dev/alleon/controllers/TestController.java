@@ -32,7 +32,6 @@ public class TestController {
         return "test/test";
     }
 
-
     // 2. 음성 → 키워드 추출 → redirect 주소 JSON 응답
     @PostMapping("/welfare/voice")
     @ResponseBody
@@ -54,5 +53,10 @@ public class TestController {
         var items = testDataService.fetchByKeyword(kw);
         var summary = openAiService.summarizeResults(items);
         return Map.of("kw", kw, "summary", summary, "items", items);
+    }
+
+    @GetMapping("/button")
+    public String getButton(){
+        return "/test/buttontest";
     }
 }

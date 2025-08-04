@@ -1,4 +1,45 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+[data-mt-object=button] {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.0625rem;
+  justify-content: space-evenly;
+  width: 6rem;
+  border-radius: 9rem;
+  background-color: white;
+  cursor: pointer;
+  padding: 0.225rem;
+  box-shadow: rgba(33, 118, 208, 0.6274509804) 0.0625rem 0.0625rem 0.125rem;
+}
+[data-mt-object=button] > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+[data-mt-object=button] > [data-mt-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+[data-mt-object=button] > img {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+[data-mt-object=button] > .caption {
+  color: #2176D0;
+  font-weight: 800;
+}
+[data-mt-object=button]:hover {
+  border: solid 0.0625rem #2176D0;
+  box-shadow: #2176D0 0.0625rem 0.0625rem;
+}
+[data-mt-object=button]:active {
+  background-color: #2176D0;
+}
+[data-mt-object=button]:active > .caption {
+  color: #fff;
+}
+
 #searchForm {
   align-items: center;
   display: flex;
