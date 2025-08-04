@@ -55,8 +55,4 @@ public class TestController {
         return Map.of("kw", kw, "summary", summary, "items", items);
     }
 
-    @GetMapping("/button")
-    public String getButton(){
-        return "home/intro";
-    }
 }
