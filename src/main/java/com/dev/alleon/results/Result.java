@@ -1,4 +1,4 @@
 package com.dev.alleon.results;
 
-public class Result {
+public interface Result {
 }
