@@ -1,0 +1,49 @@
+@charset "UTF-8";
+@import "_def";
+
+.pages {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(0deg, #f0f9ff, #ccdbff, #afcdfd);
+  > section {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition: opacity 1s ease;
+
+    &.visible {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    > .content-box {
+      @include flex(row, center, center, 0.5rem);
+
+      > .content {
+        margin-left: 1rem;
+        font-size: 8rem;
+      }
+    }
+  }
+}
+.common {
+  background: linear-gradient(0deg, #f0f9ff, #ccdbff, #afcdfd);
+  @include flex(column, center, center);
+  padding: 1rem;
+  height: 100vh;
+  width: 100vw;
+  font-size: 15rem;
+  font-weight: 800;
+  color: #afcdfd;
+  -webkit-text-stroke: 0.25rem white;
+}
+
+.line {
+  content: '';
+  width: 5rem;
+  height: 2rem;
+  background-color: #afcdfd;
+  border: 0.25rem solid white;
+  margin-left: 1rem;
+}

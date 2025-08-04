@@ -57,6 +57,6 @@ public class TestController {
 
     @GetMapping("/button")
     public String getButton(){
-        return "/test/buttontest";
+        return "home/intro";
     }
 }
