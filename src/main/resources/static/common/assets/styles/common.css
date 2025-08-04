@@ -1,5 +1,5 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
-[data-mt-object=button] {
+[data-aeo-object=button] {
   align-items: center;
   display: flex;
   flex-direction: row;
@@ -13,34 +13,34 @@
   padding: 0.225rem;
   box-shadow: rgba(33, 118, 208, 0.6274509804) 0.0625rem 0.0625rem 0.125rem;
 }
-[data-mt-object=button] > * {
+[data-aeo-object=button] > * {
   flex-grow: 0;
   flex-shrink: 0;
 }
-[data-mt-object=button] > [data-mt-stretch] {
+[data-aeo-object=button] > [data-aeo-stretch] {
   flex-grow: 1;
   flex-shrink: 1;
 }
-[data-mt-object=button] > img {
+[data-aeo-object=button] > img {
   width: 1.125rem;
   height: 1.125rem;
 }
-[data-mt-object=button] > .caption {
+[data-aeo-object=button] > .caption {
   color: #2176D0;
   font-weight: 800;
 }
-[data-mt-object=button]:hover {
+[data-aeo-object=button]:hover {
   border: solid 0.0625rem #2176D0;
   box-shadow: #2176D0 0.0625rem 0.0625rem;
 }
-[data-mt-object=button]:active {
+[data-aeo-object=button]:active {
   background-color: #2176D0;
 }
-[data-mt-object=button]:active > .caption {
+[data-aeo-object=button]:active > .caption {
   color: #fff;
 }
 
-[data-mt-object=loading] {
+[data-aeo-object=loading] {
   align-items: center;
   display: flex;
   flex-direction: column;
@@ -61,28 +61,28 @@
   transition-timing-function: ease;
   z-index: 7;
 }
-[data-mt-object=loading] > * {
+[data-aeo-object=loading] > * {
   flex-grow: 0;
   flex-shrink: 0;
 }
-[data-mt-object=loading] > [data-mt-stretch] {
+[data-aeo-object=loading] > [data-aeo-stretch] {
   flex-grow: 1;
   flex-shrink: 1;
 }
-[data-mt-object=loading][data-rb-visible] {
+[data-aeo-object=loading][data-aeo-visible] {
   opacity: 1;
   pointer-events: auto;
 }
-[data-mt-object=loading][data-rb-visible] > [data-mt-component="loading.icon"] {
+[data-aeo-object=loading][data-aeo-visible] > [data-aeo-component="loading.icon"] {
   top: 0;
   opacity: 1;
 }
-[data-mt-object=loading][data-rb-visible] > [data-mt-component="loading.caption"] {
+[data-aeo-object=loading][data-aeo-visible] > [data-aeo-component="loading.caption"] {
   top: 0;
   opacity: 1;
   transition-delay: 100ms;
 }
-[data-mt-object=loading] > [data-mt-component="loading.icon"] {
+[data-aeo-object=loading] > [data-aeo-component="loading.icon"] {
   top: 0.25rem;
   width: 3.5rem;
   animation-duration: 1000ms;
@@ -103,7 +103,7 @@
     transform: rotateZ(360deg);
   }
 }
-[data-mt-object=loading] > [data-mt-component="loading.caption"] {
+[data-aeo-object=loading] > [data-aeo-component="loading.caption"] {
   top: 0.25rem;
   color: #ffffff;
   font-size: 1.25rem;

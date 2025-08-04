@@ -3,7 +3,7 @@
 @use "sass:color";
 @import "../../_def";
 
-[data-mt-object="loading"] {
+[data-aeo-object="loading"] {
   @include flex(column, center, center, 1.25rem);
   top: 0;
   left: 0;
@@ -19,23 +19,23 @@
   transition-timing-function: ease;
   z-index: 7;
 
-  &[data-rb-visible] {
+  &[data-aeo-visible] {
     opacity: 1;
     pointer-events: auto;
 
-    > [data-mt-component="loading.icon"] {
+    > [data-aeo-component="loading.icon"] {
       top: 0;
       opacity: 1;
     }
 
-    > [data-mt-component="loading.caption"] {
+    > [data-aeo-component="loading.caption"] {
       top: 0;
       opacity: 1;
       transition-delay: 100ms;
     }
   }
 
-  > [data-mt-component="loading.icon"] {
+  > [data-aeo-component="loading.icon"] {
     @keyframes animation {
       from {
         transform: rotateZ(0deg);
@@ -57,7 +57,7 @@
     transition-timing-function: ease;
   }
 
-  > [data-mt-component="loading.caption"] {
+  > [data-aeo-component="loading.caption"] {
     top: 0.25rem;
     color: #ffffff;
     font-size: 1.25rem;

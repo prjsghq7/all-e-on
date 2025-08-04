@@ -4,16 +4,16 @@ export class Loading {
 
     constructor() {
         this.#$element = document.createElement('div');
-        this.#$element.dataset.mtObject = "loading";
+        this.#$element.dataset.aeoObject = "loading";
         this.#$element.setVisible(false); // 초기 숨김
 
         const $icon = document.createElement('img');
-        $icon.dataset.mtComponent = "loading.icon";
+        $icon.dataset.aeoComponent = "loading.icon";
         // 테스트용 임시 이미지
         $icon.src = '/common/assets/images/button-images/check.png';
 
         this.#$caption = document.createElement('span');
-        this.#$caption.dataset.mtComponent = "loading.caption";
+        this.#$caption.dataset.aeoComponent = "loading.caption";
         this.#$caption.textContent = '잠시만 기다려주세요.';
 
         this.#$element.append($icon, this.#$caption);

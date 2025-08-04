@@ -2,9 +2,9 @@
 *     <script defer src="/common/assets/scripts/common.js" type="module"></script> 로 사용
 * --------------------------------------------------------------------------------------------*/
 
-HTMLElement.INVALID_ATTR_NAME = 'data-rb-invalid';
-HTMLElement.VALID_ATTR_NAME = 'data-rb-valid';
-HTMLElement.VISIBLE_ATTR_NAME = 'data-rb-visible';
+HTMLElement.INVALID_ATTR_NAME = 'data-aeo-invalid';
+HTMLElement.VALID_ATTR_NAME = 'data-aeo-valid';
+HTMLElement.VISIBLE_ATTR_NAME = 'data-aeo-visible';
 
 /**
  * @param {boolean} b
