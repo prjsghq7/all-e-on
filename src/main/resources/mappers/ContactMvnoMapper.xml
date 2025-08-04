@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.ContactMvnoMapper">
+    <select id="selectAll">
+        SELECT `code` AS `code`,
+               `display_text` AS `displayText`,
+               `order_no` AS `orderNo`
+        FROM `aeo`.`contact_mvnos`
+        ORDER BY `order_no`
+    </select>
+    <select id="selectCountByCode" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`contact_mvnos`
+        WHERE `code` = #{code}
+    </select>
+</mapper>

@@ -1,4 +1,60 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.dev.alleon.mappers.UserMapper" >
+    <insert id="insert"
+    useGeneratedKeys="true"
+    keyColumn="id"
+    keyProperty="id">
+        INSERT INTO `aeo`.`users` (name, profile, email, password, contact_mvno_code, contact_first, contact_second, contact_third, nickname, birth, gender, provider_key, provider_type, address_postal, address_primary, address_secondary, active_state, created_at, modified_at, last_login) VALUES (#{user.name}, #{user.profile}, #{user.email}, #{user.password}, #{user.contactMvnoCode}, #{user.contactFirst}, #{user.contactSecond}, #{user.contactThird}, #{user.nickname}, #{user.birth}, #{user.gender}, #{user.providerKey}, #{user.providerType}, #{user.addressPostal}, #{user.addressPrimary}, #{user.addressSecondary}, #{user.activeState}, #{user.createdAt}, #{user.modifiedAt}, #{user.lastLogin})
+
+    </insert>
+    <update id="update">
+        UPDATE `aeo`.`users`
+        SET
+            name = #{user.name},
+            profile = #{user.profile},
+            email = #{user.email},
+            password = #{user.password},
+            contact_mvno_code = #{user.contactMvnoCode},
+            contact_first = #{user.contactFirst},
+            contact_second = #{user.contactSecond},
+            contact_third = #{user.contactThird},
+            nickname = #{user.nickname},
+            birth = #{user.birth},
+            gender = #{user.gender},
+            provider_key = #{user.providerKey},
+            provider_type = #{user.providerType},
+            address_postal = #{user.addressPostal},
+            address_primary = #{user.addressPrimary},
+            address_secondary = #{user.addressSecondary},
+            active_state = #{user.activeState},
+            created_at = #{user.createdAt},
+            modified_at = #{user.modifiedAt},
+            last_login = #{user.lastLogin}
+        WHERE `index` = #{user.index}
+        LIMIT 1
+    </update>
+    <select id="selectLocalUserByContact" resultType="com.dev.alleon.entities.UserEntity">
+
+    </select>
+    <select id="selectLocalUserByEmail" resultType="com.dev.alleon.entities.UserEntity">
+
+    </select>
+    <select id="selectCountByEmail" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`users`
+        WHERE `email` = #{email}
+    </select>
+    <select id="selectCountByNickname" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`users`
+        WHERE `nickname` = #{nickname}
+    </select>
+    <select id="selectCountByContact" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`users`
+        WHERE `contact_first` = #{contactFirst}
+        AND `contact_second` = #{contactSecond}
+        AND `contact_third` = #{contactThird}
+    </select>
 </mapper>
