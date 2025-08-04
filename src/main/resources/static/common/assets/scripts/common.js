@@ -58,6 +58,15 @@ HTMLElement.prototype.setValid = function (b) {
     return this;
 }
 
+HTMLElement.prototype.setInvalid = function (b) {
+    if (b === true) {
+        this.setAttribute(HTMLElement.INVALID_ATTR_NAME, '');
+    } else if (b === false) {
+        this.removeAttribute(HTMLElement.INVALID_ATTR_NAME);
+    }
+    return this;
+}
+
 /**@returns {boolean} */
 HTMLElement.prototype.isVisible = function () {
     return this.hasAttribute(HTMLElement.VISIBLE_ATTR_NAME);
