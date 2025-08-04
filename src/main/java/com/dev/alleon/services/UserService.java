@@ -1,7 +1,187 @@
 package com.dev.alleon.services;
 
+import com.dev.alleon.entities.ContactMvnoEntity;
+import com.dev.alleon.entities.EmailTokenEntity;
+import com.dev.alleon.entities.UserEntity;
+import com.dev.alleon.mappers.ContactMvnoMapper;
+import com.dev.alleon.mappers.EmailTokenMapper;
+import com.dev.alleon.mappers.UserMapper;
+import com.dev.alleon.mappers.welfare.HouseholdTypeMapper;
+import com.dev.alleon.mappers.welfare.InterestSubMapper;
+import com.dev.alleon.mappers.welfare.LifeCycleMapper;
+import com.dev.alleon.regexes.EmailTokenRegex;
+import com.dev.alleon.regexes.UserRegex;
+import com.dev.alleon.results.CommonResult;
+import com.dev.alleon.results.Result;
+import com.dev.alleon.results.ResultTuple;
+import com.dev.alleon.results.user.RegisterResult;
+import com.dev.alleon.results.user.RemoveAccountResult;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+
+import java.time.LocalDateTime;
 
 @Service
 public class UserService {
+
+    @Autowired
+    public UserService(UserMapper userMapper, EmailTokenMapper emailTokenMapper, ContactMvnoMapper contactMvnoMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, LifeCycleMapper lifeCycleMapper, JavaMailSender javaMailSender, SpringTemplateEngine springTemplateEngine, PasswordEncoder passwordEncoder) {
+        this.userMapper = userMapper;
+        this.emailTokenMapper = emailTokenMapper;
+        this.contactMvnoMapper = contactMvnoMapper;
+        this.householdTypeMapper = householdTypeMapper;
+        this.interestSubMapper = interestSubMapper;
+        this.lifeCycleMapper = lifeCycleMapper;
+        this.javaMailSender = javaMailSender;
+        this.springTemplateEngine = springTemplateEngine;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    private static EmailTokenEntity generateEmailToken(String email, String userAgent, int expMin) {
+        String code = RandomStringUtils.randomNumeric(6);   // "000000" ~ "999999"
+        String salt = RandomStringUtils.randomAlphanumeric(128); // a-z A~Z 0~9
+
+        return UserService.generateEmailToken(email, userAgent, code, salt, expMin);
+    }
+    private static EmailTokenEntity generateEmailToken(String email, String userAgent, String code, String salt, int expMin) {
+        EmailTokenEntity emailToken = new EmailTokenEntity();
+        emailToken.setEmail(email);
+        emailToken.setCode(code);
+        emailToken.setSalt(salt);
+        emailToken.setUserAgent(userAgent);
+        emailToken.setUsed(false);
+        emailToken.setCreatedAt(LocalDateTime.now());
+        emailToken.setExpiresAt(LocalDateTime.now().plusMinutes(expMin));
+        return emailToken;
+    }
+
+    private final UserMapper userMapper;
+    private final EmailTokenMapper emailTokenMapper;
+    private final ContactMvnoMapper contactMvnoMapper;
+    private final HouseholdTypeMapper householdTypeMapper;
+    private final InterestSubMapper interestSubMapper;
+    private final LifeCycleMapper lifeCycleMapper;
+    private final JavaMailSender javaMailSender;
+    private final SpringTemplateEngine springTemplateEngine;
+    private final PasswordEncoder passwordEncoder;
+
+    public ResultTuple<EmailTokenEntity> sendRemoveAccountEmail(UserEntity signedUser, String email, String userAgent) throws MessagingException {
+        if (signedUser.getActiveState() > 2) {
+            return ResultTuple.<EmailTokenEntity>builder().result(CommonResult.FAILURE_SESSION_EXPIRED).build();
+        }
+
+        if (!UserRegex.email.matches(email) || userAgent == null) {
+            return ResultTuple.<EmailTokenEntity>builder()
+                    .result(CommonResult.FAILURE)
+                    .build();
+        }
+
+        if (!signedUser.getEmail().equals(email)) {
+            return ResultTuple.<EmailTokenEntity>builder()
+                    .result(RemoveAccountResult.FAILURE_NO_PERMISSION)
+                    .build();
+        }
+
+        String code = RandomStringUtils.randomNumeric(6);   // "000000" ~ "999999"
+        String salt = RandomStringUtils.randomAlphanumeric(128); // a-z A~Z 0~9
+        EmailTokenEntity emailToken = UserService.generateEmailToken(email, userAgent, code, salt, 10);
+
+        if (this.emailTokenMapper.insert(emailToken) < 1) {
+            return ResultTuple.<EmailTokenEntity>builder().result(CommonResult.FAILURE).build();
+        }
+
+        //이메일 전송
+        Context context = new Context();
+        // thymeleaf 에서 사용할 데이터 입력
+        context.setVariable("code", emailToken.getCode());
+        // 보낼 html 파일 경로
+        String mailText = this.springTemplateEngine.process("user/removeAccountEmail", context);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        mimeMessageHelper.setFrom("rkw2115@gmail.com");
+        mimeMessageHelper.setTo(emailToken.getEmail());
+        mimeMessageHelper.setSubject("[aeo] 회원탈퇴 인증번호");
+        mimeMessageHelper.setText(mailText, true);
+        this.javaMailSender.send(mimeMessage);
+
+        return ResultTuple.<EmailTokenEntity>builder()
+                .result(CommonResult.SUCCESS)
+                .payload(emailToken)
+                .build();
+    }
+
+    public Result removeAccount(UserEntity signedUser, EmailTokenEntity emailToken) {
+        // TODO 이즈인밸리드유저 검사해야됨
+        if (signedUser.getActiveState() > 2) {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+
+        if (emailToken == null || !EmailTokenRegex.emailCode.matches(emailToken.getCode()) || !EmailTokenRegex.emailSalt.matches(emailToken.getSalt())) {
+            return CommonResult.FAILURE;
+        }
+        EmailTokenEntity dbEmailToken = this.emailTokenMapper.selectByEmailAndCodeAndSalt(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
+        if (dbEmailToken == null
+                || !dbEmailToken.isUsed()
+                || !dbEmailToken.getUserAgent().equals(emailToken.getUserAgent())) {
+            return CommonResult.FAILURE;
+        }
+
+        if (!signedUser.getEmail().equals(emailToken.getEmail())) {
+            return RemoveAccountResult.FAILURE_NO_PERMISSION;
+        }
+        signedUser.setActiveState(2);
+        signedUser.setModifiedAt(LocalDateTime.now());
+        return this.userMapper.update(signedUser) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
+    }
+
+    public Result register(EmailTokenEntity emailToken,
+                           UserEntity user) {
+        if (user == null) {
+            return CommonResult.FAILURE;
+        }
+        if (emailToken == null ||
+                !EmailTokenRegex.emailCode.matches(emailToken.getCode()) || !EmailTokenRegex.emailSalt.matches(emailToken.getSalt())) {
+            return CommonResult.FAILURE;
+        }
+        EmailTokenEntity dbEmailToken = this.emailTokenMapper.selectByEmailAndCodeAndSalt(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
+        if (dbEmailToken == null ||
+                !dbEmailToken.isUsed() ||
+                !dbEmailToken.getUserAgent().equals(emailToken.getUserAgent())) {
+            return CommonResult.FAILURE;
+        }
+
+        if (!UserRegex._name.matches(user.getName()) || !UserRegex.email.matches(user.getEmail()) || !UserRegex.password.matches(user.getPassword())) {
+            return CommonResult.FAILURE;
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        if (!UserRegex.nickname.matches(user.getName()) || !UserRegex.birth.matches(user.getBirth().toString()) || !UserRegex.gender.matches(user.getGender()) || !UserRegex.contactSecondRegex.matches(user.getContactSecond()) || !UserRegex.contactThirdRegex.matches(user.getContactThird()) || user.getAddressPostal() == null || user.getAddressPostal().isEmpty() || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+            return CommonResult.FAILURE;
+        }
+        if (this.userMapper.selectCountByNickname(user.getNickname()) > 0) {
+            return RegisterResult.FAILURE_DUPLICATE_NICKNAME;
+        }
+        if (this.userMapper.selectCountByContact(user.getContactFirst(), user.getContactSecond(), user.getContactThird()) > 0) {
+            return RegisterResult.FAILURE_DUPLICATE_CONTACT;
+        }
+
+        user.setActiveState(1);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setModifiedAt(LocalDateTime.now());
+        user.setLastLogin(null);
+
+        return this.userMapper.insert(user) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
+    }
+
+    public ContactMvnoEntity[] getContactMvnos() {
+        return contactMvnoMapper.selectAll();
+    }
+
 }
