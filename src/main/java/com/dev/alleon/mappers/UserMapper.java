@@ -25,6 +25,9 @@ public interface UserMapper {
                              @Param(value = "contactSecond") String contactSecond,
                              @Param(value = "contactThird") String contactThird);
 
+    int selectLocalUserCountByEmail(@Param(value = "email") String email);
+
+
 
 
 

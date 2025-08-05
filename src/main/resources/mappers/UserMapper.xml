@@ -3,10 +3,9 @@
 <mapper namespace="com.dev.alleon.mappers.UserMapper" >
     <insert id="insert"
     useGeneratedKeys="true"
-    keyColumn="id"
-    keyProperty="id">
-        INSERT INTO `aeo`.`users` (name, profile, email, password, contact_mvno_code, contact_first, contact_second, contact_third, nickname, birth, gender, provider_key, provider_type, address_postal, address_primary, address_secondary, active_state, created_at, modified_at, last_login) VALUES (#{user.name}, #{user.profile}, #{user.email}, #{user.password}, #{user.contactMvnoCode}, #{user.contactFirst}, #{user.contactSecond}, #{user.contactThird}, #{user.nickname}, #{user.birth}, #{user.gender}, #{user.providerKey}, #{user.providerType}, #{user.addressPostal}, #{user.addressPrimary}, #{user.addressSecondary}, #{user.activeState}, #{user.createdAt}, #{user.modifiedAt}, #{user.lastLogin})
-
+    keyColumn="index"
+    keyProperty="index">
+        INSERT INTO `aeo`.`users` (name, profile, email, password, contact_mvno_code, contact_first, contact_second, contact_third, nickname, birth, gender, provider_key, provider_type, address_postal, address_primary, address_secondary, active_state, created_at, modified_at, last_login, life_cycle_code, household_type_code, interest_sub_code) VALUES (#{user.name}, #{user.profile}, #{user.email}, #{user.password}, #{user.contactMvnoCode}, #{user.contactFirst}, #{user.contactSecond}, #{user.contactThird}, #{user.nickname}, #{user.birth}, #{user.gender}, #{user.providerKey}, #{user.providerType}, #{user.addressPostal}, #{user.addressPrimary}, #{user.addressSecondary}, #{user.activeState}, #{user.createdAt}, #{user.modifiedAt}, #{user.lastLogin}, #{user.lifeCycleCode}, #{user.householdTypeCode}, #{user.interestSubCode})
     </insert>
     <update id="update">
         UPDATE `aeo`.`users`
@@ -30,7 +29,10 @@
             active_state = #{user.activeState},
             created_at = #{user.createdAt},
             modified_at = #{user.modifiedAt},
-            last_login = #{user.lastLogin}
+            last_login = #{user.lastLogin},
+            life_cycle_code = #{user.lifeCycleCode},
+            household_type_code = #{user.householdTypeCode},
+            interest_sub_code = #{user.interestSubCode}
         WHERE `index` = #{user.index}
         LIMIT 1
     </update>
@@ -38,7 +40,11 @@
 
     </select>
     <select id="selectLocalUserByEmail" resultType="com.dev.alleon.entities.UserEntity">
-
+        SELECT `index` AS `id`, `name` AS `name`, `profile` AS `profile`, `email` AS `email`, `password` AS `password`, contact_mvno_code AS `contactMvnoCode`, `contact_first` AS `contactFirst`, `contact_second` AS `contactSecond`, `contact_third` AS `contactThird`, `nickname` AS `nickname`, `birth` AS `birth`, `gender` AS `gender`, `provider_key` AS `providerKey`, `provider_type` AS `providerType`, `address_postal` AS `addressPostal`, `address_primary` AS `addressPrimary`, `address_secondary` AS `addressSecondary`, `active_state` AS `activeState`, `created_at` AS `createdAt`, `modified_at` AS `modifiedAt`, `last_login` AS `lastLogin`, `life_cycle_code` AS `lifeCycleCode`, `household_type_code` AS `householdTypeCode`, `interest_sub_code` AS `interestSubCode`
+        FROM `aeo`.`users`
+        WHERE `email` = #{email}
+        AND `provider_type` = 'local'
+        LIMIT 1
     </select>
     <select id="selectCountByEmail" resultType="java.lang.Integer">
         SELECT COUNT(0)
@@ -57,4 +63,11 @@
         AND `contact_second` = #{contactSecond}
         AND `contact_third` = #{contactThird}
     </select>
+    <select id="selectLocalUserCountByEmail" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`users`
+        WHERE `email` = #{email}
+        AND `provider_type` = 'local'
+    </select>
+
 </mapper>
