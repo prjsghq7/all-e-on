@@ -1,8 +1,6 @@
 package com.dev.alleon.services;
 
-import com.dev.alleon.entities.ContactMvnoEntity;
-import com.dev.alleon.entities.EmailTokenEntity;
-import com.dev.alleon.entities.UserEntity;
+import com.dev.alleon.entities.*;
 import com.dev.alleon.mappers.ContactMvnoMapper;
 import com.dev.alleon.mappers.EmailTokenMapper;
 import com.dev.alleon.mappers.UserMapper;
@@ -28,6 +26,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class UserService {
@@ -143,36 +142,49 @@ public class UserService {
     public Result register(EmailTokenEntity emailToken,
                            UserEntity user) {
         if (user == null) {
+            System.out.println("5");
             return CommonResult.FAILURE;
         }
         if (emailToken == null ||
                 !EmailTokenRegex.emailCode.matches(emailToken.getCode()) || !EmailTokenRegex.emailSalt.matches(emailToken.getSalt())) {
+            System.out.println("4");
             return CommonResult.FAILURE;
         }
         EmailTokenEntity dbEmailToken = this.emailTokenMapper.selectByEmailAndCodeAndSalt(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
         if (dbEmailToken == null ||
                 !dbEmailToken.isUsed() ||
                 !dbEmailToken.getUserAgent().equals(emailToken.getUserAgent())) {
+            System.out.println("3");
             return CommonResult.FAILURE;
         }
 
         if (!UserRegex._name.matches(user.getName()) || !UserRegex.email.matches(user.getEmail()) || !UserRegex.password.matches(user.getPassword())) {
+            System.out.println("2");
             return CommonResult.FAILURE;
         }
         user.setPassword(BCryptUtils.encrypt(user.getPassword()));
-        if (!UserRegex.nickname.matches(user.getName()) || !UserRegex.birth.matches(user.getBirth().toString()) || !UserRegex.gender.matches(user.getGender()) || !UserRegex.contactSecondRegex.matches(user.getContactSecond()) || !UserRegex.contactThirdRegex.matches(user.getContactThird()) || user.getAddressPostal() == null || user.getAddressPostal().isEmpty() || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+        if (!UserRegex.nickname.matches(user.getNickname()) || !UserRegex.birth.matches(user.getBirth().toString()) || !UserRegex.gender.matches(user.getGender()) || !UserRegex.contactSecondRegex.matches(user.getContactSecond()) || !UserRegex.contactThirdRegex.matches(user.getContactThird()) || user.getAddressPostal() == null || user.getAddressPostal().isEmpty() || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+            System.out.println("1");
             return CommonResult.FAILURE;
         }
+        user.setProfile(new Byte[0]);
+        //임시용 지워야됨
+
+
         if (this.userMapper.selectCountByNickname(user.getNickname()) > 0) {
+            System.out.println("7");
             return RegisterResult.FAILURE_DUPLICATE_NICKNAME;
         }
         if (this.userMapper.selectCountByContact(user.getContactFirst(), user.getContactSecond(), user.getContactThird()) > 0) {
+            System.out.println("6");
             return RegisterResult.FAILURE_DUPLICATE_CONTACT;
         }
 
         user.setActiveState(1);
         user.setCreatedAt(LocalDateTime.now());
         user.setModifiedAt(LocalDateTime.now());
+        user.setProviderType("LOCAL");
+        user.setProviderKey(user.getEmail());
         user.setLastLogin(null);
 
         return this.userMapper.insert(user) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
@@ -181,5 +193,96 @@ public class UserService {
     public ContactMvnoEntity[] getContactMvnos() {
         return contactMvnoMapper.selectAll();
     }
+
+    public ResultTuple<EmailTokenEntity> sendRegisterEmail(String email, String userAgent) throws MessagingException {
+        if (!UserRegex.email.matches(email) || userAgent == null) {
+            return ResultTuple.<EmailTokenEntity>builder()
+                    .result(CommonResult.FAILURE)
+                    .build();
+        }
+        if (this.userMapper.selectLocalUserCountByEmail(email) > 0) {
+            return ResultTuple.<EmailTokenEntity>builder()
+                    .result(CommonResult.FAILURE_DUPLICATE)
+                    .build();
+        }
+        String code = RandomStringUtils.randomNumeric(6);   // "000000" ~ "999999"
+        String salt = RandomStringUtils.randomAlphanumeric(128); // a-z A~Z 0~9
+        EmailTokenEntity emailToken = UserService.generateEmailToken(email, userAgent, code, salt, 10);
+
+        if (this.emailTokenMapper.insert(emailToken) < 1) {
+            return ResultTuple.<EmailTokenEntity>builder().result(CommonResult.FAILURE).build();
+        }
+
+        //이메일 전송
+        Context context = new Context();
+        // thymeleaf 에서 사용할 데이터 입력
+        context.setVariable("code", emailToken.getCode());
+        // 보낼 html 파일 경로
+        String mailText = this.springTemplateEngine.process("user/registerEmail", context);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        mimeMessageHelper.setFrom("rkw2115@gmail.com");
+        mimeMessageHelper.setTo(emailToken.getEmail());
+        mimeMessageHelper.setSubject("[all-e-on] 회원가입 인증번호");
+        mimeMessageHelper.setText(mailText, true);
+        this.javaMailSender.send(mimeMessage);
+
+        return ResultTuple.<EmailTokenEntity>builder()
+                .result(CommonResult.SUCCESS)
+                .payload(emailToken)
+                .build();
+    }
+
+    public List<CodeEntity> getHouseCode(String code) {
+        return this.householdTypeMapper.selectAll();
+    }
+
+    public List<CodeEntity> getInterestCode(String code) {
+        return this.interestSubMapper.selectAll();
+    }
+
+    public List<CodeEntity> getLifeCode(String code) {
+        return this.lifeCycleMapper.selectAll();
+    }
+
+    public Result checkNickname(String nickname) {
+        if (!UserRegex.nickname.matches(nickname)) {
+            return CommonResult.FAILURE;
+        }
+        return this.userMapper.selectCountByNickname(nickname) > 0 ? CommonResult.FAILURE_DUPLICATE : CommonResult.SUCCESS;
+    }
+
+    public Result checkContact(String contactFirst, String contactSecond, String contactThird) {
+        if (!UserRegex.contactSecondRegex.matches(contactSecond)
+                || !UserRegex.contactThirdRegex.matches(contactThird)) {
+            return CommonResult.FAILURE;
+        }
+        return this.userMapper.selectCountByContact(contactFirst, contactSecond, contactThird) > 0 ? CommonResult.FAILURE_DUPLICATE : CommonResult.SUCCESS;
+    }
+
+    public ResultTuple<UserEntity> login(String email, String password, String userAgent) {
+        if (!UserRegex.email.matches(email) || !UserRegex.password.matches(password)) {
+            return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
+        }
+        UserEntity dbUser = this.userMapper.selectLocalUserByEmail(email);
+
+        System.out.println("입력된 비밀번호: " + password);
+        System.out.println("DB 비밀번호: " + dbUser.getPassword());
+        System.out.println("BCrypt 결과: " + BCryptUtils.isMatch(password, dbUser.getPassword()));
+
+
+        if (dbUser.getActiveState() > 2) {
+            return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
+        }
+        if (!BCryptUtils.isMatch(password, dbUser.getPassword())) {
+            System.out.println("입력된 비밀번호: " + password);
+            System.out.println("DB 비밀번호: " + dbUser.getPassword());
+            System.out.println("BCrypt 결과: " + BCryptUtils.isMatch(password, dbUser.getPassword()));
+
+            return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
+        }
+        return ResultTuple.<UserEntity>builder().result(CommonResult.SUCCESS).payload(dbUser).build();
+    }
+
 
 }
