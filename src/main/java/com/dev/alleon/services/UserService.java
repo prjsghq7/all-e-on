@@ -16,13 +16,13 @@ import com.dev.alleon.results.Result;
 import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.results.user.RegisterResult;
 import com.dev.alleon.results.user.RemoveAccountResult;
+import com.dev.alleon.utils.BCryptUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
@@ -33,7 +33,7 @@ import java.time.LocalDateTime;
 public class UserService {
 
     @Autowired
-    public UserService(UserMapper userMapper, EmailTokenMapper emailTokenMapper, ContactMvnoMapper contactMvnoMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, LifeCycleMapper lifeCycleMapper, JavaMailSender javaMailSender, SpringTemplateEngine springTemplateEngine, PasswordEncoder passwordEncoder) {
+    public UserService(UserMapper userMapper, EmailTokenMapper emailTokenMapper, ContactMvnoMapper contactMvnoMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, LifeCycleMapper lifeCycleMapper, JavaMailSender javaMailSender, SpringTemplateEngine springTemplateEngine) {
         this.userMapper = userMapper;
         this.emailTokenMapper = emailTokenMapper;
         this.contactMvnoMapper = contactMvnoMapper;
@@ -42,7 +42,6 @@ public class UserService {
         this.lifeCycleMapper = lifeCycleMapper;
         this.javaMailSender = javaMailSender;
         this.springTemplateEngine = springTemplateEngine;
-        this.passwordEncoder = passwordEncoder;
     }
 
     private static EmailTokenEntity generateEmailToken(String email, String userAgent, int expMin) {
@@ -71,7 +70,6 @@ public class UserService {
     private final LifeCycleMapper lifeCycleMapper;
     private final JavaMailSender javaMailSender;
     private final SpringTemplateEngine springTemplateEngine;
-    private final PasswordEncoder passwordEncoder;
 
     public ResultTuple<EmailTokenEntity> sendRemoveAccountEmail(UserEntity signedUser, String email, String userAgent) throws MessagingException {
         if (signedUser.getActiveState() > 2) {
@@ -161,7 +159,7 @@ public class UserService {
         if (!UserRegex._name.matches(user.getName()) || !UserRegex.email.matches(user.getEmail()) || !UserRegex.password.matches(user.getPassword())) {
             return CommonResult.FAILURE;
         }
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(BCryptUtils.encrypt(user.getPassword()));
         if (!UserRegex.nickname.matches(user.getName()) || !UserRegex.birth.matches(user.getBirth().toString()) || !UserRegex.gender.matches(user.getGender()) || !UserRegex.contactSecondRegex.matches(user.getContactSecond()) || !UserRegex.contactThirdRegex.matches(user.getContactThird()) || user.getAddressPostal() == null || user.getAddressPostal().isEmpty() || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
             return CommonResult.FAILURE;
         }
