@@ -7,13 +7,63 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>로그인</title>
     <link href="/common/assets/styles/common.min.css" rel="stylesheet" type="text/css">
+    <script defer src="/user/assets/scripts/login.js"></script>
 </head>
 <body>
 <!--search 버튼 확인용 추후 로그인 구현 시 코드 삭제-->
 <th:block th:replace="~{fragments/search :: search}">
 </th:block>
-로그인 성공띄!
+<div id="default-area">
+    <div id="login">
+        <span class="title">AEO</span>
+        <form novalidate id="loginForm">
+            <h2 class="title">로그인</h2>
 
-Test
+            <div class="input-wrapper">
+                <label data-aeo-object="label" class="caption">이메일
+                <input required data-aeo-object="field" type="email" id="email" maxlength="50" minlength="8" th:pattern="${T(com.dev.alleon.regexes.UserRegex).email.pattern}" placeholder=""> </label>
+            </div>
+            <div class="input-wrapper">
+                <label data-aeo-object="label" class="caption">
+                    비밀번호
+                    <input required data-aeo-object="field" type="password" id="password" maxlength="50" minlength="6" th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}" placeholder=" ">
+                </label>
+            </div>
+            <div class="remember-area">
+                <label data-aeo-object="-object-check">
+                    <input class="--input" name="remember" type="checkbox">
+                    <span class="--box"></span>
+                    <span class="--caption">이메일 기억</span>
+                </label>
+            </div>
+            <button class="login-button" type="submit">로그인</button>
+        </form>
+        <div class="login-guide">
+            <span class="caption">계정이 없으신가요?</span>
+            <a href="/user/register?registerType=local" class="link">회원가입</a>
+        </div>
+        <div class="login-guide">
+            <span class="caption">계정 정보를 분실하셨나요?</span>
+            <a class="link" href="/user/recover">계정복구</a>
+        </div>
+        <div class="oauth-wrapper">
+            <span class="caption">소셜 계정으로 간편 로그인</span>
+            <div class="button-container">
+                <!-- Google 로그인 버튼 -->
+                <a class="link" href="/oauth2/authorization/google">
+                    <img class="icon" src="/user/assets/images/oauth/oauth-icon-google.png" alt="NAVER 계정으로 로그인">
+                </a>
+                <!-- KaKao 로그인 버튼 -->
+                <a class="link" href="/oauth2/authorization/kakao">
+                    <img class="icon" src="/user/assets/images/oauth/oauth-icon-kakao.png" alt="NAVER 계정으로 로그인">
+                </a>
+                <!-- Naver 로그인 버튼 -->
+                <a class="link" href="/oauth2/authorization/naver">
+                    <img class="icon" src="/user/assets/images/oauth/oauth-icon-naver.png" alt="NAVER 계정으로 로그인">
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

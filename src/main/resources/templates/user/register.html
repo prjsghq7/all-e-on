@@ -5,56 +5,65 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script defer src="/user/assets/scripts/register.js"></script>
+    <script defer src="/common/assets/scripts/common.js" type="module"></script>
+    <script src="/common/assets/scripts/common.js"></script>
 <!--    <meta name="_csrf" th:content="${_csrf.token}">-->
 <!--    <meta name="_csrf_header" th:content="${_csrf.headerName}">-->
+    <link rel="stylesheet" href="/common/assets/styles/register.css">
     <title>회원가입 페이지</title>
 </head>
 <body>
+<div id="addressFindDialog" class="">
+    <div class="modal">
+    </div>
+</div>
 <form novalidate id="registerForm" class="register">
     <h1 class="title">회원가입</h1>
-    <div class="container-first">
+    <div class="container-first" data-aeo-name="userRegister">
         <div class="input-wrapper">
             <input hidden name="emailSalt" type="hidden">
-            <label data-mt-object="label">
+            <label data-aeo-object="label" data-aeo-name="name">
                 <span class="--caption">이름</span>
                 <span class="--row">
                 <input required autocomplete="off" data-aeo-object="field" maxlength="5" minlength="2" name="name" placeholder="성 + 이름(공백없음)" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex)._name.pattern}">
                     <!--                TODO th:pattern 리젝스 검사-->
             </span>
-                <span class="--warning">올바른 이름을 입력해주세요.</span>
+                <span data-aeo-component="label.warning">올바른 이름을 입력해주세요.</span>
             </label>
-            <label data-mt-object="label">
+            <label data-aeo-object="label" data-aeo-name="email">
                 <span class="--caption">이메일</span>
                 <span class="--row">
-                <input required type="email" name="email" autocomplete="email" data-mt-object="field" data-mt-stretch maxlength="50" minlength="8" placeholder="user@sample.com" th:pattern="${T(com.dev.alleon.regexes.UserRegex).email.pattern}">
+                <input required type="email" name="email" autocomplete="email" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="8" placeholder="user@sample.com" th:pattern="${T(com.dev.alleon.regexes.UserRegex).email.pattern}">
                     <!--                TODO 마찬가지 th:pattern 리젝스 검사-->
-                <button type="button" data-mt-object="button" name="emailCodeSendButton">인증코드 전송</button>
+                <button type="button" data-aeo-object="button" name="emailCodeSendButton">인증코드 전송</button>
             </span>
                 <span class="--row">
-                <input disabled required autocomplete="off" data-mt-object="field" data-mt-stretch maxlength="6" minlength="6" name="emailCode" placeholder="000000" type="text" th:pattern="${T(com.dev.alleon.regexes.EmailTokenRegex).emailCode.pattern}">
+                <input disabled required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="6" minlength="6" name="emailCode" placeholder="000000" type="text" th:pattern="${T(com.dev.alleon.regexes.EmailTokenRegex).emailCode.pattern}">
                     <!--                TODO th:pattern-->
-                <button type="button" data-mt-object="button -color-blue" name="emailCodeVerifyButton">인증번호 확인</button>
+                <button type="button" data-aeo-object="button -color-blue" name="emailCodeVerifyButton">인증번호 확인</button>
             </span>
-                <span class="--warning">이메일 인증을 완료해주세요.</span>
+                <span data-aeo-component="label.warning">이메일 인증을 완료해주세요.</span>
             </label>
-            <label data-mt-object="label">
+            <label data-aeo-object="label" data-aeo-name="password">
                 <span class="--caption">비밀번호</span>
                 <span class="--row">
-                <input required autocomplete="off" data-mt-object="field" data-mt-stretch maxlength="60" minlength="6" name="password" placeholder="숫자, 알파벳, 특수기호 6자 이상 50자 이하" type="password" th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}">
+                <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="60" minlength="6" name="password" placeholder="숫자, 알파벳, 특수기호 6자 이상 50자 이하" type="password" th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}">
                     <!--                TODO th:pattern-->
-                <input required autocomplete="off" data-mt-object="field" data-mt-stretch maxlength="50" minlength="6" name="passwordCheck" placeholder="비밀번호 재입력" type="password" th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}">
+                <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="6" name="passwordCheck" placeholder="비밀번호 재입력" type="password" th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}">
                     <!--                TODO th:pattern-->
             </span>
-                <span class="--warning">비밀번호를 입력해 주세요.</span>
+                <span data-aeo-component="label.warning">비밀번호를 입력해 주세요.</span>
             </label>
-            <label data-mt-object="label">
+            <label data-aeo-object="label" data-aeo-name="nickname">
                 <span class="--caption">닉네임</span>
                 <span class="--row">
-                    <input required autocomplete="off" data-mt-object="field" data-mt-stretch maxlength="10" minlength="1" name="nickname" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex).nickname.pattern}">
+                    <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="10" minlength="1" name="nickname" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex).nickname.pattern}">
 <!--                    TODO th:pattern-->
-                    <button data-mt-object="button" name="nicknameCheckButton" type="button">중복 확인</button>
+                    <button data-aeo-object="button" name="nicknameCheckButton" type="button">중복 확인</button>
                 </span>
-                <span class="--warning">닉네임 중복을 확인해 주세요.</span>
+                <span data-aeo-component="label.warning">닉네임 중복을 확인해 주세요.</span>
             </label>
             <label data-aeo-object="label">
                 <span class="--caption">생년월일/성별</span>
@@ -73,7 +82,7 @@
                     </span>
                     <span class="-flex-stretch" role="none"></span>
                 </span>
-                <span class="--warning">생년월일을 입력해주세요.</span>
+                <span data-aeo-component="label.warning">생년월일을 입력해주세요.</span>
             </label>
             <label data-aeo-object="label">
                 <span class="--caption">연락처</span>
@@ -98,7 +107,7 @@
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactThirdRegex.pattern}">
                     <button class="-object-button -color-blue" name="contactCheckButton" type="button">중복 확인</button>
                 </span>
-                <span class="--warning">연락처를 입력해 주세요.</span>
+                <span data-aeo-component="label.warning">연락처를 입력해 주세요.</span>
             </label>
             <label data-aeo-object="label">
                 <span class="--caption">주소</span>
@@ -111,10 +120,47 @@
                        name="addressPrimary" placeholder="기본 주소 (주소 찾기 버튼을 클릭해 주세요.)" type="text">
                 <input required data-aeo-object="field" maxlength="100" minlength="0" name="addressSecondary"
                        placeholder="상세 주소 (건물 이름, 동, 호)" type="text">
-                <span class="--warning">주소를 입력해 주세요.</span>
+                <span data-aeo-component="label.warning">주소를 입력해 주세요.</span>
             </label>
         </div>
     </div>
+    <div class="container code">
+        <span class="title">코드 선택</span>
+
+        <label>
+            <span class="--caption">가구 유형</span>
+            <select name="houseCode" required>
+                <option disabled selected hidden value="">선택하세요</option>
+                <option th:each="item : ${houseCode}"
+                        th:value="${item.code}"
+                        th:text="${item.displayText}">
+                </option>
+            </select>
+        </label>
+
+        <label>
+            <span class="--caption">관심 분야</span>
+            <select name="interestCode" required>
+                <option disabled selected hidden value="">선택하세요</option>
+                <option th:each="item : ${interestCode}"
+                        th:value="${item.code}"
+                        th:text="${item.displayText}">
+                </option>
+            </select>
+        </label>
+
+        <label>
+            <span class="--caption">생애주기</span>
+            <select name="lifeCode" required>
+                <option disabled selected hidden value="">선택하세요</option>
+                <option th:each="item : ${lifeCode}"
+                        th:value="${item.code}"
+                        th:text="${item.displayText}">
+                </option>
+            </select>
+        </label>
+    </div>
+
     <div class="container term">
         <span class="title">이용약관 동의</span>
         <div class="input-wrapper">
@@ -145,7 +191,7 @@
 제 4조 (약관 외 준칙)
 1. 본 약관은 회사가 제공하는 서비스에 관해 별도의 정책 및 운영규칙과 함께 적용됩니다.
 2. 본 약관에 명시되지 아니한 사항과 본 약관의 해석에 관하여는 관계법령에 따릅니다.</textarea>
-                <span class="--warning">서비스 이용약관에 동의해주세요.</span>
+                <span data-aeo-component="label.warning">서비스 이용약관에 동의해주세요.</span>
                 <label class="-object-check">
                     <input class="--input" name="agreeServiceTerm" type="checkbox">
                     <span class="--box"></span>
@@ -182,7 +228,7 @@
 이용자는 개인정보 수집 및 이용에 대한 동의를 거부할 권리가 있습니다.
 다만, 필수항목에 대한 동의를 거부할 경우 서비스 이용이 제한될 수 있습니다.
                 </textarea>
-                <span class="--warning">개인정보 수집 및 이용 동의 약관에 동의해주세요.</span>
+                <span data-aeo-component="label.warning">개인정보 수집 및 이용 동의 약관에 동의해주세요.</span>
                 <label class="-object-check">
                     <input class="--input" name="agreePrivacy" type="checkbox">
                     <span class="--box"></span>
@@ -208,7 +254,7 @@
             <img alt="" class="--icon" src="/common/assets/images/button-images/previous.png">
             <span class="--caption">이전</span>
         </button>
-        <button class="-object-button -color-blue" name="submit" type="submit" data-rb-visible>
+        <button class="register" name="submit" type="submit" data-rb-visible>
             <img alt="" class="--icon" src="/common/assets/images/button-images/next.png">
             <span class="--caption">다음</span>
         </button>
