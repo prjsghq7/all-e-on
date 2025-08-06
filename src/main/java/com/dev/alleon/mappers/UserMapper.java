@@ -15,7 +15,9 @@ public interface UserMapper {
                                         @Param(value = "contactSecond") String contactSecond,
                                         @Param(value = "contactThird") String contactThird);
 
-    UserEntity selectLocalUserByEmail(@Param(value = "email") String email);
+    UserEntity selectUserByEmail(@Param(value = "email") String email);
+
+    UserEntity selectUserByProviderKey(@Param("providerType") String provider, @Param("providerId") String providerId);
 
     int selectCountByEmail(@Param(value = "email") String email);
 
@@ -25,7 +27,7 @@ public interface UserMapper {
                              @Param(value = "contactSecond") String contactSecond,
                              @Param(value = "contactThird") String contactThird);
 
-    int selectLocalUserCountByEmail(@Param(value = "email") String email);
+    int selectUserCountByEmail(@Param(value = "email") String email);
 
 
 

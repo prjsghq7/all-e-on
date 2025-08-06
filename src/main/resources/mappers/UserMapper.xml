@@ -37,13 +37,35 @@
         LIMIT 1
     </update>
     <select id="selectLocalUserByContact" resultType="com.dev.alleon.entities.UserEntity">
-
-    </select>
-    <select id="selectLocalUserByEmail" resultType="com.dev.alleon.entities.UserEntity">
-        SELECT `index` AS `id`, `name` AS `name`, `profile` AS `profile`, `email` AS `email`, `password` AS `password`, contact_mvno_code AS `contactMvnoCode`, `contact_first` AS `contactFirst`, `contact_second` AS `contactSecond`, `contact_third` AS `contactThird`, `nickname` AS `nickname`, `birth` AS `birth`, `gender` AS `gender`, `provider_key` AS `providerKey`, `provider_type` AS `providerType`, `address_postal` AS `addressPostal`, `address_primary` AS `addressPrimary`, `address_secondary` AS `addressSecondary`, `active_state` AS `activeState`, `created_at` AS `createdAt`, `modified_at` AS `modifiedAt`, `last_login` AS `lastLogin`, `life_cycle_code` AS `lifeCycleCode`, `household_type_code` AS `householdTypeCode`, `interest_sub_code` AS `interestSubCode`
+        SELECT `index`               AS `id`,
+               `name`                AS `name`,
+               `profile`             AS `profile`,
+               `email`               AS `email`,
+               `password`            AS `password`,
+               contact_mvno_code     AS `contactMvnoCode`,
+               `contact_first`       AS `contactFirst`,
+               `contact_second`      AS `contactSecond`,
+               `contact_third`       AS `contactThird`,
+               `nickname`            AS `nickname`,
+               `birth`               AS `birth`,
+               `gender`              AS `gender`,
+               `provider_key`        AS `providerKey`,
+               `provider_type`       AS `providerType`,
+               `address_postal`      AS `addressPostal`,
+               `address_primary`     AS `addressPrimary`,
+               `address_secondary`   AS `addressSecondary`,
+               `active_state`        AS `activeState`,
+               `created_at`          AS `createdAt`,
+               `modified_at`         AS `modifiedAt`,
+               `last_login`          AS `lastLogin`,
+               `life_cycle_code`     AS `lifeCycleCode`,
+               `household_type_code` AS `householdTypeCode`,
+               `interest_sub_code`   AS `interestSubCode`
         FROM `aeo`.`users`
-        WHERE `email` = #{email}
-        AND `provider_type` = 'local'
+        WHERE `contact_first` = #{contactFirst}
+          AND `contact_second` = #{contactSecond}
+          AND `contact_third` = #{contactThird}
+          AND `provider_type` = 'local'
         LIMIT 1
     </select>
     <select id="selectCountByEmail" resultType="java.lang.Integer">
@@ -63,11 +85,69 @@
         AND `contact_second` = #{contactSecond}
         AND `contact_third` = #{contactThird}
     </select>
-    <select id="selectLocalUserCountByEmail" resultType="java.lang.Integer">
+    <select id="selectUserCountByEmail" resultType="java.lang.Integer">
         SELECT COUNT(0)
         FROM `aeo`.`users`
         WHERE `email` = #{email}
-        AND `provider_type` = 'local'
+    </select>
+    <select id="selectUserByEmail" resultType="com.dev.alleon.entities.UserEntity">
+        SELECT `index`               AS `id`,
+               `name`                AS `name`,
+               `profile`             AS `profile`,
+               `email`               AS `email`,
+               `password`            AS `password`,
+               contact_mvno_code     AS `contactMvnoCode`,
+               `contact_first`       AS `contactFirst`,
+               `contact_second`      AS `contactSecond`,
+               `contact_third`       AS `contactThird`,
+               `nickname`            AS `nickname`,
+               `birth`               AS `birth`,
+               `gender`              AS `gender`,
+               `provider_key`        AS `providerKey`,
+               `provider_type`       AS `providerType`,
+               `address_postal`      AS `addressPostal`,
+               `address_primary`     AS `addressPrimary`,
+               `address_secondary`   AS `addressSecondary`,
+               `active_state`        AS `activeState`,
+               `created_at`          AS `createdAt`,
+               `modified_at`         AS `modifiedAt`,
+               `last_login`          AS `lastLogin`,
+               `life_cycle_code`     AS `lifeCycleCode`,
+               `household_type_code` AS `householdTypeCode`,
+               `interest_sub_code`   AS `interestSubCode`
+        FROM `aeo`.`users`
+        WHERE `email` = #{email}
+        LIMIT 1
+    </select>
+    <select id="selectUserByProviderKey" resultType="com.dev.alleon.entities.UserEntity">
+        SELECT `index`               AS `id`,
+               `name`                AS `name`,
+               `profile`             AS `profile`,
+               `email`               AS `email`,
+               `password`            AS `password`,
+               contact_mvno_code     AS `contactMvnoCode`,
+               `contact_first`       AS `contactFirst`,
+               `contact_second`      AS `contactSecond`,
+               `contact_third`       AS `contactThird`,
+               `nickname`            AS `nickname`,
+               `birth`               AS `birth`,
+               `gender`              AS `gender`,
+               `provider_key`        AS `providerKey`,
+               `provider_type`       AS `providerType`,
+               `address_postal`      AS `addressPostal`,
+               `address_primary`     AS `addressPrimary`,
+               `address_secondary`   AS `addressSecondary`,
+               `active_state`        AS `activeState`,
+               `created_at`          AS `createdAt`,
+               `modified_at`         AS `modifiedAt`,
+               `last_login`          AS `lastLogin`,
+               `life_cycle_code`     AS `lifeCycleCode`,
+               `household_type_code` AS `householdTypeCode`,
+               `interest_sub_code`   AS `interestSubCode`
+        FROM `aeo`.`users`
+        WHERE `provider_type` = #{providerType}
+        AND `provider_key` = #{providerKey}
+        LIMIT 1
     </select>
 
 </mapper>
