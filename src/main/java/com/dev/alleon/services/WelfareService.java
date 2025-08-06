@@ -30,7 +30,10 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WelfareService {
@@ -123,10 +126,8 @@ public class WelfareService {
                 WelfareListDto dto = new WelfareListDto();
 
                 dto.setInqNum(Integer.parseInt(getTagValue(el, "inqNum")));
-                dto.setIntrsThemaArray(getTagValue(el, "intrsThemaArray"));
                 dto.setJurMnofNm(getTagValue(el, "jurMnofNm"));
                 dto.setJurOrgNm(getTagValue(el, "jurOrgNm"));
-                dto.setLifeArray(getTagValue(el, "lifeArray"));
                 dto.setOnapPsbltYn(getTagValue(el, "onapPsbltYn"));
                 dto.setRprsCtadr(getTagValue(el, "rprsCtadr"));
                 dto.setServDgst(getTagValue(el, "servDgst"));
@@ -141,7 +142,9 @@ public class WelfareService {
                                 DateTimeFormatter.ofPattern("yyyyMMdd")
                         )
                 );
-                dto.setTrgterIndvdlArray(getTagValue(el, "trgterIndvdlArray"));
+                dto.setIntrsThemaArray(getTagListValue(el, "intrsThemaArray"));
+                dto.setLifeArray(getTagListValue(el, "lifeArray"));
+                dto.setTrgterIndvdlArray(getTagListValue(el, "trgterIndvdlArray"));
                 welfareList.add(dto);
             }
             return new WelfareListResponse(welfareList, pageVo);
@@ -153,9 +156,28 @@ public class WelfareService {
 
     private String getTagValue(Element parent, String tag) {
         NodeList node = parent.getElementsByTagName(tag);
-        if (node.getLength() == 0) return null;
+        if (node.getLength() == 0) {
+            return null;
+        }
 
         String value = node.item(0).getTextContent();
-        return (value == null || value.isBlank()) ? null : value;
+        return (value == null || value.isBlank())
+                ? null
+                : value;
+    }
+
+    private List<String> getTagListValue(Element parent, String tag) {
+        NodeList node = parent.getElementsByTagName(tag);
+        if (node.getLength() == 0) {
+            return Collections.emptyList();
+        }
+
+        String value = node.item(0).getTextContent();
+        if (value == null || value.isBlank()) {
+            return Collections.emptyList();
+        }
+
+        return Arrays.stream(value.split(","))
+                .collect(Collectors.toList());
     }
 }

@@ -3,6 +3,7 @@ package com.dev.alleon.dtos.welfare;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Builder
 @AllArgsConstructor
@@ -14,9 +15,9 @@ public class WelfareListDto {
     private String servId;      // 서비스 ID
     private String servNm;      // 서비스 명
 
-    private String lifeArray;           // 생애 주기
-    private String trgterIndvdlArray;   // 가구 유형
-    private String intrsThemaArray;     // 관심 주제
+    private List<String> lifeArray;           // 생애 주기
+    private List<String> trgterIndvdlArray;   // 가구 유형
+    private List<String> intrsThemaArray;     // 관심 주제
 
     private String jurMnofNm;       // 소관 부처명
     private String jurOrgNm;        // 소관 조직명
