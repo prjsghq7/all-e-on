@@ -1,0 +1,61 @@
+#header {
+  font-family: "Dongle", sans-serif;
+  align-items: center;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  height: 5rem;
+  box-sizing: border-box;
+  top: 0;
+  margin: 0;
+  padding: 0.875rem 1.5rem;
+  position: sticky;
+  z-index: 999;
+  border-bottom: 0.0625rem solid #e0e0e0;
+}
+#header > .logo {
+  width: 10rem;
+}
+#header > .logo > .title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 3rem;
+}
+#header > .logo > .title:hover > .subTitle {
+  max-width: 5rem;
+  opacity: 1;
+  transition-duration: 500ms;
+  transition-property: max-width, opacity;
+  transition-timing-function: ease;
+}
+#header > .logo > .title > .subTitle {
+  color: #268dfa;
+  max-width: 0;
+  opacity: 0;
+  transition-duration: 350ms;
+  transition-property: max-width, opacity;
+  transition-timing-function: ease;
+}
+#header > .-flex-stretch {
+  min-width: 5rem;
+}
+#header > .menu {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+#header > .menu > .item, #header > .account-link {
+  font-size: 2.375rem;
+  font-weight: 400;
+}
+#header > .account-link {
+  margin-right: 3rem;
+}
+
+/*# sourceMappingURL=header.css.map */

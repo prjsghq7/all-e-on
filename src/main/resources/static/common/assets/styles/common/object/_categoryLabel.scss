@@ -1,0 +1,36 @@
+@charset "UTF-8";
+
+@use "sass:color";
+@import "../../_def";
+
+
+[data-aeo-object="categoryLabel"] {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
+  border: 0.0625rem solid #cccccc;
+  outline: 0.0625rem solid #bdbdbd;
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #454545;
+  text-decoration: none;
+
+  &:has(input:checked) {
+    outline-color: #6faefb;
+    border-color: #3488f4;
+    background-color: #268dfa;
+  }
+
+  > input {
+    &[type="radio"] {
+      display: none;
+    }
+
+    &:checked + [data-aeo-component="categoryLabel.caption"] {
+      font-weight: 800;
+      color: #ffffff;
+    }
+  }
+}

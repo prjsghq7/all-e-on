@@ -1,4 +1,58 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
+#header {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  justify-content: flex-start;
+  background-color: white;
+  display: flex;
+  gap: 0.5rem;
+  height: 3rem;
+  box-sizing: border-box;
+  top: 0;
+  margin: 0;
+  padding: 0.875rem 1.5rem;
+  position: sticky;
+  z-index: 999;
+  border-bottom: 0.0625rem solid #e0e0e0;
+}
+#header > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#header > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#header > .logo {
+  width: 10rem;
+}
+#header > .logo > .title {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  font-size: 2rem;
+}
+#header > .menu {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+  justify-content: flex-start;
+}
+#header > .menu .item > .link {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+#header > .account-link {
+  font-size: 1.5rem;
+  font-weight: 400;
+  margin-right: 3rem;
+}
+
 [data-aeo-object=button] {
   align-items: center;
   display: flex;
@@ -38,6 +92,32 @@
 }
 [data-aeo-object=button]:active > .caption {
   color: #fff;
+}
+
+[data-aeo-object=categoryLabel] {
+  padding: 0.5rem 1rem;
+  border-radius: 2rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  user-select: none;
+  border: 0.0625rem solid #cccccc;
+  outline: 0.0625rem solid #bdbdbd;
+  background-color: #fafafa;
+  font-weight: 500;
+  color: #454545;
+  text-decoration: none;
+}
+[data-aeo-object=categoryLabel]:has(input:checked) {
+  outline-color: #6faefb;
+  border-color: #3488f4;
+  background-color: #268dfa;
+}
+[data-aeo-object=categoryLabel] > input[type=radio] {
+  display: none;
+}
+[data-aeo-object=categoryLabel] > input:checked + [data-aeo-component="categoryLabel.caption"] {
+  font-weight: 800;
+  color: #ffffff;
 }
 
 [data-aeo-object=loading] {
