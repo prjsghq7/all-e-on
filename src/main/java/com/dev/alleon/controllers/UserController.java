@@ -4,6 +4,7 @@ import com.dev.alleon.entities.CodeEntity;
 import com.dev.alleon.entities.ContactMvnoEntity;
 import com.dev.alleon.entities.EmailTokenEntity;
 import com.dev.alleon.entities.UserEntity;
+import com.dev.alleon.oauth.CustomOAuth2User;
 import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.Result;
 import com.dev.alleon.results.ResultTuple;
@@ -128,5 +129,19 @@ public class UserController {
         JSONObject response = new JSONObject();
         response.put("result", result.getResult().toStringLower());
         return response.toString();
+    }
+    @RequestMapping(value = "/oauth",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    public String getOauth(HttpSession session, Model model){
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
+        if (oAuth2User == null) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("email", oAuth2User.getEmail());
+        model.addAttribute("image", oAuth2User.getProfileImage());
+        model.addAttribute("mobile", oAuth2User.getMobile());
+        model.addAttribute("name", oAuth2User.getName());
+        model.addAttribute("birthday", oAuth2User.getBirthday());
+        model.addAttribute("birthyear", oAuth2User.getBirthyear());
+        return "user/oauth";
     }
 }

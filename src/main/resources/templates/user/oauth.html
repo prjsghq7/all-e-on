@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+oauth로그인시 추가 작업
+<span th:text="${email}"></span>
+<img th:src="${image}" style="width: 5rem; height: 5rem">
+<span th:text="${mobile.split('-')[0]}"></span>
+<span th:text="${mobile.split('-')[1]}"></span>
+<span th:text="${mobile.split('-')[2]}"></span>
+<div th:text="${name}"></div>
+</body>
+</html>
