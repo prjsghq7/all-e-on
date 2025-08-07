@@ -21,7 +21,7 @@ body {
   font-size: 1rem;
   font-weight: 300;
   line-height: 1;
-  margin: 0;
+  margin: 0 auto;
   margin-block: 0;
   margin-inline: 0;
   user-select: none;
@@ -58,8 +58,11 @@ ol,ul{
 }
 
 #defaultArea {
+  min-height: calc(100vh - $header-height);
   align-self: center;
   min-width: 90rem;
-  padding: 2rem 8rem;
+  margin-top: $header-height;
+  margin-left:8rem;
+  margin-right:8rem;
 }
 

@@ -4,5 +4,9 @@
 @import "../../_def";
 
 [data-aeo-object="field"] {
-
+  border: 0.0625rem solid #454545;
+  transition-duration: 175ms;
+  transition-property: color;
+  transition-timing-function: ease;
+  padding: 0.5rem 0.75rem;
 }
