@@ -34,4 +34,9 @@ public class WelfareController {
         model.addAttribute("codes", this.welfareService.getWelfareSearchCodes(welfareSearchVo.getSearchType()));
         return "welfare/list";
     }
+
+    @RequestMapping(value = "/detail", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getDetail() {
+        return "welfare/detail";
+    }
 }

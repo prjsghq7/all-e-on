@@ -1,0 +1,212 @@
+@charset "UTF-8";
+
+@import "../../../common/assets/styles/_def";
+
+ol, ul {
+  padding: 0;
+}
+
+#defaultArea {
+  overflow: scroll;
+
+  > .header {
+    margin-bottom: 2rem;
+
+    > .mini-title {
+      font-size: 1.2rem;
+      font-weight: 500;
+      margin-bottom: 3rem;
+    }
+
+    > h2 {
+      font-size: 3rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    > span {
+      font-weight: 500;
+    }
+  }
+
+  > .main {
+    margin-bottom: 2rem;
+
+    > .main-box {
+      position: relative;
+      border: 0.0625rem solid #cccccc;
+      border-radius: 0.5rem;
+      padding: 2rem;
+
+      > .category {
+        > .items {
+          align-items: flex-start;
+          display: flex;
+          flex-direction: row;
+          gap: 0.5rem;
+          justify-content: flex-start;
+
+          > .item {
+            border: 0.09rem solid #2176d0;
+            color: #2176d0;
+            font-weight: 500;
+            border-radius: 99rem;
+            margin-bottom: 2rem;
+            padding: 0.5rem;
+          }
+        }
+      }
+
+      > .title {
+        padding-bottom: 1.25rem;
+
+        > h2 {
+          font-size: 2rem;
+          font-weight: 600;
+          margin-bottom: 2rem;
+        }
+
+        > span {
+          font-size: 1rem;
+          font-weight: 500;
+        }
+      }
+
+      > .table {
+        > .charge {
+          font-size: 1.2rem;
+          font-weight: 500;
+          color: #2176d0;
+
+          > span {
+            color: #000000;
+          }
+        }
+
+        .table-basic {
+          width: 100%;
+          border-collapse: collapse;
+          margin-top: 2rem;
+
+          th,
+          td {
+            padding: 1.2rem 0.8rem;
+            text-align: center;
+            font-size: 1rem;
+            font-weight: 500;
+            border-top: 0.0625rem solid #ccc;
+            border-bottom: 0.0625rem solid #ccc;
+            border-left: none;
+            border-right: 0.0625rem solid #ccc;
+          }
+
+          th:last-child,
+          td:last-child {
+            border-right: 0;
+          }
+
+          th {
+            background-color: #f5f7fb;
+            color: #2563eb;
+            font-weight: 600;
+          }
+
+          td {
+            color: #111;
+          }
+
+          tr:first-child th {
+            border-top: 0.0625rem solid #ccc;
+          }
+
+          tr:last-child td {
+            border-bottom: 0.0625rem solid #ccc;
+          }
+        }
+      }
+    }
+  }
+
+  > .detail {
+    > .detail-all {
+      > .category {
+        position: relative;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        text-align: center;
+
+        > label {
+          border-bottom: 0.2rem solid #2563eb;
+          background-color: #F6F7FB;
+          cursor: pointer;
+          padding: 1.5rem 6rem;
+        }
+
+        > input {
+          display: none;
+        }
+      }
+      margin-top: 5rem;
+
+      > .category:has(input[value="1"]:checked) ~ .explain > [data-mt-radio="1"],
+      > .category:has(input[value="2"]:checked) ~ .explain > [data-mt-radio="2"],
+      > .category:has(input[value="3"]:checked) ~ .explain > [data-mt-radio="3"],
+      > .category:has(input[value="4"]:checked) ~ .explain > [data-mt-radio="4"]{
+        display: block;
+      }
+
+      > .explain {
+        padding: 2rem;
+        border-left: 0.0625rem solid #6faefb;
+        border-right: 0.0625rem solid #6faefb;
+        border-bottom: 0.0625rem solid #6faefb;
+        border-bottom-left-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        > .content {
+          display: none;
+          > .detail-explain {
+            @include flex(column, flex-start, flex-start);
+            text-align: left;
+
+            > h3::before {
+              display: inline-block;
+              content: "";
+              width: 0.25rem;
+              height: 1rem;
+              background-color: #2563eb;
+            }
+
+            > ul {
+              padding: 1.5rem 2rem;
+              @include flex(column, flex-start, flex-start, 0.5rem);
+              list-style-type: square;
+
+              > li {
+              }
+
+              > ul {
+                list-style-type: circle;
+                padding: 0.5rem 1rem;
+                @include flex(column, flex-start, flex-start, 0.75rem);
+                > li{
+                  line-height: 2rem;
+                }
+              }
+            }
+          }
+        }
+      }
+
+      input[value="1"]:checked + label,
+      input[value="2"]:checked + label,
+      input[value="3"]:checked + label,
+      input[value="4"]:checked + label {
+        border-top: 0.2rem solid #2563eb;
+        border-left: 0.0625rem solid #2563eb;
+        border-right: 0.0625rem solid #2563eb;
+        background-color: #ffffff;
+        border-bottom: 0;
+      }
+    }
+  }
+}
