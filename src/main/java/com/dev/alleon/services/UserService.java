@@ -200,7 +200,7 @@ public class UserService {
                     .result(CommonResult.FAILURE)
                     .build();
         }
-        if (this.userMapper.selectLocalUserCountByEmail(email) > 0) {
+        if (this.userMapper.selectUserCountByEmail(email) > 0) {
             return ResultTuple.<EmailTokenEntity>builder()
                     .result(CommonResult.FAILURE_DUPLICATE)
                     .build();
@@ -264,7 +264,7 @@ public class UserService {
         if (!UserRegex.email.matches(email) || !UserRegex.password.matches(password)) {
             return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
         }
-        UserEntity dbUser = this.userMapper.selectLocalUserByEmail(email);
+        UserEntity dbUser = this.userMapper.selectUserByEmail(email);
 
         System.out.println("입력된 비밀번호: " + password);
         System.out.println("DB 비밀번호: " + dbUser.getPassword());
