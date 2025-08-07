@@ -33,15 +33,15 @@
             </button>
         </div>
         <div class="code-container">
-            <label>
+            <label data-aeo-object="categoryLabel" class="all">
                 <input type="radio" name="code" value="" checked>
-                <span class="caption">전체</span>
+                <span data-aeo-component="categoryLabel.caption">전체</span>
             </label>
-            <label th:each="code : ${codes}">
+            <label data-aeo-object="categoryLabel" th:each="code : ${codes}">
                 <input type="radio" name="code"
                        th:value="${code.code}"
                        th:checked="${code.code == searchVo.code}">
-                <span class="caption" th:text="${code.displayText}"></span>
+                <span data-aeo-component="categoryLabel.caption" th:text="${code.displayText}"></span>
             </label>
         </div>
     </form>
@@ -70,16 +70,31 @@
         <a class="welfare" href="#" th:each="welfare : ${welfareList}">
             <div class="header">
                 <span class="name" th:text="${welfare.servNm}"></span>
+
                 <button>요약 읽어주기</button>
             </div>
             <span class="sub" th:text="${welfare.jurMnofNm} + ' / ' + ${welfare.jurOrgNm}"></span>
             <span th:text="${welfare.servDgst}"></span>
-            <span class="sub" th:text="${welfare.srvPvsnNm}"></span>
+            <span class="sub" th:text="${welfare.srvPvsnNm} + ' / ' + ${welfare.sprtCycNm}"></span>
+            <div class="tooltip-container">
+                <span class="tooltip" th:if="${!welfare.lifeArray.isEmpty()}">
+                    <span class="caption">생애 주기</span>
+                    <span class="tag" th:each="life : ${welfare.lifeArray}" th:text="${life}"></span>
+                </span>
+                <span class="tooltip" th:if="${!welfare.trgterIndvdlArray.isEmpty()}">
+                    <span class="caption">가구 유형</span>
+                    <span class="tag" th:each="trgterIndvdl : ${welfare.trgterIndvdlArray}" th:text="${trgterIndvdl}"></span>
+                </span>
+                <span class="tooltip" th:if="${!welfare.intrsThemaArray.isEmpty()}">
+                    <span class="caption">관심 주제</span>
+                    <span class="tag" th:each="intrsThema : ${welfare.intrsThemaArray}" th:text="${intrsThema}"></span>
+                </span>
+            </div>
         </a>
-        <div th:if="${#lists.isEmpty(items) and not #strings.isEmpty(kw)}">조건에 맞는 복지 서비스가 없습니다.</div>
+        <div class="empty" th:if="${welfareList == null || welfareList.isEmpty()}">조건에 맞는 복지 서비스가 없습니다.</div>
     </div>
 
-    <div id="pageContainer">
+    <div id="pageContainer" th:if="${welfareList != null && !welfareList.isEmpty()}">
         <a class="page"
            th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
            th:text="${pageNum}"
