@@ -75,7 +75,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  line-height: 1.6;
+  line-height: 1.3;
 }
 #welfareList .welfare {
   align-items: stretch;
@@ -103,27 +103,61 @@
   color: #606060;
   font-size: 0.875rem;
 }
+#welfareList .welfare .description {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #222222;
+  line-height: 1.8;
+}
+#welfareList .welfare .footer {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+  justify-content: flex-start;
+}
+#welfareList .welfare .footer .info {
+  color: #606060;
+  font-size: 0.875rem;
+}
+#welfareList .welfare .footer .slash {
+  color: #4e4e4e;
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+#welfareList .welfare .footer .stretch {
+  flex-grow: 1;
+}
+#welfareList .welfare .footer .regi-date {
+  color: #0a0825;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
 #welfareList .welfare:hover > .tooltip-container {
   display: flex;
   opacity: 1;
   bottom: 100%;
+  left: 2.5rem;
+  transform: scale(1);
 }
 #welfareList .welfare .tooltip-container {
   position: absolute;
   opacity: 0;
+  pointer-events: none;
   align-items: flex-start;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
   justify-content: flex-start;
   bottom: 0;
-  left: 2rem;
+  left: -2rem;
   background: #f9f9f9;
   border: 0.0625rem solid #cccccc;
   border-radius: 0.5rem;
   padding: 0.75rem;
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.1333333333);
-  transition-property: bottom, opacity;
+  transform: scale(0.35);
+  transition-property: left, bottom, opacity, transform;
   transition-duration: 400ms;
   transition-timing-function: ease;
 }
@@ -148,7 +182,7 @@
   font-size: 0.75rem;
   font-weight: 500;
   border: 0.0625rem solid #b4d4ff;
-  border-radius: 9999px;
+  border-radius: 0.5rem;
   box-shadow: 0 0.0625rem 0.125rem rgba(0, 0, 0, 0.1333333333);
 }
 #welfareList .empty {

@@ -11,7 +11,8 @@
     <link href="/welfare/assets/styles/list.min.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-
+<th:block th:replace="~{/fragments/header :: header}">
+</th:block>
 <div id="defaultArea">
     <form id="searchForm">
         <input name="searchType" type="hidden" th:value="${searchVo.getSearchType()}">
@@ -45,37 +46,23 @@
             </label>
         </div>
     </form>
-
-
-<!--    <table>-->
-<!--        <thead>-->
-<!--        <tr>-->
-<!--            <td>서비스 명</td>-->
-<!--            <td>서비스 요약</td>-->
-<!--            <td>제공 유형</td>-->
-<!--            <td>등록일</td>-->
-<!--        </tr>-->
-<!--        </thead>-->
-<!--        <tbody>-->
-<!--        <tr th:each="welfare : ${welfareList}">-->
-<!--            <td th:text="${welfare.servNm}"></td>-->
-<!--            <td th:text="${welfare.servDgst}"></td>-->
-<!--            <td th:text="${welfare.srvPvsnNm}"></td>-->
-<!--            <td th:text="${#temporals.format(welfare.svcfrstRegTs, 'yyyy-MM-dd')}"></td>-->
-<!--        </tr>-->
-<!--        </tbody>-->
-<!--    </table>-->
-
     <div id="welfareList">
         <a class="welfare" href="#" th:each="welfare : ${welfareList}">
             <div class="header">
                 <span class="name" th:text="${welfare.servNm}"></span>
-
                 <button>요약 읽어주기</button>
             </div>
             <span class="sub" th:text="${welfare.jurMnofNm} + ' / ' + ${welfare.jurOrgNm}"></span>
-            <span th:text="${welfare.servDgst}"></span>
-            <span class="sub" th:text="${welfare.srvPvsnNm} + ' / ' + ${welfare.sprtCycNm}"></span>
+            <span class="description" th:text="${welfare.servDgst}"></span>
+            <div class="footer">
+                <span class="info" th:text="${welfare.srvPvsnNm}"></span>
+                <span class="slash">/</span>
+                <span class="info" th:text="'지원 주기 : ' + ${welfare.sprtCycNm}"></span>
+                <span class="slash">/</span>
+                <span class="info" th:text="${welfare.onapPsbltYn == 'Y'} ? '온라인 신청 가능' : '온라인 신청 불가'"></span>
+                <span class="stretch" role="none"></span>
+                <span class="regi-date" th:text="${welfare.svcfrstRegTs}"></span>
+            </div>
             <div class="tooltip-container">
                 <span class="tooltip" th:if="${!welfare.lifeArray.isEmpty()}">
                     <span class="caption">생애 주기</span>
