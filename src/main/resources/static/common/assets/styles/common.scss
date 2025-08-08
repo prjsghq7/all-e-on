@@ -32,6 +32,7 @@ body {
   margin-block: 0;
   margin-inline: 0;
   user-select: none;
+  min-width: 100vw;
 }
 
 a {
@@ -67,9 +68,9 @@ ol, ul {
 #defaultArea {
   min-height: calc(100vh - $header-height);
   align-self: center;
-  min-width: 90rem;
-  margin-top: $header-height;
-  margin-left: 8rem;
-  margin-right: 8rem;
+  max-width: 90rem;
+  background-color: #FFFFFF;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
+  margin: 0 8rem;
 }
 
