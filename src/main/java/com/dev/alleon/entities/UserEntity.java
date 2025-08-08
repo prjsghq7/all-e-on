@@ -29,6 +29,7 @@ public class UserEntity {
     private String addressSecondary;
     private int activeState;
     private LocalDateTime createdAt;
+    private LocalDateTime termAgreedAt;
     private LocalDateTime modifiedAt;
     private LocalDateTime lastLogin;
     private String lifeCycleCode;

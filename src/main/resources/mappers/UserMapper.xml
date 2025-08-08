@@ -5,7 +5,7 @@
     useGeneratedKeys="true"
     keyColumn="index"
     keyProperty="index">
-        INSERT INTO `aeo`.`users` (name, profile, email, password, contact_mvno_code, contact_first, contact_second, contact_third, nickname, birth, gender, provider_key, provider_type, address_postal, address_primary, address_secondary, active_state, created_at, modified_at, last_login, life_cycle_code, household_type_code, interest_sub_code) VALUES (#{user.name}, #{user.profile}, #{user.email}, #{user.password}, #{user.contactMvnoCode}, #{user.contactFirst}, #{user.contactSecond}, #{user.contactThird}, #{user.nickname}, #{user.birth}, #{user.gender}, #{user.providerKey}, #{user.providerType}, #{user.addressPostal}, #{user.addressPrimary}, #{user.addressSecondary}, #{user.activeState}, #{user.createdAt}, #{user.modifiedAt}, #{user.lastLogin}, #{user.lifeCycleCode}, #{user.householdTypeCode}, #{user.interestSubCode})
+        INSERT INTO `aeo`.`users` (name, profile, email, password, contact_mvno_code, contact_first, contact_second, contact_third, nickname, birth, gender, provider_key, provider_type, address_postal, address_primary, address_secondary, active_state, created_at, term_agreed_at, modified_at, last_login, life_cycle_code, household_type_code, interest_sub_code) VALUES (#{user.name}, #{user.profile}, #{user.email}, #{user.password}, #{user.contactMvnoCode}, #{user.contactFirst}, #{user.contactSecond}, #{user.contactThird}, #{user.nickname}, #{user.birth}, #{user.gender}, #{user.providerKey}, #{user.providerType}, #{user.addressPostal}, #{user.addressPrimary}, #{user.addressSecondary}, #{user.activeState}, #{user.createdAt}, #{user.termAgreedAt}, #{user.modifiedAt}, #{user.lastLogin}, #{user.lifeCycleCode}, #{user.householdTypeCode}, #{user.interestSubCode})
     </insert>
     <update id="update">
         UPDATE `aeo`.`users`
@@ -28,6 +28,7 @@
             address_secondary = #{user.addressSecondary},
             active_state = #{user.activeState},
             created_at = #{user.createdAt},
+            term_agreed_at = #{user.termAgreedAt},
             modified_at = #{user.modifiedAt},
             last_login = #{user.lastLogin},
             life_cycle_code = #{user.lifeCycleCode},
@@ -56,6 +57,7 @@
                `address_secondary`   AS `addressSecondary`,
                `active_state`        AS `activeState`,
                `created_at`          AS `createdAt`,
+               `term_agreed_at` AS `termAgreedAt`,
                `modified_at`         AS `modifiedAt`,
                `last_login`          AS `lastLogin`,
                `life_cycle_code`     AS `lifeCycleCode`,
@@ -110,6 +112,7 @@
                `address_secondary`   AS `addressSecondary`,
                `active_state`        AS `activeState`,
                `created_at`          AS `createdAt`,
+               `term_agreed_at` AS `termAgreedAt`,
                `modified_at`         AS `modifiedAt`,
                `last_login`          AS `lastLogin`,
                `life_cycle_code`     AS `lifeCycleCode`,
@@ -139,6 +142,7 @@
                `address_secondary`   AS `addressSecondary`,
                `active_state`        AS `activeState`,
                `created_at`          AS `createdAt`,
+               `term_agreed_at` AS `termAgreedAt`,
                `modified_at`         AS `modifiedAt`,
                `last_login`          AS `lastLogin`,
                `life_cycle_code`     AS `lifeCycleCode`,
@@ -149,5 +153,4 @@
         AND `provider_key` = #{providerKey}
         LIMIT 1
     </select>
-
 </mapper>

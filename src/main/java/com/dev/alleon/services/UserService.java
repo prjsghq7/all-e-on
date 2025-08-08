@@ -1,6 +1,9 @@
 package com.dev.alleon.services;
 
-import com.dev.alleon.entities.*;
+import com.dev.alleon.entities.CodeEntity;
+import com.dev.alleon.entities.ContactMvnoEntity;
+import com.dev.alleon.entities.EmailTokenEntity;
+import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.mappers.ContactMvnoMapper;
 import com.dev.alleon.mappers.EmailTokenMapper;
 import com.dev.alleon.mappers.UserMapper;
@@ -168,9 +171,6 @@ public class UserService {
             return CommonResult.FAILURE;
         }
         user.setProfile(new Byte[0]);
-        //임시용 지워야됨
-
-
         if (this.userMapper.selectCountByNickname(user.getNickname()) > 0) {
             System.out.println("7");
             return RegisterResult.FAILURE_DUPLICATE_NICKNAME;
