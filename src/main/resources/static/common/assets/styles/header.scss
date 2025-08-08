@@ -1,6 +1,9 @@
+@charset "UTF-8";
+
 @import "./_def";
 
-$header-height: 3rem;
+$header-height: 4.5rem;
+$header-font-size: 1.875rem;
 
 #header {
   @include flex(row, center, flex-start);
@@ -11,10 +14,13 @@ $header-height: 3rem;
   box-sizing: border-box;
   top: 0;
   margin: 0;
-  padding: 0.875rem 1.5rem;
+  padding: 0.5rem 1.5rem;
   position: sticky;
   z-index: 999;
   border-bottom: 0.0625rem solid #e0e0e0;
+
+  font-size: $header-font-size;
+  font-weight: 600;
 
   > .logo {
     width: 10rem;
@@ -24,7 +30,6 @@ $header-height: 3rem;
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
-      font-size: 2rem;
     }
   }
 
@@ -37,16 +42,11 @@ $header-height: 3rem;
 
     .item {
       > .link {
-        font-size: 1.5rem;
-        font-weight: 400;
       }
     }
   }
 
   > .account-link {
-    font-size: 1.5rem;
-    font-weight: 400;
-
     margin-right: 3rem;
   }
 }
