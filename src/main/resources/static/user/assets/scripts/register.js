@@ -1,6 +1,18 @@
 const $registerForm = document.getElementById('registerForm');
 const submitBtn = $registerForm.querySelector(':scope > .button-container > .register');
 
+const $nameLabel = $registerForm['name'].closest('[data-aeo-object="label"]');
+const $emailLabel = $registerForm['email'].closest('[data-aeo-object="label"]');
+const $passwordLabel = $registerForm['password'].closest('[data-aeo-object="label"]');
+const $nicknameLabel = $registerForm['nickname'].closest('[data-aeo-object="label"]');
+const $birthLabel = $registerForm['birth'].closest('[data-aeo-object="label"]');
+const $contactLabel = $registerForm['contactSecond'].closest('[data-aeo-object="label"]');
+const $addressLabel = $registerForm['addressPostal'].closest('[data-aeo-object="label"]');
+const $termLabel = $registerForm['agreeServiceTerm'].closest('[data-aeo-object="label"]');
+const $privacyLabel = $registerForm['agreePrivacy'].closest('[data-aeo-object="label"]');
+
+const $labelMap =  Array.from($registerForm.querySelectorAll('[data-aeo-object="label"]')).reduce((map, $label) => (map[$label.getAttribute('data-aeo-name')] = $label, map), {});
+
 $registerForm['emailCodeSendButton'].addEventListener('click', () => {
     const $emailLabel = $registerForm['email'].closest('[data-aeo-object="label"]');
     $emailLabel.setInValid(false);
@@ -98,25 +110,9 @@ $registerForm['emailCodeVerifyButton'].addEventListener('click', () => {
 
 submitBtn.addEventListener('click', (e) => {
     e.preventDefault();
-    const $nameLabel = $registerForm['name'].closest('[data-aeo-object="label"]');
-    const $emailLabel = $registerForm['email'].closest('[data-aeo-object="label"]');
-    const $passwordLabel = $registerForm['password'].closest('[data-aeo-object="label"]');
-    const $nicknameLabel = $registerForm['nickname'].closest('[data-aeo-object="label"]');
-    const $birthLabel = $registerForm['birth'].closest('[data-aeo-object="label"]');
-    const $contactLabel = $registerForm['contactSecond'].closest('[data-aeo-object="label"]');
-    const $addressLabel = $registerForm['addressPostal'].closest('[data-aeo-object="label"]');
-    const $termLabel = $registerForm['agreeServiceTerm'].closest('[data-aeo-object="label"]');
-    const $privacyLabel = $registerForm['agreePrivacy'].closest('[data-aeo-object="label"]');
-
-    if ($nameLabel?.setInValid) $nameLabel.setInValid(false);
-    if ($emailLabel?.setInValid) $emailLabel.setInValid(false);
-    if ($passwordLabel?.setInValid) $passwordLabel.setInValid(false);
-    if ($nicknameLabel?.setInValid) $nicknameLabel.setInValid(false);
-    if ($birthLabel?.setInValid) $birthLabel.setInValid(false);
-    if ($contactLabel?.setInValid) $contactLabel.setInValid(false);
-    if ($addressLabel?.setInValid) $addressLabel.setInValid(false);
-    if ($termLabel?.setInValid) $termLabel.setInValid(false);
-    if ($privacyLabel?.setInValid) $privacyLabel.setInValid(false);
+    Object.values($labelMap).forEach($label => {
+        $label.setInValid(false);
+    });
 
     if ($registerForm['name'].validity.valueMissing) {
         $nameLabel.setInValid(true, '이름을 입력해 주세요.');
@@ -144,17 +140,14 @@ submitBtn.addEventListener('click', (e) => {
         $passwordLabel.setInValid(true, '비밀번호를 입력해 주세요.');
         return;
     }
-    if (!$registerForm['password'].validity.valid) {
+    if ($registerForm['password'].validity.valueMissing) {
+        $passwordLabel.setInValid(true, '비밀번호를 입력해 주세요.');
+    } else if (!$registerForm['password'].validity.valid) {
         $passwordLabel.setInValid(true, '올바른 비밀번호를 입력해 주세요.');
-        return;
-    }
-    if ($registerForm['passwordCheck'].validity.valueMissing) {
+    } else if ($registerForm['passwordCheck'].validity.valueMissing) {
         $passwordLabel.setInValid(true, '비밀번호를 한번 더 입력해 주세요.');
-        return;
-    }
-    if ($registerForm['password'].value !== $registerForm['passwordCheck'].value) {
+    } else if ($registerForm['password'].value !== $registerForm['passwordCheck'].value) {
         $passwordLabel.setInValid(true, '비밀번호가 일치하지 않습니다.');
-        return;
     }
 
     if ($registerForm['nickname'].validity.valueMissing) {
@@ -234,7 +227,6 @@ submitBtn.addEventListener('click', (e) => {
     formData.append('lifeCycleCode', $registerForm['lifeCode'].value);
     formData.append('householdTypeCode', $registerForm['houseCode'].value);
     formData.append('interestSubCode', $registerForm['interestCode'].value);
-
     formData.append('agreeServiceTerm', $registerForm['agreeServiceTerm'].checked);
     formData.append('agreePrivacy', $registerForm['agreePrivacy'].checked);
 
@@ -267,6 +259,97 @@ submitBtn.addEventListener('click', (e) => {
     xhr.open('POST', '/user/register');
     xhr.send(formData);
 });
+
+$registerForm['nicknameCheckButton'].addEventListener('click', () => {
+    $nicknameLabel.setInValid(false);
+    if ($registerForm['nickname'].validity.valueMissing) {
+        $nicknameLabel.setInValid(true, '닉네임을 입력해 주세요.');
+        $registerForm['nickname'].focus();
+    } else if (!$registerForm['nickname'].validity.valid) {
+        $nicknameLabel.setInValid(true, '올바른 닉네임을 입력해주세요.');
+        $registerForm['nickname'].focus();
+    }
+    if ($nicknameLabel.isInValid()) {
+        return;
+    }
+    
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('nickname', $registerForm['nickname'].value);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            alert('실패');
+            return;
+        }
+        const response = JSON.parse(xhr.responseText);
+        switch (response.result) {
+            case 'failure_duplicate':
+                alert('이미 사용중');
+                $registerForm['nickname'].focus();
+                break;
+            case 'success':
+                alert('성공');
+                $registerForm['nickname'].setDisabled(true);
+                $registerForm['nicknameCheckButton'].setDisabled(true);
+                break;
+            default:
+                alert('알 수 없는 이유 실패');
+        }
+        
+    };
+    xhr.open('POST', '/user/nickname-check');
+    xhr.send(formData);
+});
+
+$registerForm['contactCheckButton'].addEventListener('click', () => {
+    $contactLabel.setInValid(false);
+    if ($registerForm['contactMvno'].value === '-1') {
+        $contactLabel.setInValid(true, '통신사를 선택해주세요.');
+    } else if ($registerForm['contactSecond'].validity.valueMissing || $registerForm['contactThird'].validity.valueMissing) {
+        $contactLabel.setInValid(true, '전화번호를 입력해주세요.');
+    } else if (!$registerForm['contactSecond'].validity.valid || !$registerForm['contactThird'].validity.valid) {
+        $contactLabel.setInValid(true, '올바른 전화번호를 입력해주세요.');
+    }
+    if ($contactLabel.isInValid()) {
+        return;
+    }
+    
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('contactFirst', $registerForm['contactFirst'].value);
+    formData.append('contactSecond', $registerForm['contactSecond'].value);
+    formData.append('contactThird', $registerForm['contactThird'].value);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            alert('오류');
+            return;
+        }
+        const response = JSON.parse(xhr.responseText);
+        const contact = $registerForm['contactFirst'].value + '-' + $registerForm['contactSecond'].value + '-' + $registerForm['contactThird'].value;
+        switch (response.result) {
+            case 'failure_duplicate':
+                alert('연락처 중복됨');
+                $registerForm['contactSecond'].focus();
+                break;
+            case 'success':
+                $registerForm['contactMvno'].setDisabled(true);
+                $registerForm['contactFirst'].setDisabled(true);
+                $registerForm['contactSecond'].setDisabled(true);
+                break;
+            default:
+                alert('ㅋ');
+        }
+    };
+    xhr.open('POST', '/user/contact-check');
+    xhr.send(formData);
+});
+
 
 $registerForm['addressFindButton'].addEventListener('click', () => {
     const $addressFindDialog = document.getElementById('addressFindDialog');
