@@ -314,6 +314,7 @@ body {
   margin-inline: 0;
   user-select: none;
   min-width: 100vw;
+  background-color: #f4f5f9;
 }
 
 a {
