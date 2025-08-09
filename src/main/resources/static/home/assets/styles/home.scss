@@ -1,0 +1,115 @@
+@charset "UTF-8";
+@import "../../../common/assets/styles/_def";
+
+$font-size: 1.2rem;
+
+#defaultArea {
+  @include flex(column, flex-start, stretch, 5rem);
+  //background-color: transparent;
+  box-shadow: 0 0;
+
+  > .alarm-sec {
+    @include flex(column, flex-start, space-evenly);
+
+    > .caption {
+      font-size: $font-size;
+      font-weight: 900;
+    }
+
+    > .alarm-container {
+      @include flex(row, center, center);
+      width: 100%;
+      height: 25rem;
+      //background-color: #FFFFFF;
+      border-radius: 1rem;
+      box-shadow: gray 0 0 .2rem;
+      overflow: hidden;
+
+      > .prevBtn {
+        width: 2rem;
+        text-align: center;
+      }
+
+      > .nextBtn {
+        width: 2rem;
+        text-align: center;
+      }
+
+      > .slider-wrapper {
+        @include flex(row, center, flex-start);
+        width: 66rem;
+        overflow: hidden;
+
+        > .list {
+          @include flex(row, center, flex-start, 2rem);
+          width: auto;
+          height: 25rem;
+          padding-inline: 0;
+          transition: transform 0.4s ease;
+          will-change: transform; // 브라우저가 성능 최적화를 미리 준비하게 도와주는 CSS 속성
+
+          > .item {
+            width: 20rem;
+            height: 20rem;
+            background-color: #2176D0;
+            border-radius: 0.625rem;
+            padding: 0.8125rem;
+            flex-shrink: 0;
+          }
+        }
+      }
+    }
+  }
+  >.recommend-sec{
+    @include flex(column, flex-start, space-evenly);
+    >.recommend-container{
+      width: 100%;
+      height: 25rem;
+      //background: linear-gradient(90deg, #2730b0, #252574, #272a59);
+      //background: linear-gradient(90deg, #53c3e9, #a6e3f2, #c5e6ec);
+      //background: linear-gradient(90deg, #70dbff, #adefff, #c7f7ff);
+      //background: linear-gradient(112deg, #e35f5f, #fddc81);
+      //background: linear-gradient(112deg, #85ff99, #f7ff85);
+      background-color: #EDFAE8;
+      border-radius: 1rem;
+      box-shadow: gray 0 0 .2rem;
+    }
+  }
+
+  > .site-sec {
+    @include flex(column, center, center);
+    height: 100%;
+
+    > .list {
+      @include flex(row, center, flex-start, 0.625rem);
+
+      > .item {
+        @include flex(column, center, center, 1rem);
+        width: 12rem;
+        height: 12rem;
+        background-color: #FFFFFF;
+        border-radius: 0.625rem;
+        border: 0.0625rem solid #cccccc;
+
+        &:last-child {
+          > a {
+            @include flex(column, flex-start, center);
+
+            > img {
+              border: 0.0625rem solid #cccccc;
+              border-radius: 0.625rem;
+              padding: 0.5rem;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+[data-aeo-object="section"] {
+  width: 100%;
+  height: 30rem;
+  //background-color: #cccccc;
+  border-radius: 0.625rem;
+}

@@ -1,4 +1,4 @@
-package com.dev.alleon.controllers;
+package com.dev.alleon.controllers.homeController;
 
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
@@ -13,8 +13,8 @@ public class HomeController {
         return "home/intro";
     }
 
-//    @RequestMapping(value = "/home", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-//    public String getHome(){
-//        return "home/home";
-//    }
+    @RequestMapping(value = "/home", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getHome(){
+        return "home/home";
+    }
 }

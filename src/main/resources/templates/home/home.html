@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>복지 | HOME</title>
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/home/assets/styles/home.min.css">
+    <script defer src="/home/assets/scripts/home.js"></script>
+</head>
+<body>
+<header th:replace="~{fragments/header :: header}"></header>
+<div id="defaultArea">
+    <section data-aeo-object="section" class="alarm-sec">
+        <span class="caption">ALARM</span>
+        <div class="alarm-container">
+            <span class="prevBtn">
+                <img src="/home/assets/images/prev.png" alt="">
+            </span>
+            <div class="slider-wrapper">
+                <ul class="list">
+                    <li class="item">
+                        <a href="#">제목1</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목2</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목3</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목4</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목5</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목6</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목7</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목8</a>
+                    </li>
+                    <li class="item">
+                        <a href="#">제목9</a>
+                    </li>
+                </ul>
+            </div>
+
+            <span class="nextBtn">
+                <img src="/home/assets/images/next.png" alt="">
+            </span>
+        </div>
+    </section>
+    <section data-aeo-object="section" class="recommend-sec">
+        <span class="caption">RECOMMEND</span>
+        <div class="recommend-container">
+            <div class="title-container"></div>
+            <div class="recommend-list">
+                <ul class="list">
+                    <li class="item"></li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section data-aeo-object="section" class="search-sec">
+        검색
+    </section>
+    <section data-aeo-object="section" class="site-sec">
+        <ul class="list">
+            <li class="item">
+                <a href="https://plus.gov.kr/">
+                    <img src="/home/assets/images/gov24.png" alt="정부24">
+                </a>
+                <span>정부24</span>
+            </li>
+            <li class="item">
+                <a href="https://www.work24.go.kr/cm/main.do">
+                    <img src="/home/assets/images/work24.png" alt="고용24">
+                </a>
+                <span>고용24</span>
+            </li>
+        </ul>
+    </section>
+</div>
+</body>
+</html>
