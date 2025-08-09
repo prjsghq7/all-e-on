@@ -344,7 +344,8 @@ ol, ul {
   list-style-type: none;
   margin-block: 0;
   padding-block: 0;
-  margin-inside: 0;
+  margin-inline: 0;
+  padding-inline: 0;
 }
 
 #defaultArea {
