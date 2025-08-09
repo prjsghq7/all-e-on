@@ -8,13 +8,13 @@
     <title>복지 | HOME</title>
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
     <link rel="stylesheet" href="/home/assets/styles/home.min.css">
+
     <script defer src="/home/assets/scripts/home.js"></script>
 </head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
 <div id="defaultArea">
     <section data-aeo-object="section" class="alarm-sec">
-        <span class="caption">ALARM</span>
         <div class="alarm-container">
             <span class="prevBtn">
                 <img src="/home/assets/images/prev.png" alt="">
@@ -55,36 +55,111 @@
                 <img src="/home/assets/images/next.png" alt="">
             </span>
         </div>
+        <div class="introduce-container">
+            <div class="content-container">
+                <span class="caption">
+                    아직도 정부 복지에 대해서 모르시는게 많으신가요?
+                </span>
+                <span class="content">
+                    복지 서비스웹인 AEO를 통해서 고객님의 놓쳤던 복지를 알아보세요!
+                </span>
+            </div>
+        </div>
     </section>
     <section data-aeo-object="section" class="recommend-sec">
-        <span class="caption">RECOMMEND</span>
         <div class="recommend-container">
-            <div class="title-container"></div>
+            <div class="title-container">
+                <span class="caption">간단한 문구</span>
+                <span class="content">내용</span>
+            </div>
             <div class="recommend-list">
                 <ul class="list">
-                    <li class="item"></li>
+                    <li class="item">
+                        <a href="#" class="caption">title</a>
+                        <span class="content">내용</span>
+                    </li>
+                    <li class="item">추천2</li>
+                    <li class="item">추천3</li>
+                    <li class="item">추천4</li>
+                    <li class="item">추천5</li>
+                    <li class="item">추천6</li>
                 </ul>
             </div>
         </div>
     </section>
     <section data-aeo-object="section" class="search-sec">
-        검색
+        <div class="search-grid">
+            <div class="list">
+                <div class="item">
+                    A<br>
+                    A<br>
+                    A<br>
+                    A<br>
+                    A<br>
+                    A<br>
+                    A<br>
+                    A<br>
+                    A<br>
+                    A
+                </div>
+            </div>
+            <div class="list">
+                <div class="item">
+                    B<br>
+                    B<br>
+                    B<br>
+                    B<br>
+                    B<br>
+                    B<br>
+                    B<br>
+                    B<br>
+                    B<br>
+                    B
+                </div>
+            </div>
+            <div class="list">
+                <div class="item">
+                    C<br>
+                    C<br>
+                    C<br>
+                    C<br>
+                    C<br>
+                    C<br>
+                    C<br>
+                    C<br>
+                    C<br>
+                    C
+                </div>
+            </div>
+        </div>
     </section>
     <section data-aeo-object="section" class="site-sec">
-        <ul class="list">
-            <li class="item">
-                <a href="https://plus.gov.kr/">
-                    <img src="/home/assets/images/gov24.png" alt="정부24">
-                </a>
-                <span>정부24</span>
-            </li>
-            <li class="item">
-                <a href="https://www.work24.go.kr/cm/main.do">
-                    <img src="/home/assets/images/work24.png" alt="고용24">
-                </a>
-                <span>고용24</span>
-            </li>
-        </ul>
+        <div class="site-left">
+            <span class="title">관련 다른 사이트</span>
+            <span class="accent">바로가기 ></span>
+        </div>
+        <div class="site-right">
+            <ul class="list">
+                <li class="item">
+                    <a href="https://www.bokjiro.go.kr">
+                        <img src="/home/assets/images/bokjiro.gif" alt="복지로">
+                    </a>
+                    <span>복지로</span>
+                </li>
+                <li class="item">
+                    <a href="https://plus.gov.kr/">
+                        <img src="/home/assets/images/gov24.png" alt="정부24">
+                    </a>
+                    <span>정부24</span>
+                </li>
+                <li class="item">
+                    <a href="https://www.work24.go.kr/cm/main.do">
+                        <img src="/home/assets/images/work24.png" alt="고용24">
+                    </a>
+                    <span>고용24</span>
+                </li>
+            </ul>
+        </div>
     </section>
 </div>
 </body>

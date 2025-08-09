@@ -3,6 +3,10 @@ const $sliderWrapper = $alarmContainer.querySelector('.slider-wrapper');
 const $list = $sliderWrapper.querySelector('.list');
 const nextBtn = $alarmContainer.querySelector('.nextBtn');
 const prevBtn = $alarmContainer.querySelector('.prevBtn');
+const $defaultArea = document.getElementById('defaultArea');
+const $contentContainer = $defaultArea.querySelector(':scope>.alarm-sec>.introduce-container>.content-container');
+const $conCaption = $contentContainer.querySelector(':scope>.caption');
+const $conContent = $contentContainer.querySelector(':scope>.content');
 
 let offset = 0;
 
@@ -38,3 +42,14 @@ prevBtn.addEventListener('click', () => {
 
     $list.style.transform = `translateX(${offset}px)`;
 });
+
+let showCaption = true;
+
+// // 초기 상태: 캡션 보이기
+$contentContainer.classList.add('show-caption');
+setInterval(() => {
+    showCaption=!showCaption;
+    $contentContainer.classList.toggle('show-caption', showCaption);
+    $contentContainer.classList.toggle('show-content', !showCaption);
+}, 2000);
+

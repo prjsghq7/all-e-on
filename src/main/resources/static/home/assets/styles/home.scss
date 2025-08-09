@@ -1,19 +1,76 @@
 @charset "UTF-8";
 @import "../../../common/assets/styles/_def";
+@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Gaegu&family=Jua&family=Oswald:wght@200..700&display=swap');
 
 $font-size: 1.2rem;
-
 #defaultArea {
-  @include flex(column, flex-start, stretch, 5rem);
-  //background-color: transparent;
+  @include flex(column, flex-start, stretch, 3rem);
+  background-color: transparent;
   box-shadow: 0 0;
 
   > .alarm-sec {
-    @include flex(column, flex-start, space-evenly);
-
+    @include flex(column, flex-start, space-evenly,0.5rem);
     > .caption {
       font-size: $font-size;
       font-weight: 900;
+    }
+
+    > .introduce-container {
+      width: 100%;
+      height: 9rem;
+
+      .content-container {
+        @include flex(column, flex-start, center, .5rem);
+        border-radius: 0.625rem;
+        width: 100%;
+        height: 100%;
+        //background: linear-gradient(112deg, #c15151, #d16f11);
+        background-color: coral;
+        padding: 2rem;
+        box-shadow: gray 0 0 .2rem;
+
+        // 공통 전환
+        > .caption,
+        > .content {
+          opacity: 0;
+          transform: translateY(6px);
+          transition: opacity .45s ease, transform .45s ease;
+          will-change: opacity, transform;
+        }
+
+        > .caption {
+          padding-left: 7rem;
+          width: 100%;
+          text-align: left;
+          font-family: "Jua", sans-serif;
+          font-weight: 400;
+          font-style: normal;
+          font-size: 3rem;
+        }
+
+        > .content {
+          width: 80%;
+          text-align: end;
+          font-size: 2rem;
+          font-family: "Jua", sans-serif;
+          font-weight: 400;
+          font-style: normal;
+
+        }
+
+        // 상태: 캡션 보이기
+        &.show-caption {
+          > .caption { opacity: 1; transform: translateY(0); }
+          > .content { opacity: 0; transform: translateY(6px); }
+        }
+
+        // 상태: 콘텐츠 보이기
+        &.show-content {
+          > .caption { opacity: 0; transform: translateY(6px); }
+          > .content { opacity: 1; transform: translateY(0); }
+        }
+      }
+
     }
 
     > .alarm-container {
@@ -21,10 +78,10 @@ $font-size: 1.2rem;
       width: 100%;
       height: 25rem;
       //background-color: #FFFFFF;
+      background: linear-gradient(112deg, #e35f5f, #fddc81);
       border-radius: 1rem;
       box-shadow: gray 0 0 .2rem;
       overflow: hidden;
-
       > .prevBtn {
         width: 2rem;
         text-align: center;
@@ -44,14 +101,13 @@ $font-size: 1.2rem;
           @include flex(row, center, flex-start, 2rem);
           width: auto;
           height: 25rem;
-          padding-inline: 0;
           transition: transform 0.4s ease;
           will-change: transform; // 브라우저가 성능 최적화를 미리 준비하게 도와주는 CSS 속성
 
           > .item {
             width: 20rem;
             height: 20rem;
-            background-color: #2176D0;
+            background-color: #ffffff;
             border-radius: 0.625rem;
             padding: 0.8125rem;
             flex-shrink: 0;
@@ -60,45 +116,146 @@ $font-size: 1.2rem;
       }
     }
   }
-  >.recommend-sec{
+
+  > .recommend-sec {
     @include flex(column, flex-start, space-evenly);
-    >.recommend-container{
+    > .recommend-container {
+      @include flex(row, center, center, 5rem);
+
       width: 100%;
       height: 25rem;
       //background: linear-gradient(90deg, #2730b0, #252574, #272a59);
       //background: linear-gradient(90deg, #53c3e9, #a6e3f2, #c5e6ec);
       //background: linear-gradient(90deg, #70dbff, #adefff, #c7f7ff);
-      //background: linear-gradient(112deg, #e35f5f, #fddc81);
+      background: linear-gradient(112deg, #e35f5f, #fddc81);
       //background: linear-gradient(112deg, #85ff99, #f7ff85);
-      background-color: #EDFAE8;
+      //background-color: #EDFAE8;
+
       border-radius: 1rem;
       box-shadow: gray 0 0 .2rem;
+      padding: 0.5rem;
+
+      > .title-container {
+        @include flex(column, center, center, 0.5rem);
+
+        min-width: 25rem;
+        height: 100%;
+        background-color: #FFFFFF90;
+        border-radius: 0.625rem;
+        padding: 0.5rem;
+
+        > .caption {
+          font-size: 2rem;
+        }
+      }
+
+      > .recommend-list {
+        min-width: 50rem;
+        height: 100%;
+        background-color: #FFFFFF90;
+        border-radius: 0.625rem;
+        padding: 0.5rem;
+        overflow: hidden;
+
+        > .list {
+          @include flex(column, center, flex-start, 0.5rem);
+          min-width: 49rem;
+          height: 100%;
+          overflow-y: scroll;
+
+          > .item {
+            @include flex(column, flex-start, center, 0.5rem);
+            min-width: 40rem;
+            height: 5rem;
+            background-color: #ffffff;
+            border-radius: 0.625rem;
+            padding: 0.625rem;
+
+            > .caption {
+              font-size: 1.2rem;
+              font-weight: 900;
+            }
+          }
+        }
+      }
     }
   }
-
-  > .site-sec {
-    @include flex(column, center, center);
+  > .search-sec {
+    //@include flex(row, center, flex-start);
+    background: linear-gradient(112deg, #e35f5f, #fddc81);
     height: 100%;
+    padding: 1rem;
 
-    > .list {
-      @include flex(row, center, flex-start, 0.625rem);
+    > .search-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      /*열(세로) 7개 생성*/
+      grid-gap: 1rem;
+      height: 100%;
 
-      > .item {
-        @include flex(column, center, center, 1rem);
-        width: 12rem;
-        height: 12rem;
+      > .list {
+        height: 100%;
         background-color: #FFFFFF;
         border-radius: 0.625rem;
         border: 0.0625rem solid #cccccc;
 
-        &:last-child {
-          > a {
-            @include flex(column, flex-start, center);
+        > .item {
 
-            > img {
-              border: 0.0625rem solid #cccccc;
-              border-radius: 0.625rem;
-              padding: 0.5rem;
+        }
+      }
+    }
+  }
+  > .site-sec {
+    @include flex(row, center, flex-start);
+    //height: 100%;
+    //background-color: gray;
+    background: linear-gradient(112deg, #e35f5f, #fddc81);
+    padding: 1rem;
+
+    > .site-left {
+      @include flex(column, flex-start, center, 1rem);
+
+      width: 3rem;
+      height: 100%;
+      margin-left: 3rem;
+      flex-grow: 1;
+
+      > .title {
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      > .accent {
+        font-size: 2rem;
+        font-weight: 500;
+      }
+    }
+
+    > .site-right {
+      @include flex(row, center, center);
+      height: 100%;
+      padding: 0.5rem;
+
+      > .list {
+        @include flex(row, center, flex-start, 0.625rem);
+
+        > .item {
+          @include flex(column, center, center, 1rem);
+          width: 12rem;
+          height: 12rem;
+          background-color: #FFFFFF;
+          border-radius: 0.625rem;
+          border: 0.0625rem solid #cccccc;
+
+          &:last-child {
+            > a {
+              @include flex(column, flex-start, center);
+
+              > img {
+                border: 0.0625rem solid #cccccc;
+                border-radius: 0.625rem;
+                padding: 0.5rem;
+              }
             }
           }
         }
@@ -109,7 +266,12 @@ $font-size: 1.2rem;
 
 [data-aeo-object="section"] {
   width: 100%;
-  height: 30rem;
+  //height: 30rem;
   //background-color: #cccccc;
   border-radius: 0.625rem;
+
+  &.search-sec,
+  &.site-sec {
+    height: initial;
+  }
 }
