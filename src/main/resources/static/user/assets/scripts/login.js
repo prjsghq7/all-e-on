@@ -1,3 +1,6 @@
+const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
 const $loginForm = document.getElementById('loginForm');
 const $loginBtn = $loginForm.querySelector('.login-button')
 
@@ -52,6 +55,7 @@ $loginBtn.addEventListener('click', (e) => {
 
     };
     xhr.open('POST', '/user/login');
+    xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
