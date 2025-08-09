@@ -171,6 +171,7 @@ public class UserService {
             return CommonResult.FAILURE;
         }
         user.setProfile(new Byte[0]);
+        user.setTermAgreedAt(LocalDateTime.now());
         if (this.userMapper.selectCountByNickname(user.getNickname()) > 0) {
             System.out.println("7");
             return RegisterResult.FAILURE_DUPLICATE_NICKNAME;
@@ -283,6 +284,91 @@ public class UserService {
         }
         return ResultTuple.<UserEntity>builder().result(CommonResult.SUCCESS).payload(dbUser).build();
     }
+
+    public ResultTuple<EmailTokenEntity> sendRecoverPasswordEmail(String email, String userAgent) throws MessagingException {
+        if (!UserRegex.email.matches(email) || userAgent == null) {
+            return ResultTuple.<EmailTokenEntity>builder().result(CommonResult.FAILURE).build();
+        }
+        if (this.userMapper.selectUserCountByEmail(email) == 0) {
+            return ResultTuple.<EmailTokenEntity>builder().result(CommonResult.FAILURE_ABSENT).build();
+        }
+        String code = RandomStringUtils.randomNumeric(6);   // "000000" ~ "999999"
+        String salt = RandomStringUtils.randomAlphanumeric(128); // a-z A~Z 0~9
+        EmailTokenEntity emailToken = UserService.generateEmailToken(email, userAgent, code, salt, 10);
+
+        if (this.emailTokenMapper.insert(emailToken) < 1) {
+            return ResultTuple.<EmailTokenEntity>builder().result(CommonResult.FAILURE).build();
+        }
+        //이메일 전송
+        Context context = new Context();
+        // thymeleaf 에서 사용할 데이터 입력
+        context.setVariable("code", emailToken.getCode());
+        // 보낼 html 파일 경로
+        String mailText = this.springTemplateEngine.process("user/recoverEmail", context);
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+        MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
+        mimeMessageHelper.setFrom("rkw2115@gmail.com");
+        mimeMessageHelper.setTo(emailToken.getEmail());
+        mimeMessageHelper.setSubject("[all-e-on] 계정 복구(비밀번호 재설정) 인증번호");
+        mimeMessageHelper.setText(mailText, true);
+        this.javaMailSender.send(mimeMessage);
+
+        return ResultTuple.<EmailTokenEntity>builder()
+                .result(CommonResult.SUCCESS)
+                .payload(emailToken)
+                .build();
+    }
+
+    public Result recoverPassword(EmailTokenEntity emailToken, String password) {
+        if (emailToken == null || !UserRegex.email.matches(emailToken.getEmail()) || !UserRegex.password.matches(password)) {
+            return CommonResult.FAILURE;
+        }
+
+        EmailTokenEntity dbEmailToken = this.emailTokenMapper.selectByEmailAndCodeAndSalt(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
+
+        if (dbEmailToken == null || !dbEmailToken.isUsed() || !dbEmailToken.getUserAgent().equals(emailToken.getUserAgent())) {
+            return CommonResult.FAILURE;
+        }
+
+        UserEntity user = this.userMapper.selectUserByEmail(emailToken.getEmail());
+        if (user == null || user.getActiveState() == 3) {
+            return CommonResult.FAILURE;
+        }
+        if (user.getActiveState() == 2) {
+            return CommonResult.FAILURE_SUSPENDED;
+        }
+        user.setPassword(BCryptUtils.encrypt(password));
+        user.setModifiedAt(LocalDateTime.now());
+        return this.userMapper.update(user) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
+    }
+
+    public Result recoverEmail(UserEntity user) {
+        if (user == null
+                || !UserRegex._name.matches(user.getName())
+                || !UserRegex.birth.matches(user.getBirth().toString())
+                || !UserRegex.contactSecondRegex.matches(user.getContactSecond())
+                || !UserRegex.contactThirdRegex.matches(user.getContactThird())
+                || this.contactMvnoMapper.selectCountByCode(user.getContactMvnoCode()) < 1) {
+            return CommonResult.FAILURE;
+        }
+        UserEntity dbUser = this.userMapper.selectLocalUserByContact(user.getContactMvnoCode(), user.getContactFirst(), user.getContactSecond(), user.getContactThird());
+        if (dbUser == null
+                || dbUser.getActiveState() == 3
+                || !dbUser.getName().equals(user.getName())
+                || !dbUser.getBirth().equals(user.getBirth())) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        user.setEmail(dbUser.getEmail());
+        if (dbUser.getActiveState() == 4) {
+            return CommonResult.FAILURE_SUSPENDED;
+        }
+
+        return CommonResult.SUCCESS;
+    }
+
+
+
 
 
 }

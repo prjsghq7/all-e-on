@@ -1,3 +1,6 @@
+const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+
 const $registerForm = document.getElementById('registerForm');
 const submitBtn = $registerForm.querySelector(':scope > .button-container > .register');
 
@@ -56,6 +59,7 @@ $registerForm['emailCodeSendButton'].addEventListener('click', () => {
         alert('알 수 없는 오류가 발생했습니다.');
     };
     xhr.open('POST', '/user/register-email');
+    xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
@@ -105,6 +109,7 @@ $registerForm['emailCodeVerifyButton'].addEventListener('click', () => {
         alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
     };
     xhr.open('PATCH', '/user/register-email');
+    xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
@@ -257,6 +262,7 @@ submitBtn.addEventListener('click', (e) => {
         alert('알 수 없는 이유로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     };
     xhr.open('POST', '/user/register');
+    xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
@@ -301,6 +307,7 @@ $registerForm['nicknameCheckButton'].addEventListener('click', () => {
         
     };
     xhr.open('POST', '/user/nickname-check');
+    xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
@@ -347,6 +354,7 @@ $registerForm['contactCheckButton'].addEventListener('click', () => {
         }
     };
     xhr.open('POST', '/user/contact-check');
+    xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
