@@ -9,10 +9,6 @@
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
     <link rel="stylesheet" href="/home/assets/styles/home.min.css">
     <script defer src="/home/assets/scripts/home.js"></script>
-    <script th:if="${session.signedUser==null}">
-        alert('로그인 부탁드립니다.');
-        history.back();
-    </script>
 </head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
@@ -77,9 +73,13 @@
             </div>
             <div class="recommend-list">
                 <ul class="list">
-                    <li class="item" th:each="allRecommend:${allRecommends}">
-                        <a href="#" class="caption" th:text="${allRecommend.servNm}">title</a>
+                    <li class="item" th:if="${allRecommends!=null || allRecommends.size()>0}" th:each="allRecommend:${allRecommends}">
+                        <a th:href="@{'/welfare/detail' (id=${allRecommend.servId})}" class="caption" th:text="${allRecommend.servNm}">title</a>
                         <span class="content" th:text="${allRecommend.servDgst}">내용</span>
+                    </li>
+                    <li class="item empty" th:if="${session.signedUser==null}">
+                        <span class="caption">맞춤 추천 서비스</span>
+                        <span class="content">맞춤 추천 서비스를 이용하시기 위해서는 회원가입을 부탁드립니다.</span>
                     </li>
                 </ul>
             </div>
@@ -89,44 +89,23 @@
         <div class="search-grid">
             <div class="list">
                 <div class="item">
-                    A<br>
-                    A<br>
-                    A<br>
-                    A<br>
-                    A<br>
-                    A<br>
-                    A<br>
-                    A<br>
-                    A<br>
-                    A
+                    <a href="/welfare/list?searchType=lifeArray">
+                        <span class="caption">생애주기 검색</span>
+                    </a>
                 </div>
             </div>
             <div class="list">
                 <div class="item">
-                    B<br>
-                    B<br>
-                    B<br>
-                    B<br>
-                    B<br>
-                    B<br>
-                    B<br>
-                    B<br>
-                    B<br>
-                    B
+                    <a href="/welfare/list?searchType=IntrsThemaArray">
+                        <span class="caption">관심유형 검색</span>
+                    </a>
                 </div>
             </div>
             <div class="list">
                 <div class="item">
-                    C<br>
-                    C<br>
-                    C<br>
-                    C<br>
-                    C<br>
-                    C<br>
-                    C<br>
-                    C<br>
-                    C<br>
-                    C
+                    <a href="/welfare/list?searchType=trgterIndvdlArray">
+                        <span class="caption">가족유형 검색</span>
+                    </a>
                 </div>
             </div>
         </div>

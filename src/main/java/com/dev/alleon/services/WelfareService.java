@@ -85,7 +85,9 @@ public class WelfareService {
     }
 
     public List<HomeRecommendDto> getHomeRecommendList(String code, String type) {
-
+        if (code == null || type == null) {
+            return null;
+        }
         System.out.println("homeRecommend: " + serviceKey);
         String encodedServiceKey = URLEncoder.encode(serviceKey, StandardCharsets.UTF_8);
         URI requestUrl = UriComponentsBuilder.fromHttpUrl(API_URL + LIST_QUERY)

@@ -9,7 +9,8 @@ $font-size: 1.2rem;
   box-shadow: 0 0;
 
   > .alarm-sec {
-    @include flex(column, flex-start, space-evenly,0.5rem);
+    @include flex(column, flex-start, space-evenly, 0.5rem);
+
     > .caption {
       font-size: $font-size;
       font-weight: 900;
@@ -25,9 +26,13 @@ $font-size: 1.2rem;
         width: 100%;
         height: 100%;
         //background: linear-gradient(112deg, #c15151, #d16f11);
-        background-color: coral;
+        //background-color: coral;
+        background-image: url("../../../user/assets/images/flag.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
         padding: 2rem;
-        box-shadow: gray 0 0 .2rem;
+        //box-shadow: gray 0 0 .2rem;
 
         // 공통 전환
         > .caption,
@@ -36,6 +41,9 @@ $font-size: 1.2rem;
           transform: translateY(6px);
           transition: opacity .45s ease, transform .45s ease;
           will-change: opacity, transform;
+          color: #fff;
+          -webkit-text-stroke-color: #0a0825;
+          -webkit-text-stroke-width: 0.1rem;
         }
 
         > .caption {
@@ -60,14 +68,28 @@ $font-size: 1.2rem;
 
         // 상태: 캡션 보이기
         &.show-caption {
-          > .caption { opacity: 1; transform: translateY(0); }
-          > .content { opacity: 0; transform: translateY(6px); }
+          > .caption {
+            opacity: 1;
+            transform: translateY(0);
+          }
+
+          > .content {
+            opacity: 0;
+            transform: translateY(6px);
+          }
         }
 
         // 상태: 콘텐츠 보이기
         &.show-content {
-          > .caption { opacity: 0; transform: translateY(6px); }
-          > .content { opacity: 1; transform: translateY(0); }
+          > .caption {
+            opacity: 0;
+            transform: translateY(6px);
+          }
+
+          > .content {
+            opacity: 1;
+            transform: translateY(0);
+          }
         }
       }
 
@@ -82,6 +104,7 @@ $font-size: 1.2rem;
       border-radius: 1rem;
       box-shadow: gray 0 0 .2rem;
       overflow: hidden;
+
       > .prevBtn {
         width: 2rem;
         text-align: center;
@@ -119,6 +142,7 @@ $font-size: 1.2rem;
 
   > .recommend-sec {
     @include flex(column, flex-start, space-evenly);
+
     > .recommend-container {
       @include flex(row, center, center, 5rem);
 
@@ -162,7 +186,7 @@ $font-size: 1.2rem;
           min-width: 49rem;
           height: 100%;
           overflow-y: scroll;
-
+          padding: 0;
           > .item {
             @include flex(column, flex-start, center, 0.5rem);
             width: 40rem;
@@ -175,11 +199,22 @@ $font-size: 1.2rem;
               font-size: 1.2rem;
               font-weight: 900;
             }
+
+            &.empty {
+              @include flex(column, center, center, 1.5rem);
+              height: 100%;
+              background-color: transparent;
+
+              > .caption {
+                font-size: 2rem;
+              }
+            }
           }
         }
       }
     }
   }
+
   > .search-sec {
     //@include flex(row, center, flex-start);
     background: linear-gradient(112deg, #e35f5f, #fddc81);
@@ -195,16 +230,33 @@ $font-size: 1.2rem;
 
       > .list {
         height: 100%;
-        background-color: #FFFFFF;
+        background-color: #FFFFFF50;
         border-radius: 0.625rem;
         border: 0.0625rem solid #cccccc;
 
         > .item {
+          @include flex(row, center, center);
+          height: 3rem;
 
+          > a {
+            font-size: 1.5rem;
+            font-weight: 800;
+
+            .caption {
+              font-family: "Jua", sans-serif;
+              display: inline-block;
+              transition: transform 0.3s ease;
+            }
+          }
+
+          &:hover .caption {
+            transform: scale(1.2);
+          }
         }
       }
     }
   }
+
   > .site-sec {
     @include flex(row, center, flex-start);
     //height: 100%;
@@ -243,16 +295,17 @@ $font-size: 1.2rem;
           @include flex(column, center, center, 1rem);
           width: 12rem;
           height: 12rem;
-          background-color: #FFFFFF;
+          background-color: #FFFFFF50;
           border-radius: 0.625rem;
-          border: 0.0625rem solid #cccccc;
+          //border: 0.0625rem solid #cccccc;
 
           &:last-child {
             > a {
               @include flex(column, flex-start, center);
 
               > img {
-                border: 0.0625rem solid #cccccc;
+                //border: 0.0625rem solid #cccccc;
+                background-color: #ffffff;
                 border-radius: 0.625rem;
                 padding: 0.5rem;
               }

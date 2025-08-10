@@ -28,12 +28,13 @@ public class HomeController {
 
     @RequestMapping(value = "/home", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getHome(@SessionAttribute(value = "signedUser", required = false) UserEntity singedUser, Model model) {
-        List<HomeRecommendDto> homeRecommendDtos = new ArrayList<>();
-        homeRecommendDtos.addAll(this.welfareService.getHomeRecommendList(singedUser.getLifeCycleCode(), "lifeArray"));
-        homeRecommendDtos.addAll(this.welfareService.getHomeRecommendList(singedUser.getHouseholdTypeCode(), "trgterIndvdlArray"));
-        homeRecommendDtos.addAll(this.welfareService.getHomeRecommendList(singedUser.getInterestSubCode(), "IntrsThemaArray"));
-        model.addAttribute("allRecommends", homeRecommendDtos);
-
+        if (singedUser != null) {
+            List<HomeRecommendDto> homeRecommendDtos = new ArrayList<>();
+            homeRecommendDtos.addAll(this.welfareService.getHomeRecommendList(singedUser.getLifeCycleCode(), "lifeArray"));
+            homeRecommendDtos.addAll(this.welfareService.getHomeRecommendList(singedUser.getHouseholdTypeCode(), "trgterIndvdlArray"));
+            homeRecommendDtos.addAll(this.welfareService.getHomeRecommendList(singedUser.getInterestSubCode(), "IntrsThemaArray"));
+            model.addAttribute("allRecommends", homeRecommendDtos);
+        }
         return "home/home";
     }
 
