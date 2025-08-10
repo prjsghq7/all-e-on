@@ -1,8 +1,112 @@
-@charset "UTF-8";
+[data-aeo-object="dialog"]{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(112deg, rgba(227,95,95,.35), rgba(253,220,129,.35));
+  backdrop-filter:blur(.5rem);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .2s ease;
+  z-index:1000;
+}
 
-@use "sass:color";
-@import "../../_def";
+[data-aeo-object="dialog"][data-aeo-visible]{
+  opacity:1;
+  pointer-events:auto;
+}
 
-[data-aeo-object ="dialog"] {
+[data-aeo-object="dialog"] > [data-aeo-component="dialog.modal"]{
+  width:min(34rem, 92vw);
+  background:#ffffff;
+  border:.0625rem solid rgba(0,0,0,.06);
+  border-radius:.75rem;
+  box-shadow:0 .5rem 1.5rem rgba(0,0,0,.08);
+  overflow:hidden;
+  transform:translateY(.375rem) scale(.985);
+  transition:transform .2s ease, box-shadow .2s ease;
+}
 
+[data-aeo-object="dialog"][data-aeo-visible] > [data-aeo-component="dialog.modal"]{
+  transform:translateY(0) scale(1);
+}
+
+[data-aeo-component="dialog.modal.title"]{
+  padding:1rem 1.25rem;
+  font-size:1.25rem;
+  font-weight:800;
+  letter-spacing:.02rem;
+  color:#272727;
+  background:
+          linear-gradient(112deg, rgba(227,95,95,.10), rgba(253,220,129,.10)),
+          #ffffff;
+  border-bottom:.0625rem solid rgba(0,0,0,.06);
+}
+
+[data-aeo-component="dialog.modal.content"]{
+  padding:1.25rem 1.25rem 1rem 1.25rem;
+  font-size:1rem;
+  line-height:1.5rem;
+  color:#272727;
+}
+
+[data-aeo-component="dialog.modal.buttonContainer"]{
+  display:flex;
+  align-items:center;
+  justify-content:flex-end;
+  gap:.75rem;
+  padding:1rem 1.25rem 1.25rem 1.25rem;
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"]{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:.5rem;
+  min-width:6rem;
+  height:2.5rem;
+  padding:0 .875rem;
+  border:0;
+  border-radius:.5rem;
+  cursor:pointer;
+  background:linear-gradient(112deg, #e35f5f, #fddc81);
+  color:#ffffff;
+  font-weight:700;
+  box-shadow:0 .5rem 1.5rem rgba(0,0,0,.08);
+  transition:transform .08s ease, box-shadow .2s ease, opacity .2s ease, filter .2s ease;
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"]:hover{
+  transform:translateY(-.0625rem);
+  box-shadow:0 .625rem 2rem rgba(0,0,0,.12);
+  filter:brightness(1.02);
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"]:active{
+  transform:translateY(0);
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"]:disabled{
+  opacity:.5;
+  cursor:not-allowed;
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"][data-aeo-color="gray"]{
+  background:#f1f5f9;
+  color:#272727;
+  box-shadow:none;
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"][data-aeo-color="gray"]:hover{
+  filter:none;
+  box-shadow:none;
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"][data-aeo-color="green"]{
+  background:linear-gradient(112deg, #22c55e, #a0e39e);
+}
+
+[data-aeo-component="dialog.modal.buttonContainer.button"][data-aeo-color="red"]{
+  background:linear-gradient(112deg, #ef4444, #f7a4a4);
 }
