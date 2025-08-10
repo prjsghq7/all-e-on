@@ -38,12 +38,12 @@
                 </label>
                 <label data-aeo-object="label" data-aeo-name="email">
                     <span data-aeo-component="label.caption">이메일</span>
-                    <span data-aeo-component="label.row">
+                    <span data-aeo-component="label.row" class="register">
                 <input required type="email" name="email" autocomplete="email" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="8" placeholder="user@sample.com" th:pattern="${T(com.dev.alleon.regexes.UserRegex).email.pattern}">
                         <!--                TODO 마찬가지 th:pattern 리젝스 검사-->
                 <button type="button" data-aeo-object="button" name="emailCodeSendButton">인증코드 전송</button>
             </span>
-                    <span data-aeo-component="label.row">
+                    <span data-aeo-component="label.row" class="register">
                 <input disabled required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="6" minlength="6" name="emailCode" placeholder="000000" type="text" th:pattern="${T(com.dev.alleon.regexes.EmailTokenRegex).emailCode.pattern}">
                         <!--                TODO th:pattern-->
                 <button type="button" data-aeo-object="button" name="emailCodeVerifyButton">인증번호 확인</button>
@@ -118,7 +118,7 @@
                     <span class="--row">
                     <input readonly required data-aeo-object="field" data-aeo-stretch maxlength="5" minlength="5" name="addressPostal"
                            placeholder="우편 번호(주소 찾기 버튼을 클릭해 주세요.)">
-                    <button class="-object-button -color-blue" name="addressFindButton" type="button">주소 찾기</button>
+                    <button data-aeo-object="button -color -blue" name="addressFindButton" type="button">주소 찾기</button>
                 </span>
                     <input readonly required data-aeo-object="field" maxlength="100" minlength="10"
                            name="addressPrimary" placeholder="기본 주소 (주소 찾기 버튼을 클릭해 주세요.)" type="text">
@@ -253,7 +253,7 @@
                 <span data-aeo-component="label.caption">취소</span>
             </a>
             <div data-aeo-stretch role="none"></div>
-            <button class="register" name="submit" type="submit" data-aeo-visible>
+            <button class="register" name="submit" type="submit" data-aeo-object="button -color -blue" data-aeo-visible>
                 <img alt="" class="--icon" src="/common/assets/images/button-images/next.png">
                 <span data-aeo-component="label.caption">회원가입</span>
             </button>
