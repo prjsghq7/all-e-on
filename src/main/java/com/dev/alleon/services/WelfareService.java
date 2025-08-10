@@ -5,9 +5,11 @@ import com.dev.alleon.dtos.welfare.WelfareListDto;
 import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.CodeEntity;
 import com.dev.alleon.entities.UserEntity;
+import com.dev.alleon.entities.welfare.WelfareEntity;
 import com.dev.alleon.mappers.welfare.HouseholdTypeMapper;
 import com.dev.alleon.mappers.welfare.InterestSubMapper;
 import com.dev.alleon.mappers.welfare.LifeCycleMapper;
+import com.dev.alleon.mappers.welfare.WelfareMapper;
 import com.dev.alleon.vos.PageVo;
 import com.dev.alleon.vos.WelfareSearchVo;
 import org.springframework.beans.factory.annotation.Value;
@@ -54,10 +56,14 @@ public class WelfareService {
     private final HouseholdTypeMapper householdTypeMapper;
     private final InterestSubMapper interestSubMapper;
 
-    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper) {
+    private final WelfareMapper welfareMapper;
+
+    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, WelfareMapper welfareMapper) {
         this.lifeCycleMapper = lifeCycleMapper;
         this.householdTypeMapper = householdTypeMapper;
         this.interestSubMapper = interestSubMapper;
+
+        this.welfareMapper = welfareMapper;
     }
 
     public List<CodeEntity> getWelfareSearchCodes(WelfareSearchVo.SearchType searchType) {
@@ -201,6 +207,66 @@ public class WelfareService {
         }
     }
 
+    public WelfareEntity getWelfareDetail(String id) {
+        if (this.welfareMapper.selectCountById(id) < 1) {
+            String encodedServiceKey = URLEncoder.encode(serviceKey, StandardCharsets.UTF_8);
+            URI requestUrl = UriComponentsBuilder.fromHttpUrl(API_URL + DETAIL_QUERY)
+                    .queryParam("serviceKey", encodedServiceKey)
+                    .queryParam("callTp", "D")
+                    .queryParam("servId", id)
+                    .build(true)
+                    .toUri();
+
+            System.out.println("requestUrl : " + requestUrl);
+
+            String xmlResponse = restTemplate.getForObject(requestUrl, String.class);
+            System.out.println(xmlResponse);
+
+            WelfareEntity welfare = this.parseXmlToWelfareDetail(xmlResponse);
+
+            this.welfareMapper.insert(welfare);
+        }
+        return this.welfareMapper.selectById(id);
+    }
+
+    private WelfareEntity parseXmlToWelfareDetail(String xmlResponse) {
+        System.out.println("xmlResponse : " + xmlResponse);
+
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new InputSource(new StringReader(xmlResponse)));
+
+            WelfareEntity welfare = new WelfareEntity();
+
+            Element rootElement = doc.getDocumentElement();
+            System.out.println("rootElement : " + rootElement);
+            System.out.println("servId : " + getTagValue(rootElement, "servId"));
+
+            welfare.setId(getTagValue(rootElement, "servId"));
+            welfare.setName(getTagValue(rootElement, "servNm"));
+            welfare.setMinistryName(getTagValue(rootElement, "jurMnofNm"));
+
+            welfare.setTargetDetailContent(getTagValue(rootElement, "tgtrDtlCn"));
+            welfare.setSelectionCriteriaContent(getTagValue(rootElement, "slctCritCn"));
+            welfare.setAllowanceServiceContent(getTagValue(rootElement, "alwServCn"));
+
+            welfare.setCriteriaYear(getTagValue(rootElement, "crtrYr"));
+            welfare.setSummary(getTagValue(rootElement, "wlfareInfoOutlCn"));
+            welfare.setSupportCycle(getTagValue(rootElement, "sprtCycNm"));
+            welfare.setServiceProvision(getTagValue(rootElement, "srvPvsnNm"));
+
+            welfare.setLifeArray(getTagValue(rootElement, "lifeArray"));
+            welfare.setRgterIndvdlArray(getTagValue(rootElement, "rgterIndvdlArray"));
+            welfare.setIntrsThemaArray(getTagValue(rootElement, "intrsThemaArray"));
+
+            welfare.setViews(0);
+
+            return welfare;
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private String getTagValue(Element parent, String tag) {
         NodeList node = parent.getElementsByTagName(tag);

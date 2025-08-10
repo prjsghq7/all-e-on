@@ -2,6 +2,7 @@ package com.dev.alleon.controllers;
 
 import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.CodeEntity;
+import com.dev.alleon.entities.welfare.WelfareEntity;
 import com.dev.alleon.services.WelfareService;
 import com.dev.alleon.vos.WelfareSearchVo;
 import org.springframework.http.MediaType;
@@ -36,7 +37,10 @@ public class WelfareController {
     }
 
     @RequestMapping(value = "/detail", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getDetail() {
+    public String getDetail(@RequestParam(value = "id", required = false) String id,
+                            Model model) {
+        WelfareEntity welfare = this.welfareService.getWelfareDetail(id);
+        model.addAttribute("welfare", welfare);
         return "welfare/detail";
     }
 }

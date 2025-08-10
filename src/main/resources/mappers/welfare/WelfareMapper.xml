@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.welfare.WelfareMapper">
+    <insert id="insert">
+        INSERT INTO `aeo`.`welfares` (`id`, `name`, `ministry_name`, `target_detail_content`,
+                                      `selection_criteria_content`,
+                                      `allowance_service_content`, `criteria_year`, `summary`, `support_cycle`,
+                                      `service_provision`, `life_array`, `rgter_indvdl_array`, `intrs_thema_array`,
+                                      `views`)
+        VALUES (#{welfare.id},
+                #{welfare.name},
+                #{welfare.ministryName},
+                #{welfare.targetDetailContent},
+                #{welfare.selectionCriteriaContent},
+                #{welfare.allowanceServiceContent},
+                #{welfare.criteriaYear},
+                #{welfare.summary},
+                #{welfare.supportCycle},
+                #{welfare.serviceProvision},
+                #{welfare.lifeArray},
+                #{welfare.rgterIndvdlArray},
+                #{welfare.intrsThemaArray},
+                #{welfare.views})
+    </insert>
+
+    <select id="selectCountById" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`welfares`
+        WHERE `id` = #{id}
+    </select>
+
+    <select id="selectById" resultType="com.dev.alleon.entities.welfare.WelfareEntity">
+        SELECT `id`                         AS `id`,
+               `name`                       AS `name`,
+               `ministry_name`              AS `ministryName`,
+               `target_detail_content`      AS `targetDetailContent`,
+               `selection_criteria_content` AS `selectionCriteriaContent`,
+               `allowance_service_content`  AS `allowanceServiceContent`,
+               `criteria_year`              AS `criteriaYear`,
+               `summary`                    AS `summary`,
+               `support_cycle`              AS `supportCycle`,
+               `service_provision`          AS `serviceProvision`,
+               `life_array`                 AS `lifeArray`,
+               `rgter_indvdl_array`         AS `rgterIndvdlArray`,
+               `intrs_thema_array`          AS `intrsThemaArray`,
+               `views`                      AS `views`
+        FROM `aeo`.`welfares`
+        WHERE `id` = #{id}
+    </select>
+</mapper>

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -47,7 +47,7 @@
         </div>
     </form>
     <div id="welfareList">
-        <a class="welfare" href="#" th:each="welfare : ${welfareList}">
+        <a class="welfare" th:href="@{'/welfare/detail' (id=${welfare.servId})}" th:each="welfare : ${welfareList}">
             <div class="header">
                 <span class="name" th:text="${welfare.servNm}"></span>
                 <button>요약 읽어주기</button>
