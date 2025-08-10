@@ -1,6 +1,10 @@
 @charset "UTF-8";
 @import "../../../common/assets/styles/_def";
 
+html {
+  min-width: 90rem;
+}
+
 $grad-start: #e35f5f;
 $grad-end: #fddc81;
 $card-bg: #ffffff;

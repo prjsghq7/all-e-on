@@ -1,4 +1,8 @@
 @charset "UTF-8";
+html {
+  min-width: 90rem;
+}
+
 #addressFindDialog {
   align-items: center;
   display: flex;
