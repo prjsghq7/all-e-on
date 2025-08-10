@@ -41,13 +41,13 @@ $loginBtn.addEventListener('click', (e) => {
                 alert('로그인 실패');
                 break;
             case 'success':
-                alert('성공!');
+                location.href = `${origin}/`
                 if ($loginForm['remember'].checked) {
                     localStorage.setItem('loginEmail', $loginForm['email'].value);
                 } else {
                     localStorage.removeItem('loginEmail');
                 }
-                location.href = `${origin}/`
+
                 break;
             default:
                 alert('로그인 실패');
