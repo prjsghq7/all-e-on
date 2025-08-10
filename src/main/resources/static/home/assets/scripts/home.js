@@ -14,7 +14,7 @@ function remToPx(rem) {
     return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
 }
 
-const moveDistance = remToPx(66); // slider-wrapper 크기와 같게
+const moveDistance = remToPx(66.12); // slider-wrapper 크기와 같게
 
 function getMaxOffset() {
     return -($list.scrollWidth - $sliderWrapper.clientWidth);

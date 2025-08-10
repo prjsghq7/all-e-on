@@ -300,11 +300,13 @@
 
 html {
   min-height: 100vh;
+  min-width: 106rem;
   font-family: "SUIT-Regular", serif;
 }
 
 body {
-  min-height: 100%;
+  -ms-overflow-style: none;
+  height: 100vh;
   cursor: default;
   font-size: 1rem;
   font-weight: 300;
@@ -315,6 +317,10 @@ body {
   user-select: none;
   min-width: 100vw;
   background-color: #f4f5f9;
+}
+
+body::-webkit-scrollbar {
+  display: none;
 }
 
 a {
@@ -344,17 +350,17 @@ ol, ul {
   list-style-type: none;
   margin-block: 0;
   padding-block: 0;
-  margin-inline: 0;
-  padding-inline: 0;
+  margin-inside: 0;
 }
 
 #defaultArea {
   min-height: calc(100vh - 4.5rem);
   align-self: center;
-  max-width: 90rem;
+  min-width: 90rem;
   background-color: #FFFFFF;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   margin: 0 8rem;
+  overflow-x: hidden;
 }
 
 /*# sourceMappingURL=common.css.map */
