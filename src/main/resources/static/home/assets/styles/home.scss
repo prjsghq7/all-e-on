@@ -165,7 +165,7 @@ $font-size: 1.2rem;
 
           > .item {
             @include flex(column, flex-start, center, 0.5rem);
-            min-width: 40rem;
+            width: 40rem;
             height: 5rem;
             background-color: #ffffff;
             border-radius: 0.625rem;

@@ -1,8 +1,10 @@
 package com.dev.alleon.services;
 
+import com.dev.alleon.dtos.home.HomeRecommendDto;
 import com.dev.alleon.dtos.welfare.WelfareListDto;
 import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.CodeEntity;
+import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.mappers.welfare.HouseholdTypeMapper;
 import com.dev.alleon.mappers.welfare.InterestSubMapper;
 import com.dev.alleon.mappers.welfare.LifeCycleMapper;
@@ -41,6 +43,7 @@ public class WelfareService {
     private static final String LIST_QUERY = "/NationalWelfarelistV001";
     private static final String DETAIL_QUERY = "/NationalWelfaredetailedV001";
     private static final int NUMBER_OF_ROWS = 10;
+    private static final int RECOMMEND_OF_ROWS = 3;
 
     @Value("${welfare.service-key}")
     private String serviceKey;
@@ -73,6 +76,51 @@ public class WelfareService {
                 codeEntities = null;
         }
         return codeEntities;
+    }
+
+    public List<HomeRecommendDto> getHomeRecommendList(String code, String type) {
+
+        System.out.println("homeRecommend: " + serviceKey);
+        String encodedServiceKey = URLEncoder.encode(serviceKey, StandardCharsets.UTF_8);
+        URI requestUrl = UriComponentsBuilder.fromHttpUrl(API_URL + LIST_QUERY)
+                .queryParam("serviceKey", encodedServiceKey)
+                .queryParam("pageNo", 1)
+                .queryParam("numOfRows", RECOMMEND_OF_ROWS)
+                .queryParam("callTp", "D")
+                .queryParam("srchKeyCode", "003")
+                .queryParam(type, code)
+                .build(true)
+                .toUri();
+        System.out.println("requestUrl : " + requestUrl);
+        String xmlResponse = restTemplate.getForObject(requestUrl, String.class);
+        System.out.println(xmlResponse);
+        System.out.println(parseXmlToHomeRecommend(xmlResponse));
+        return parseXmlToHomeRecommend(xmlResponse);
+    }
+
+    public List<HomeRecommendDto> parseXmlToHomeRecommend(String xmlResponse) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new InputSource(new StringReader(xmlResponse)));
+            System.out.println("doc: " + doc);
+            NodeList nodes = doc.getElementsByTagName("servList");
+            System.out.println(nodes.getLength());
+
+            List<HomeRecommendDto> homeRecommendDtos = new ArrayList<>();
+            for (int i = 0; i <nodes.getLength(); i++) {
+                Element el = (Element) nodes.item(i);
+                System.out.println("el: "+el.getTextContent());
+                HomeRecommendDto dto = new HomeRecommendDto();
+                dto.setServId(getTagValue(el, "servId"));
+                dto.setServNm(getTagValue(el, "servNm"));
+                dto.setServDgst(getTagValue(el, "servDgst"));
+                homeRecommendDtos.add(dto);
+            }
+            return homeRecommendDtos;
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public WelfareListResponse getWelfareList(WelfareSearchVo welfareSearchVo, int page) {
