@@ -1,14 +1,6 @@
 /*--------------------------------------------------------------------------------------------
 *     <script defer src="/common/assets/scripts/common.js" type="module"></script> 로 사용
 * --------------------------------------------------------------------------------------------*/
-import {Dialog} from "./object/dialog.js";
-
-window.Dialog = Dialog;
-
-
-window.dialog = new Dialog({
-    $element: document.body.querySelector(':scope > [data-aeo-object="dialog"]')
-});
 
 HTMLElement.INVALID_ATTR_NAME = 'data-aeo-invalid';
 HTMLElement.VALID_ATTR_NAME = 'data-aeo-valid';
