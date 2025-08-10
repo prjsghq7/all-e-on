@@ -9,8 +9,7 @@ $pages[0].style.display = 'flex';
 
 const invalidIndex = setInterval(()=>{
     if (currentIndex >= $pages.length) {
-        alert('끝');
-        //location.href="/home";
+        location.href="/home";
         clearInterval(invalidIndex);
         return;
     }
