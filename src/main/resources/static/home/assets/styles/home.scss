@@ -122,7 +122,7 @@ $font-size: 1.2rem;
         overflow: hidden;
 
         > .list {
-          @include flex(row, center, flex-start, 2.12rem);
+          @include flex(row, center, flex-start, 2rem);
           width: auto;
           height: 25rem;
           transition: transform 0.4s ease;
@@ -135,7 +135,12 @@ $font-size: 1.2rem;
             border-radius: 0.625rem;
             padding: 0.8125rem;
             flex-shrink: 0;
-            
+
+            &:hover {
+              box-shadow: 0 0 0 2px #938d87; // 바깥 라인 느낌
+              transition: box-shadow 0.2s ease;
+            }
+
           }
         }
       }
@@ -173,7 +178,10 @@ $font-size: 1.2rem;
         background-color: #FFFFFF90;
         border-radius: 0.625rem;
         padding: 0.5rem;
-
+        background-image: url("../../../common/assets/images/logo2.png");
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
         > .caption {
           font-size: 2rem;
         }
@@ -192,7 +200,8 @@ $font-size: 1.2rem;
           min-width: 49rem;
           height: 100%;
           overflow-y: scroll;
-          padding: 0;
+          padding-top: 0.5rem;
+
           > .item {
             @include flex(column, flex-start, center, 0.5rem);
             width: 40rem;
@@ -205,6 +214,13 @@ $font-size: 1.2rem;
               font-size: 1.2rem;
               font-weight: 900;
             }
+            >.content{
+              width: 38.75rem;
+              height: 2rem;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
 
             &.empty {
               @include flex(column, center, center, 1.5rem);
@@ -214,6 +230,11 @@ $font-size: 1.2rem;
               > .caption {
                 font-size: 2rem;
               }
+            }
+
+            &:hover {
+              box-shadow: 0 0 0 2px #228765; // 바깥 라인 느낌
+              transition: box-shadow 0.2s ease;
             }
           }
         }
@@ -244,15 +265,28 @@ $font-size: 1.2rem;
         > .item {
           @include flex(row, center, center);
           height: 3rem;
+          border-radius: 0.625rem;
+          background-color: #ECF9F0;
+
+          &:hover {
+            box-shadow: 0 0 0 2px #228765;
+            transition: box-shadow 0.2s ease;
+            >a{
+              .caption{
+                color: #228765;
+              }
+            }
+          }
 
           > a {
             font-size: 1.5rem;
             font-weight: 800;
 
             .caption {
-              font-family: "Jua", sans-serif;
+              font-family: "Poor Story", system-ui;
               display: inline-block;
               transition: transform 0.3s ease;
+              color: gray;
             }
           }
 

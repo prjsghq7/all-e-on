@@ -162,7 +162,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 2.12rem;
+  gap: 2rem;
   justify-content: flex-start;
   width: auto;
   height: 25rem;
@@ -184,6 +184,10 @@
   border-radius: 0.625rem;
   padding: 0.8125rem;
   flex-shrink: 0;
+}
+#defaultArea > .alarm-sec > .alarm-container > .slider-wrapper > .list > .item:hover {
+  box-shadow: 0 0 0 2px #938d87;
+  transition: box-shadow 0.2s ease;
 }
 #defaultArea > .recommend-sec {
   align-items: flex-start;
@@ -235,6 +239,10 @@
   background-color: rgba(255, 255, 255, 0.5647058824);
   border-radius: 0.625rem;
   padding: 0.5rem;
+  background-image: url("../../../common/assets/images/logo2.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
 }
 #defaultArea > .recommend-sec > .recommend-container > .title-container > * {
   flex-grow: 0;
@@ -265,7 +273,7 @@
   min-width: 49rem;
   height: 100%;
   overflow-y: scroll;
-  padding: 0;
+  padding-top: 0.5rem;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > * {
   flex-grow: 0;
@@ -300,6 +308,13 @@
   font-size: 1.2rem;
   font-weight: 900;
 }
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item > .content {
+  width: 38.75rem;
+  height: 2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty {
   align-items: center;
   display: flex;
@@ -320,6 +335,10 @@
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty > .caption {
   font-size: 2rem;
+}
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item:hover {
+  box-shadow: 0 0 0 2px #228765;
+  transition: box-shadow 0.2s ease;
 }
 #defaultArea > .search-sec {
   background-color: #a2b29f;
@@ -347,6 +366,8 @@
   gap: 0;
   justify-content: center;
   height: 3rem;
+  border-radius: 0.625rem;
+  background-color: #ECF9F0;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item > * {
   flex-grow: 0;
@@ -356,14 +377,22 @@
   flex-grow: 1;
   flex-shrink: 1;
 }
+#defaultArea > .search-sec > .search-grid > .list > .item:hover {
+  box-shadow: 0 0 0 2px #228765;
+  transition: box-shadow 0.2s ease;
+}
+#defaultArea > .search-sec > .search-grid > .list > .item:hover > a .caption {
+  color: #228765;
+}
 #defaultArea > .search-sec > .search-grid > .list > .item > a {
   font-size: 1.5rem;
   font-weight: 800;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item > a .caption {
-  font-family: "Jua", sans-serif;
+  font-family: "Poor Story", system-ui;
   display: inline-block;
   transition: transform 0.3s ease;
+  color: gray;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item:hover .caption {
   transform: scale(1.2);
