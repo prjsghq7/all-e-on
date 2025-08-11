@@ -100,7 +100,8 @@ $font-size: 1.2rem;
       width: 100%;
       height: 25rem;
       //background-color: #FFFFFF;
-      background: linear-gradient(112deg, #e35f5f, #fddc81);
+      //background: linear-gradient(112deg, #e35f5f, #fddc81);
+      background-color: #f8ede3;
       border-radius: 1rem;
       box-shadow: gray 0 0 .2rem;
       overflow: hidden;
@@ -134,6 +135,7 @@ $font-size: 1.2rem;
             border-radius: 0.625rem;
             padding: 0.8125rem;
             flex-shrink: 0;
+            
           }
         }
       }
@@ -151,7 +153,11 @@ $font-size: 1.2rem;
       //background: linear-gradient(90deg, #2730b0, #252574, #272a59);
       //background: linear-gradient(90deg, #53c3e9, #a6e3f2, #c5e6ec);
       //background: linear-gradient(90deg, #70dbff, #adefff, #c7f7ff);
-      background: linear-gradient(112deg, #e35f5f, #fddc81);
+
+      //background: linear-gradient(112deg, #e35f5f, #fddc81);
+      background-color: #bdd2b6;
+      //background-color: #93bfcf;
+
       //background: linear-gradient(112deg, #85ff99, #f7ff85);
       //background-color: #EDFAE8;
 
@@ -217,7 +223,8 @@ $font-size: 1.2rem;
 
   > .search-sec {
     //@include flex(row, center, flex-start);
-    background: linear-gradient(112deg, #e35f5f, #fddc81);
+    //background: linear-gradient(112deg, #e35f5f, #fddc81);
+    background-color: #a2b29f;
     height: 100%;
     padding: 1rem;
 
@@ -261,8 +268,10 @@ $font-size: 1.2rem;
     @include flex(row, center, flex-start);
     //height: 100%;
     //background-color: gray;
-    background: linear-gradient(112deg, #e35f5f, #fddc81);
+    //background: linear-gradient(112deg, #e35f5f, #fddc81);
+    background-color: #798777;
     padding: 1rem;
+
 
     > .site-left {
       @include flex(column, flex-start, center, 1rem);
