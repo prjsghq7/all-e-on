@@ -9,6 +9,7 @@
     <title>Document</title>
     <link href="/common/assets/styles/common.min.css" rel="stylesheet" type="text/css">
     <link href="/welfare/assets/styles/list.min.css" rel="stylesheet" type="text/css">
+    <script defer src="/common/assets/scripts/tts.js"></script>
 </head>
 <body>
 <th:block th:replace="~{/fragments/header :: header}">
@@ -50,7 +51,10 @@
         <a class="welfare" th:href="@{'/welfare/detail' (id=${welfare.servId})}" th:each="welfare : ${welfareList}">
             <div class="header">
                 <span class="name" th:text="${welfare.servNm}"></span>
-                <button>요약 읽어주기</button>
+                <button class="tts">
+                    <img src="/welfare/assets/images/welfare-speaker.png" alt="음성 안내">
+                    <span class="tts-caption">음성으로 안내</span>
+                </button>
             </div>
             <span class="sub" th:text="${welfare.jurMnofNm} + ' / ' + ${welfare.jurOrgNm}"></span>
             <span class="description" th:text="${welfare.servDgst}"></span>
