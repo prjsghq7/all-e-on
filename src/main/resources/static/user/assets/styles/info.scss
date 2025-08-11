@@ -1,0 +1,188 @@
+@charset "UTF-8";
+@import "../../../common/assets/styles/_def";
+
+$grad-start: #e35f5f;
+$grad-end: #fddc81;
+$ink: #272727;
+$muted: #969aa1;
+$line: #e9ebf0;
+
+$radius: .625rem;
+
+#defaultArea > .container {
+  width: min(64rem, calc(100% - 4rem));
+  margin: 2rem auto;
+  padding: 0;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+
+  .title {
+    margin: 0 0 1.25rem 0;
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: .02em;
+    background: linear-gradient(112deg, $grad-start, $grad-end);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+}
+
+#profile-section {
+  display: grid;
+  grid-template-columns: 18rem 1fr;
+  gap: 1.25rem 2rem;
+  align-items: start;
+
+  #profileImageForm {
+    display: grid;
+    grid-template-rows: auto auto auto;
+    gap: .75rem;
+    align-content: start;
+
+    .profile-image-input[type="file"] {
+      position: absolute !important;
+      width: 1px !important;
+      height: 1px !important;
+      margin: -1px !important;
+      padding: 0 !important;
+      overflow: hidden !important;
+      clip: rect(0, 0, 0, 0) !important;
+      white-space: nowrap !important;
+      border: 0 !important;
+    }
+
+    .avatar-uploader {
+      display: grid;
+      grid-template-columns: 8.5rem 1fr;
+      align-items: center;
+      gap: .75rem;
+      cursor: pointer;
+      user-select: none;
+
+      .avatar {
+        position: relative;
+        width: 8.5rem;
+        height: 8.5rem;
+        border-radius: 50%;
+        overflow: hidden;
+        background: #fff;
+        outline: 2px dashed transparent;
+        border: 1px dashed rgba($grad-start, .45);
+        transition: border-color .15s ease, outline-color .15s ease, transform .08s ease;
+
+        .avatar-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          display: block;
+        }
+
+        .overlay {
+          position: absolute;
+          inset: 0;
+          display: grid;
+          place-items: center;
+          font-weight: 700;
+          font-size: .95rem;
+          color: #fff;
+          background: linear-gradient(112deg, rgba($grad-start,.35), rgba($grad-end,.35));
+          opacity: 0;
+          transition: opacity .15s ease;
+          pointer-events: none;
+        }
+
+        &:hover {
+          border-color: mix($grad-start, $grad-end, 50%);
+          outline-color: rgba($grad-start, .15);
+          transform: translateY(-1px);
+        }
+        &:hover .overlay { opacity: 1; }
+      }
+
+      .hint {
+        color: $muted;
+        font-size: .85rem;
+        line-height: 1.35;
+      }
+    }
+    .button-container {
+      display: flex;
+      gap: .5rem;
+      flex-wrap: wrap;
+    }
+  }
+
+  .profile-info {
+    display: grid;
+    grid-template-columns: 8.5rem 1fr;
+    gap: .625rem 1rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid $line;
+    border-radius: $radius;
+    background: #fff;
+
+    .label {
+      color: $ink;
+      font-weight: 700;
+      opacity: .9;
+      align-self: center;
+    }
+    span:not(.label) {
+      color: $ink;
+      align-self: center;
+      word-break: break-word;
+    }
+  }
+
+  > .button-container {
+    grid-column: 1 / -1;
+    display: flex;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-top: .25rem;
+  }
+}
+
+[data-aeo-object~="button"] {
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  gap: .375rem;
+  min-width: 6rem;
+  padding: .5rem .95rem;
+  border-radius: .5rem;
+  border: 1px solid transparent;
+  background: #fff;
+  text-decoration: none;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .18s ease, border-color .15s ease, background-color .15s ease;
+
+  .--caption, [data-aeo-component="label.caption"] {
+    font-weight: 800;
+    font-size: .95rem;
+    line-height: 1.1;
+  }
+
+  &[data-aeo-object~="-color-blue"] {
+    border-color: mix($grad-start, $grad-end, 35%);
+    background:
+            linear-gradient(#fff, #fff) padding-box,
+            linear-gradient(112deg, $grad-start, $grad-end) border-box;
+    .--caption, [data-aeo-component="label.caption"] {
+      background: linear-gradient(112deg, $grad-start, $grad-end);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    &:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.08); }
+    &:active { transform: translateY(0); }
+  }
+
+  &[data-aeo-object~="-color-red"] {
+    border-color: rgba($grad-start, .65);
+    .--caption, [data-aeo-component="label.caption"] { color: $grad-start; }
+    &:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(0,0,0,.08); }
+  }
+}

@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>alleon | 마이페이지</title>
+    <link rel="stylesheet" href="/user/assets/styles/info.min.css">
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+</head>
+<body>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
+
+<div id="defaultArea">
+    <div class="container">
+        <h1 class="title">마이페이지</h1>
+
+        <section id="profile-section">
+            <form id="profileImageForm" method="post" enctype="multipart/form-data">
+                <input id="profileImageInput" class="profile-image-input" name="image" type="file" accept="image/*" aria-label="프로필 이미지 선택">
+
+                <label for="profileImageInput" class="avatar-uploader" aria-label="프로필 이미지 변경">
+          <span class="avatar" id="avatarBox">
+<!--            <img class="avatar-img" th:src="${signedUser.profileImg != null ? signedUser.profileImg : '/user/assets/images/profile-sample.png'}" alt="프로필 이미지">-->
+            <span class="overlay">변경</span>
+          </span>
+                    <span class="hint">JPG/PNG, 2MB 이하 권장</span>
+                </label>
+
+                <div class="button-container">
+                    <button data-aeo-object="button -color-blue" class="btn-change-profile" type="button" aria-label="파일 선택">
+                        <span class="--caption">프로필변경</span>
+                    </button>
+                </div>
+            </form>
+
+            <div class="profile-info -flex-stretch">
+                <span class="label">이름</span>
+                <span th:text="${signedUser.name}"></span>
+
+                <span class="label">이메일</span>
+                <span th:text="${signedUser.email}"></span>
+
+                <span class="label">닉네임</span>
+                <span th:text="${signedUser.nickname}"></span>
+
+                <span class="label">성별/생년월일</span>
+                <span th:text="|${signedUser.gender} / ${signedUser.birth}|"></span>
+
+                <span class="label">연락처</span>
+                <span th:text="|${signedUser.contactFirst}-${signedUser.contactSecond}-${signedUser.contactThird}|"></span>
+
+                <span class="label">주소</span>
+                <span th:text="|${signedUser.addressPrimary} ${signedUser.addressSecondary}|"></span>
+
+                <span class="label">관심 주제</span>
+                <span>ㅋㅋ</span>
+            </div>
+
+            <div class="button-container">
+                <a href="/user/modify" data-aeo-object="button -color-blue" aria-label="정보 수정">
+                    <span class="--caption">정보 수정</span>
+                </a>
+                <a href="/user/remove-account" data-aeo-object="button -color-red" aria-label="회원 탈퇴">
+                    <span class="--caption">회원 탈퇴</span>
+                </a>
+            </div>
+        </section>
+    </div>
+</div>
+</body>
+</html>
