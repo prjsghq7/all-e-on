@@ -273,7 +273,7 @@
   min-width: 49rem;
   height: 100%;
   overflow-y: scroll;
-  padding-top: 0.5rem;
+  padding: 0.5rem;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > * {
   flex-grow: 0;
@@ -335,6 +335,12 @@
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty > .caption {
   font-size: 2rem;
+}
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty > .content {
+  text-align: center;
+}
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty:hover {
+  box-shadow: none;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item:hover {
   box-shadow: 0 0 0 2px #228765;

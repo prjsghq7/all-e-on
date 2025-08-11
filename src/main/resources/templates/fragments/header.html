@@ -14,7 +14,8 @@
         </li>
     </ul>
     <span role="none" data-aeo-stretch></span>
-    <a href="#" class="account-link">Login</a>
+    <a href="/user/login" class="account-link" th:if="${session.signedUser==null}">Login</a>
+    <a href="/user/logout" class="account-link" th:if="${session.signedUser!=null}">Logout</a>
 <!--    <a href="/user/logout" class="account-link">Logout</a>-->
 </header>
 </html>

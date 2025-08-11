@@ -200,7 +200,7 @@ $font-size: 1.2rem;
           min-width: 49rem;
           height: 100%;
           overflow-y: scroll;
-          padding-top: 0.5rem;
+          padding: 0.5rem;
 
           > .item {
             @include flex(column, flex-start, center, 0.5rem);
@@ -229,6 +229,12 @@ $font-size: 1.2rem;
 
               > .caption {
                 font-size: 2rem;
+              }
+              >.content{
+                text-align: center;
+              }
+              &:hover{
+                box-shadow: none;
               }
             }
 
