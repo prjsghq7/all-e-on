@@ -19,8 +19,10 @@ import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.List;
+import java.io.IOException;
+import java.util.Base64;
 
 @Controller
 @RequestMapping(value = "/user")
@@ -48,16 +50,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getRegister(HttpSession session, String code, Model model) {
+    public String getRegister(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("signedUser");
         ContactMvnoEntity[] contactMvnos = userService.getContactMvnos();
-        List<CodeEntity> houseCode = userService.getHouseCode(code);
-        List<CodeEntity> interestCode = userService.getInterestCode(code);
-        List<CodeEntity> lifeCode = userService.getLifeCode(code);
         model.addAttribute("contactMvnos", contactMvnos);
-        model.addAttribute("houseCode", houseCode);
-        model.addAttribute("interestCode", interestCode);
-        model.addAttribute("lifeCode", lifeCode);
+        model.addAttribute("houseCode", userService.getCode(CodeEntity.CodeType.trgterIndvdlArray));
+        model.addAttribute("interestCode", userService.getCode(CodeEntity.CodeType.IntrsThemaArray));
+        model.addAttribute("lifeCode", userService.getCode(CodeEntity.CodeType.lifeArray));
         return "user/register";
     }
 
@@ -131,34 +130,6 @@ public class UserController {
         return response.toString();
     }
 
-    //oauth
-    @RequestMapping(value = "/oauth",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public String getOauth(HttpSession session,String code, Model model){
-        CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
-        if (oAuth2User == null) {
-            return "redirect:/user/login";
-        }
-        ContactMvnoEntity[] contactMvnos = userService.getContactMvnos();
-        List<CodeEntity> houseCode = userService.getHouseCode(code);
-        List<CodeEntity> interestCode = userService.getInterestCode(code);
-        List<CodeEntity> lifeCode = userService.getLifeCode(code);
-        model.addAttribute("contactMvnos", contactMvnos);
-        model.addAttribute("houseCode", houseCode);
-        model.addAttribute("interestCode", interestCode);
-        model.addAttribute("lifeCode", lifeCode);
-        model.addAttribute("oauthUser", oAuth2User);
-        return "user/oauth";
-    }
-    @RequestMapping(value="/oauth/register",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String postOauthRegister(HttpSession session,UserEntity userEntity){
-        CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
-        Result result = this.userService.oauthRegister(oAuth2User, userEntity);
-        JSONObject response = new JSONObject();
-        response.put("result", result.toStringLower());
-        return response.toString();
-    }
-
     @RequestMapping(value = "/recover", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getRecover(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, Model model) {
         if (signedUser != null) {
@@ -203,6 +174,8 @@ public class UserController {
         Result result = this.userService.recoverPassword(emailToken, password);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
+        System.out.println(response);
+        System.out.println(result);
         return response.toString();
     }
 
@@ -216,6 +189,91 @@ public class UserController {
                 || result == CommonResult.FAILURE_SUSPENDED) {
             response.put("email", user.getEmail());
         }
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/info", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getInfo(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, Model model) {
+        if (signedUser == null || signedUser.getActiveState() > 2) {
+            return "redirect:/user/login";
+        }
+        if (signedUser.getProfile() != null && signedUser.getProfile().length > 0) {
+            String base64Image = "data:image/png;base64," +
+                    Base64.getEncoder().encodeToString(signedUser.getProfile());
+            model.addAttribute("profile", base64Image);
+        } else {
+            model.addAttribute("profile", null);
+        }
+        model.addAttribute("signedUser", signedUser);
+        return "user/info";
+    }
+
+    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    public String uploadProfile(@RequestParam("image") MultipartFile file,
+                                @SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                HttpSession session) throws IOException {
+        if (signedUser == null) {
+            return "redirect:/user/login";
+        }
+        if (!file.isEmpty()) {
+            if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
+                return "redirect:/user/mypage";
+            }
+            byte[] bytes = file.getBytes();
+            userService.updateProfile(signedUser.getIndex(), bytes);
+            signedUser.setProfile(bytes);
+            session.setAttribute("signedUser", signedUser);
+        }
+        return "redirect:/user/login";
+    }
+
+    @RequestMapping(value = "/modify", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getModify(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, String code, Model model) {
+        if (signedUser == null || signedUser.getActiveState() > 2) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("user", signedUser);
+        ContactMvnoEntity[] contactMvnos = userService.getContactMvnos();
+        model.addAttribute("contactMvnos", contactMvnos);
+        model.addAttribute("houseCode", userService.getCode(CodeEntity.CodeType.trgterIndvdlArray));
+        model.addAttribute("interestCode", userService.getCode(CodeEntity.CodeType.IntrsThemaArray));
+        model.addAttribute("lifeCode", userService.getCode(CodeEntity.CodeType.lifeArray));
+        System.out.println(signedUser.getHouseholdTypeCode());
+
+        return "user/modify";
+    }
+
+    @RequestMapping(value = "/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String patchModify(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, UserEntity user) {
+        Result result = userService.modify(user, signedUser);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/oauth", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getOauth(HttpSession session, Model model) {
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
+        if (oAuth2User == null) {
+            return "redirect:/user/login";
+        }
+        ContactMvnoEntity[] contactMvnos = userService.getContactMvnos();
+        model.addAttribute("houseCode", userService.getCode(CodeEntity.CodeType.trgterIndvdlArray));
+        model.addAttribute("interestCode", userService.getCode(CodeEntity.CodeType.IntrsThemaArray));
+        model.addAttribute("lifeCode", userService.getCode(CodeEntity.CodeType.lifeArray));
+        model.addAttribute("contactMvnos", contactMvnos);
+        model.addAttribute("oauthUser", oAuth2User);
+        return "user/oauth";
+    }
+
+    @RequestMapping(value="/oauth/register",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String postOauthRegister(HttpSession session,UserEntity userEntity){
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
+        Result result = this.userService.oauthRegister(oAuth2User, userEntity);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
         return response.toString();
     }
 }

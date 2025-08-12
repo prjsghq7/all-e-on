@@ -37,6 +37,13 @@
         WHERE `index` = #{user.index}
         LIMIT 1
     </update>
+    <update id="updateProfile">
+        UPDATE `aeo`.`users`
+        SET `profile` = #{profile, jdbcType=BLOB},
+            `modified_at` = NOW()
+        WHERE `index` = #{index}
+        LIMIT 1
+    </update>
     <select id="selectLocalUserByContact" resultType="com.dev.alleon.entities.UserEntity">
         SELECT `index`               AS `id`,
                `name`                AS `name`,

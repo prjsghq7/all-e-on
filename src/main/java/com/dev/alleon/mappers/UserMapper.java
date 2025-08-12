@@ -3,7 +3,6 @@ package com.dev.alleon.mappers;
 import com.dev.alleon.entities.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.core.parameters.P;
 
 @Mapper
 public interface UserMapper {
@@ -32,5 +31,6 @@ public interface UserMapper {
 
     UserEntity selectUserByProviderTypeAndProviderKey(@Param(value = "providerType") String providerType, @Param(value = "providerKey") String providerKey);
 
+    int updateProfile(@Param("index") int index, @Param("profile")byte[] profile);
 
 }

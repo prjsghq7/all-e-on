@@ -11,4 +11,10 @@ import lombok.*;
 public class CodeEntity {
     private String code;
     private String displayText;
+
+    public enum CodeType {
+        lifeArray,
+        trgterIndvdlArray,
+        IntrsThemaArray
+    }
 }

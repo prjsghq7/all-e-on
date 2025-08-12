@@ -16,12 +16,13 @@ import com.dev.alleon.regexes.UserRegex;
 import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.Result;
 import com.dev.alleon.results.ResultTuple;
+import com.dev.alleon.results.user.ModifyResult;
 import com.dev.alleon.results.user.RegisterResult;
 import com.dev.alleon.results.user.RemoveAccountResult;
 import com.dev.alleon.utils.BCryptUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -31,6 +32,7 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,13 +50,17 @@ public class UserService {
         this.springTemplateEngine = springTemplateEngine;
     }
 
+    @Transactional
+    public void updateProfile(int userId, byte[] profileBytes) {
+        userMapper.updateProfile(userId, profileBytes);
+    }
+
     private static EmailTokenEntity generateEmailToken(String email, String userAgent, int expMin) {
         String code = RandomStringUtils.randomNumeric(6);   // "000000" ~ "999999"
         String salt = RandomStringUtils.randomAlphanumeric(128); // a-z A~Z 0~9
 
         return UserService.generateEmailToken(email, userAgent, code, salt, expMin);
     }
-
     private static EmailTokenEntity generateEmailToken(String email, String userAgent, String code, String salt, int expMin) {
         EmailTokenEntity emailToken = new EmailTokenEntity();
         emailToken.setEmail(email);
@@ -169,18 +175,11 @@ public class UserService {
             return CommonResult.FAILURE;
         }
         user.setPassword(BCryptUtils.encrypt(user.getPassword()));
-        if (!UserRegex.nickname.matches(user.getNickname()) ||
-                !UserRegex.birth.matches(user.getBirth().toString()) ||
-                !UserRegex.gender.matches(user.getGender()) ||
-                !UserRegex.contactSecondRegex.matches(user.getContactSecond()) ||
-                !UserRegex.contactThirdRegex.matches(user.getContactThird()) ||
-                user.getAddressPostal() == null || user.getAddressPostal().isEmpty() ||
-                user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() ||
-                user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+        if (!UserRegex.nickname.matches(user.getNickname()) || !UserRegex.birth.matches(user.getBirth().toString()) || !UserRegex.gender.matches(user.getGender()) || !UserRegex.contactSecondRegex.matches(user.getContactSecond()) || !UserRegex.contactThirdRegex.matches(user.getContactThird()) || user.getAddressPostal() == null || user.getAddressPostal().isEmpty() || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
             System.out.println("1");
             return CommonResult.FAILURE;
         }
-        user.setProfile(new Byte[0]);
+        user.setProfile(new byte[0]);
         user.setTermAgreedAt(LocalDateTime.now());
         if (this.userMapper.selectCountByNickname(user.getNickname()) > 0) {
             System.out.println("7");
@@ -244,17 +243,24 @@ public class UserService {
                 .build();
     }
 
-    public List<CodeEntity> getHouseCode(String code) {
-        return this.householdTypeMapper.selectAll();
+    public List<CodeEntity> getCode(CodeEntity.CodeType codeType) {
+        List<CodeEntity> codeEntities = new ArrayList<>();
+
+        switch (codeType) {
+            case lifeArray:
+                codeEntities = lifeCycleMapper.selectAll();
+                break;
+            case trgterIndvdlArray:
+                codeEntities = householdTypeMapper.selectAll();
+                break;
+            case IntrsThemaArray:
+                codeEntities = interestSubMapper.selectAll();
+                break;
+        }
+
+        return codeEntities;
     }
 
-    public List<CodeEntity> getInterestCode(String code) {
-        return this.interestSubMapper.selectAll();
-    }
-
-    public List<CodeEntity> getLifeCode(String code) {
-        return this.lifeCycleMapper.selectAll();
-    }
 
     public Result checkNickname(String nickname) {
         if (!UserRegex.nickname.matches(nickname)) {
@@ -331,20 +337,24 @@ public class UserService {
 
     public Result recoverPassword(EmailTokenEntity emailToken, String password) {
         if (emailToken == null || !UserRegex.email.matches(emailToken.getEmail()) || !UserRegex.password.matches(password)) {
+            System.out.println("1");
             return CommonResult.FAILURE;
         }
 
         EmailTokenEntity dbEmailToken = this.emailTokenMapper.selectByEmailAndCodeAndSalt(emailToken.getEmail(), emailToken.getCode(), emailToken.getSalt());
 
         if (dbEmailToken == null || !dbEmailToken.isUsed() || !dbEmailToken.getUserAgent().equals(emailToken.getUserAgent())) {
+            System.out.println("2");
             return CommonResult.FAILURE;
         }
 
         UserEntity user = this.userMapper.selectUserByEmail(emailToken.getEmail());
         if (user == null || user.getActiveState() == 3) {
+            System.out.println("3");
             return CommonResult.FAILURE;
         }
         if (user.getActiveState() == 2) {
+            System.out.println("4");
             return CommonResult.FAILURE_SUSPENDED;
         }
         user.setPassword(BCryptUtils.encrypt(password));
@@ -377,6 +387,51 @@ public class UserService {
         return CommonResult.SUCCESS;
     }
 
+    public Result modify(UserEntity user, UserEntity signedUser) {
+        if (signedUser == null || signedUser.getActiveState() > 2) {
+            return CommonResult.FAILURE_SESSION_EXPIRED;
+        }
+        if (!UserRegex.nickname.matches(user.getNickname())
+                || !UserRegex.birth.matches(user.getBirth().toString())
+                || !UserRegex.gender.matches(user.getGender())
+                || !UserRegex.contactSecondRegex.matches(user.getContactSecond())
+                || !UserRegex.contactThirdRegex.matches(user.getContactThird())
+                || user.getAddressPostal() == null || user.getAddressPostal().isEmpty()
+                || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty()
+                || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+            return CommonResult.FAILURE;
+        }
+        if (!signedUser.getNickname().equals(user.getNickname())) {
+            if (this.userMapper.selectCountByNickname(user.getNickname()) > 0) {
+                return ModifyResult.FAILURE_DUPLICATE_NICKNAME;
+            }
+        }
+        if (!signedUser.getContactFirst().equals(user.getContactFirst())
+                || !signedUser.getContactSecond().equals(user.getContactSecond())
+                || !signedUser.getContactThird().equals(user.getContactThird())) {
+            if (this.userMapper.selectCountByContact(user.getContactFirst(), user.getContactSecond(), user.getContactThird()) > 0) {
+                return ModifyResult.FAILURE_DUPLICATE_CONTACT;
+            }
+        }
+        signedUser.setNickname(user.getNickname());
+        signedUser.setBirth(user.getBirth());
+        signedUser.setGender(user.getGender());
+        signedUser.setContactMvnoCode(user.getContactMvnoCode());
+        signedUser.setContactFirst(user.getContactFirst());
+        signedUser.setContactSecond(user.getContactSecond());
+        signedUser.setContactThird(user.getContactThird());
+        signedUser.setAddressPostal(user.getAddressPostal());
+        signedUser.setAddressPrimary(user.getAddressPrimary());
+        signedUser.setAddressSecondary(user.getAddressSecondary());
+        signedUser.setLifeCycleCode(user.getLifeCycleCode());
+        signedUser.setHouseholdTypeCode(user.getHouseholdTypeCode());
+        signedUser.setInterestSubCode(user.getInterestSubCode());
+
+        return userMapper.update(signedUser) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+
+    }
 
     public Result oauthRegister(CustomOAuth2User customOAuth2User, UserEntity user) {
         String contactFrist = customOAuth2User.getMobile().split("-")[0];
@@ -403,7 +458,11 @@ public class UserService {
         user.setCreatedAt(LocalDateTime.now());
         user.setTermAgreedAt(LocalDateTime.now());
         user.setActiveState(1);
-        user.setProfile(new Byte[0]);
+        user.setProfile(new byte[0]);
         return this.userMapper.insert(user) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
+
+
+
+
 }

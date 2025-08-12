@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class UserEntity {
     private int index;
     private String name;
-    private Byte[] profile;
+    private byte[] profile;
     private String email;
     private String password;
     private String contactMvnoCode;
