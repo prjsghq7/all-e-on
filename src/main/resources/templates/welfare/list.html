@@ -89,7 +89,7 @@
         <a class="page"
            th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
            th:text="${pageNum}"
-           th:href="@{/welfare/list (page = ${pageNum})}"
+           th:href="@{/welfare/list (searchType = ${searchVo.getSearchType()}, searchKeyCode = ${searchVo.getSearchKeyCode()}, keyword = ${searchVo.getKeyword()}, code = ${searchVo.code}, page = ${pageNum})}"
            th:classappend="${pageNum == pageVo.page}? '-selected'"></a>
     </div>
 </div>

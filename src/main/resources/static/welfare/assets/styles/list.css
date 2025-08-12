@@ -4,6 +4,7 @@
   flex-direction: column;
   gap: 1.5rem;
   justify-content: flex-start;
+  padding: 2rem 2.5rem;
 }
 
 #searchForm {
