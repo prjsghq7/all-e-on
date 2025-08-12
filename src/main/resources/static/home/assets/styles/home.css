@@ -1,5 +1,9 @@
 @charset "UTF-8";
 @import url("https://fonts.googleapis.com/css2?family=Dongle&family=Gaegu&family=Jua&family=Oswald:wght@200..700&display=swap");
+body {
+  background-color: #F8FBFE;
+}
+
 #defaultArea {
   align-items: flex-start;
   display: flex;
@@ -7,7 +11,8 @@
   flex-wrap: nowrap;
   gap: 3rem;
   justify-content: stretch;
-  background-color: transparent;
+  background-color: #F8FBFE;
+  padding-top: 3rem;
   box-shadow: 0 0;
 }
 #defaultArea > * {
@@ -23,7 +28,7 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: space-evenly;
 }
 #defaultArea > .alarm-sec > * {
@@ -118,9 +123,9 @@
   justify-content: center;
   width: 100%;
   height: 25rem;
-  background-color: #f8ede3;
+  background-color: #ffffff;
   border-radius: 1rem;
-  box-shadow: gray 0 0 0.2rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
   overflow: hidden;
 }
 #defaultArea > .alarm-sec > .alarm-container > * {
@@ -180,13 +185,13 @@
 #defaultArea > .alarm-sec > .alarm-container > .slider-wrapper > .list > .item {
   width: 20rem;
   height: 20rem;
-  background-color: #ffffff;
+  background-color: #f0f1f3;
   border-radius: 0.625rem;
   padding: 0.8125rem;
   flex-shrink: 0;
 }
 #defaultArea > .alarm-sec > .alarm-container > .slider-wrapper > .list > .item:hover {
-  box-shadow: 0 0 0 2px #938d87;
+  box-shadow: 0 0 0 2px #658df8;
   transition: box-shadow 0.2s ease;
 }
 #defaultArea > .recommend-sec {
@@ -210,14 +215,12 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 5rem;
+  gap: 3rem;
   justify-content: center;
   width: 100%;
   height: 25rem;
-  background-color: #bdd2b6;
   border-radius: 1rem;
-  box-shadow: gray 0 0 0.2rem;
-  padding: 0.5rem;
+  padding: 1rem;
 }
 #defaultArea > .recommend-sec > .recommend-container > * {
   flex-grow: 0;
@@ -234,11 +237,12 @@
   flex-wrap: nowrap;
   gap: 1rem;
   justify-content: flex-start;
-  min-width: 25rem;
+  min-width: 28rem;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5647058824);
+  background-color: #E5F7FF;
   border-radius: 0.625rem;
-  padding: 0.5rem;
+  padding: 1rem;
+  box-shadow: 0 0 0.2rem #ccc;
 }
 #defaultArea > .recommend-sec > .recommend-container > .title-container > * {
   flex-grow: 0;
@@ -263,11 +267,9 @@
   text-underline-offset: 0.45rem;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list {
-  min-width: 50rem;
+  min-width: 55rem;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.5647058824);
   border-radius: 0.625rem;
-  padding: 0.5rem;
   overflow: hidden;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list {
@@ -277,10 +279,11 @@
   flex-wrap: nowrap;
   gap: 0.5rem;
   justify-content: flex-start;
-  min-width: 49rem;
+  min-width: 55rem;
   height: 100%;
   overflow-y: scroll;
   padding: 0.5rem;
+  /* WebKit 기반 브라우저 (Chrome, Edge, Safari) */
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > * {
   flex-grow: 0;
@@ -290,6 +293,17 @@
   flex-grow: 1;
   flex-shrink: 1;
 }
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list::-webkit-scrollbar {
+  width: 8px; /* 스크롤바 두께 */
+}
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list::-webkit-scrollbar-track {
+  background: #f0f2f8; /* 트랙 색 (연하게) */
+  border-radius: 999rem;
+}
+#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list::-webkit-scrollbar-thumb {
+  background-color: #658df8; /* 손잡이 색상 */
+  border-radius: 999rem;
+}
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item {
   align-items: flex-start;
   display: flex;
@@ -297,11 +311,12 @@
   flex-wrap: nowrap;
   gap: 0.5rem;
   justify-content: center;
-  width: 40rem;
+  width: 50rem;
   height: 5rem;
   background-color: #ffffff;
   border-radius: 0.625rem;
   padding: 0.625rem;
+  box-shadow: 0 0 0.2rem #ccc;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item > * {
   flex-grow: 0;
@@ -312,11 +327,12 @@
   flex-shrink: 1;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item > .caption {
+  width: 49rem;
   font-size: 1.2rem;
   font-weight: 900;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item > .content {
-  width: 38.75rem;
+  width: 49rem;
   height: 2rem;
   white-space: nowrap;
   overflow: hidden;
@@ -331,6 +347,7 @@
   justify-content: center;
   height: 100%;
   background-color: transparent;
+  box-shadow: 0 0 0.2rem #ccc;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty > * {
   flex-grow: 0;
@@ -341,20 +358,20 @@
   flex-shrink: 1;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty > .caption {
+  text-align: center;
   font-size: 2rem;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty > .content {
   text-align: center;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item.empty:hover {
-  box-shadow: none;
+  box-shadow: 0 0 0.2rem #ccc;
 }
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list > .item:hover {
-  box-shadow: 0 0 0 2px #228765;
+  box-shadow: 0 0 0 2px #658df8;
   transition: box-shadow 0.2s ease;
 }
 #defaultArea > .search-sec {
-  background-color: #a2b29f;
   height: 100%;
   padding: 1rem;
 }
@@ -362,14 +379,12 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   /*열(세로) 7개 생성*/
-  grid-gap: 1rem;
   height: 100%;
 }
 #defaultArea > .search-sec > .search-grid > .list {
   height: 100%;
   background-color: rgba(255, 255, 255, 0.3137254902);
   border-radius: 0.625rem;
-  border: 0.0625rem solid #cccccc;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item {
   align-items: center;
@@ -380,7 +395,8 @@
   justify-content: center;
   height: 3rem;
   border-radius: 0.625rem;
-  background-color: #ECF9F0;
+  background-color: #ffffff;
+  box-shadow: 0 0 0.2rem #ccc;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item > * {
   flex-grow: 0;
@@ -391,21 +407,22 @@
   flex-shrink: 1;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item:hover {
-  box-shadow: 0 0 0 2px #228765;
+  background-color: #2f68ff;
   transition: box-shadow 0.2s ease;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item:hover > a .caption {
-  color: #228765;
+  text-align: center;
+  color: #ffffff;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item > a {
   font-size: 1.5rem;
-  font-weight: 800;
+  font-weight: 600;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item > a .caption {
   font-family: "Poor Story", system-ui;
   display: inline-block;
   transition: transform 0.3s ease;
-  color: gray;
+  color: #000;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item:hover .caption {
   transform: scale(1.2);
@@ -417,7 +434,8 @@
   flex-wrap: nowrap;
   gap: 0;
   justify-content: flex-start;
-  background-color: #798777;
+  background-color: #ffffff;
+  box-shadow: 0 0 0.2rem #ccc;
   padding: 1rem;
 }
 #defaultArea > .site-sec > * {
@@ -501,6 +519,7 @@
   height: 12rem;
   background-color: rgba(255, 255, 255, 0.3137254902);
   border-radius: 0.625rem;
+  box-shadow: 0 0 0.2rem #ccc;
 }
 #defaultArea > .site-sec > .site-right > .list > .item > * {
   flex-grow: 0;
@@ -533,7 +552,7 @@
   padding: 0.5rem;
 }
 #defaultArea > .site-sec > .site-right > .list > .item:hover {
-  box-shadow: 0 0 0 0.125rem #22c55e;
+  box-shadow: 0 0 0 0.125rem #658df8;
   background-color: #ffffff;
   transition: box-shadow 0.2s ease, background-color 0.2s ease;
 }
