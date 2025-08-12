@@ -30,7 +30,7 @@ public interface UserMapper {
 
     int selectUserCountByEmail(@Param(value = "email") String email);
 
-    int selectUserCountByProviderTypeAndProviderKey(@Param(value = "providerType") String providerType, @Param(value = "providerKey") String providerKey);
+    UserEntity selectUserByProviderTypeAndProviderKey(@Param(value = "providerType") String providerType, @Param(value = "providerKey") String providerKey);
 
 
 }

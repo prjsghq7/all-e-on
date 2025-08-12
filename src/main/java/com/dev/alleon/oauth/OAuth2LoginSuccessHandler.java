@@ -1,5 +1,6 @@
 package com.dev.alleon.oauth;
 
+import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.mappers.UserMapper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -25,9 +26,9 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
         System.out.println("providerKey: " + oAuth2User.getProviderKey());
         HttpSession session = request.getSession();
         session.setAttribute("oauthUser", oAuth2User);
-        if (this.userMapper.selectUserCountByProviderTypeAndProviderKey(oAuth2User.getProviderType(), oAuth2User.getProviderKey()) > 0) {
-            System.out.println("존재");
-            session.setAttribute("signedUser", oAuth2User);
+        UserEntity user = this.userMapper.selectUserByProviderTypeAndProviderKey(oAuth2User.getProviderType(), oAuth2User.getProviderKey());
+        if (user!=null && user.getActiveState()<=1) {
+            session.setAttribute("signedUser", user);
             response.sendRedirect("/home");
         } else if (this.userMapper.selectUserCountByEmail(oAuth2User.getEmail()) > 0) {
             System.out.println("존재2");
