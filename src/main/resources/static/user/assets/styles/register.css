@@ -485,4 +485,8 @@ html {
   cursor: not-allowed;
 }
 
+[data-aeo-object=div] {
+  height: 100%;
+}
+
 /*# sourceMappingURL=register.css.map */

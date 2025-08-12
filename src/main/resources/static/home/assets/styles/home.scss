@@ -32,7 +32,6 @@ $font-size: 1.2rem;
         background-repeat: no-repeat;
         background-position: center;
         padding: 2rem;
-        //box-shadow: gray 0 0 .2rem;
 
         // 공통 전환
         > .caption,
@@ -171,20 +170,31 @@ $font-size: 1.2rem;
       padding: 0.5rem;
 
       > .title-container {
-        @include flex(column, center, center, 0.5rem);
+        @include flex(column, center, flex-start, 1rem);
 
         min-width: 25rem;
         height: 100%;
         background-color: #FFFFFF90;
         border-radius: 0.625rem;
         padding: 0.5rem;
-        background-image: url("../../../common/assets/images/logo2.png");
-        background-position: center;
-        background-repeat: no-repeat;
-        background-size: contain;
+
+        > img {
+          width: 100%;
+          height: 15rem;
+        }
+
         > .caption {
           font-size: 2rem;
+
+          > .highlight {
+            font-size: 3rem;
+            font-weight: 800;
+            color: #f6a16b;
+            text-decoration: underline;
+            text-underline-offset : 0.45rem;
+          }
         }
+
       }
 
       > .recommend-list {
@@ -214,7 +224,8 @@ $font-size: 1.2rem;
               font-size: 1.2rem;
               font-weight: 900;
             }
-            >.content{
+
+            > .content {
               width: 38.75rem;
               height: 2rem;
               white-space: nowrap;
@@ -230,10 +241,12 @@ $font-size: 1.2rem;
               > .caption {
                 font-size: 2rem;
               }
-              >.content{
+
+              > .content {
                 text-align: center;
               }
-              &:hover{
+
+              &:hover {
                 box-shadow: none;
               }
             }
@@ -277,8 +290,9 @@ $font-size: 1.2rem;
           &:hover {
             box-shadow: 0 0 0 2px #228765;
             transition: box-shadow 0.2s ease;
-            >a{
-              .caption{
+
+            > a {
+              .caption {
                 color: #228765;
               }
             }
@@ -322,13 +336,15 @@ $font-size: 1.2rem;
       flex-grow: 1;
 
       > .title {
-        font-size: 1rem;
+        font-size: 1.625rem;
         font-weight: 400;
+        //color: #FFFFFF;
       }
 
       > .accent {
-        font-size: 2rem;
-        font-weight: 500;
+        font-size: 2.5rem;
+        font-weight: 800;
+        //color: #FFFFFF;
       }
     }
 
@@ -346,19 +362,23 @@ $font-size: 1.2rem;
           height: 12rem;
           background-color: #FFFFFF50;
           border-radius: 0.625rem;
-          //border: 0.0625rem solid #cccccc;
 
           &:last-child {
             > a {
               @include flex(column, flex-start, center);
 
               > img {
-                //border: 0.0625rem solid #cccccc;
+                border: 0.0625rem solid #cccccc;
                 background-color: #ffffff;
                 border-radius: 0.625rem;
                 padding: 0.5rem;
               }
             }
+          }
+          &:hover{
+            box-shadow: 0 0 0 0.125rem #22c55e;
+            background-color: #ffffff;
+            transition: box-shadow 0.2s ease, background-color 0.2s ease;
           }
         }
       }
@@ -368,8 +388,6 @@ $font-size: 1.2rem;
 
 [data-aeo-object="section"] {
   width: 100%;
-  //height: 30rem;
-  //background-color: #cccccc;
   border-radius: 0.625rem;
 
   &.search-sec,

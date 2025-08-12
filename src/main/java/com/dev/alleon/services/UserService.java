@@ -10,6 +10,7 @@ import com.dev.alleon.mappers.UserMapper;
 import com.dev.alleon.mappers.welfare.HouseholdTypeMapper;
 import com.dev.alleon.mappers.welfare.InterestSubMapper;
 import com.dev.alleon.mappers.welfare.LifeCycleMapper;
+import com.dev.alleon.oauth.CustomOAuth2User;
 import com.dev.alleon.regexes.EmailTokenRegex;
 import com.dev.alleon.regexes.UserRegex;
 import com.dev.alleon.results.CommonResult;
@@ -20,6 +21,7 @@ import com.dev.alleon.results.user.RemoveAccountResult;
 import com.dev.alleon.utils.BCryptUtils;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import jakarta.servlet.http.HttpSession;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -52,6 +54,7 @@ public class UserService {
 
         return UserService.generateEmailToken(email, userAgent, code, salt, expMin);
     }
+
     private static EmailTokenEntity generateEmailToken(String email, String userAgent, String code, String salt, int expMin) {
         EmailTokenEntity emailToken = new EmailTokenEntity();
         emailToken.setEmail(email);
@@ -166,7 +169,14 @@ public class UserService {
             return CommonResult.FAILURE;
         }
         user.setPassword(BCryptUtils.encrypt(user.getPassword()));
-        if (!UserRegex.nickname.matches(user.getNickname()) || !UserRegex.birth.matches(user.getBirth().toString()) || !UserRegex.gender.matches(user.getGender()) || !UserRegex.contactSecondRegex.matches(user.getContactSecond()) || !UserRegex.contactThirdRegex.matches(user.getContactThird()) || user.getAddressPostal() == null || user.getAddressPostal().isEmpty() || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+        if (!UserRegex.nickname.matches(user.getNickname()) ||
+                !UserRegex.birth.matches(user.getBirth().toString()) ||
+                !UserRegex.gender.matches(user.getGender()) ||
+                !UserRegex.contactSecondRegex.matches(user.getContactSecond()) ||
+                !UserRegex.contactThirdRegex.matches(user.getContactThird()) ||
+                user.getAddressPostal() == null || user.getAddressPostal().isEmpty() ||
+                user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty() ||
+                user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
             System.out.println("1");
             return CommonResult.FAILURE;
         }
@@ -368,7 +378,32 @@ public class UserService {
     }
 
 
+    public Result oauthRegister(CustomOAuth2User customOAuth2User, UserEntity user) {
+        String contactFrist = customOAuth2User.getMobile().split("-")[0];
+        String contactSecond = customOAuth2User.getMobile().split("-")[1];
+        String contactThird = customOAuth2User.getMobile().split("-")[2];
 
-
-
+        if (customOAuth2User == null || user == null) {
+            return CommonResult.FAILURE;
+        }
+        if (this.userMapper.selectUserCountByEmail(customOAuth2User.getEmail()) > 0) {
+            return CommonResult.FAILURE_DUPLICATE;
+        }
+        ;
+        user.setName(customOAuth2User.getName());
+        user.setEmail(customOAuth2User.getEmail());
+        user.setGender(customOAuth2User.getGender());
+        user.setPassword(BCryptUtils.encrypt(customOAuth2User.getEmail()));
+        user.setProviderKey(customOAuth2User.getProviderKey());
+        user.setProviderType(customOAuth2User.getProviderType());
+        user.setBirth(customOAuth2User.getBirthyear() + "-" + customOAuth2User.getBirthday());
+        user.setContactFirst(contactFrist);
+        user.setContactSecond(contactSecond);
+        user.setContactThird(contactThird);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setTermAgreedAt(LocalDateTime.now());
+        user.setActiveState(1);
+        user.setProfile(new Byte[0]);
+        return this.userMapper.insert(user) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
+    }
 }

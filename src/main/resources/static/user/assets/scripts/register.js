@@ -262,7 +262,7 @@ submitBtn.addEventListener('click', (e) => {
         alert('알 수 없는 이유로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     };
     xhr.open('POST', '/user/register');
-    xhr.setRequestHeader(header, token);
+    // xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
 
@@ -348,6 +348,7 @@ $registerForm['contactCheckButton'].addEventListener('click', () => {
                 $registerForm['contactMvno'].setDisabled(true);
                 $registerForm['contactFirst'].setDisabled(true);
                 $registerForm['contactSecond'].setDisabled(true);
+                $registerForm['contactThird'].setDisabled(true);
                 break;
             default:
                 alert('ㅋ');

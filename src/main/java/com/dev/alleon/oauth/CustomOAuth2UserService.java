@@ -39,14 +39,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 
         // ✅ Naver
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-//        System.out.println(response.get("birthyear"));
-//        System.out.println(response.get("birthday"));
-//        System.out.println(response.get("mobile"));
-//        System.out.println(providerType);
-//        System.out.println(response.get("nickname"));
-//        System.out.println(response.get("name"));
-//        System.out.println(response.get("email"));
-//        System.out.println(response.get("gender"));
+        providerKey = (String)response.get("id");
+        System.out.println(response);
 //        providerKey = (String) response.get("id");
 //        email = (String) response.get("email");
 //        nickname = (String) response.get("nickname");
@@ -61,7 +55,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         if (nickname == null || nickname.isBlank()) {
             nickname = "user_" + System.currentTimeMillis();
         }
-        return new CustomOAuth2User(attributes, providerType);
+        return new CustomOAuth2User(attributes, providerType,providerKey);
 
     }
 

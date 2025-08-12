@@ -130,19 +130,33 @@ public class UserController {
         response.put("result", result.getResult().toStringLower());
         return response.toString();
     }
+
+    //oauth
     @RequestMapping(value = "/oauth",method = RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public String getOauth(HttpSession session, Model model){
+    public String getOauth(HttpSession session,String code, Model model){
         CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
         if (oAuth2User == null) {
             return "redirect:/user/login";
         }
-        model.addAttribute("email", oAuth2User.getEmail());
-        model.addAttribute("image", oAuth2User.getProfileImage());
-        model.addAttribute("mobile", oAuth2User.getMobile());
-        model.addAttribute("name", oAuth2User.getName());
-        model.addAttribute("birthday", oAuth2User.getBirthday());
-        model.addAttribute("birthyear", oAuth2User.getBirthyear());
+        ContactMvnoEntity[] contactMvnos = userService.getContactMvnos();
+        List<CodeEntity> houseCode = userService.getHouseCode(code);
+        List<CodeEntity> interestCode = userService.getInterestCode(code);
+        List<CodeEntity> lifeCode = userService.getLifeCode(code);
+        model.addAttribute("contactMvnos", contactMvnos);
+        model.addAttribute("houseCode", houseCode);
+        model.addAttribute("interestCode", interestCode);
+        model.addAttribute("lifeCode", lifeCode);
+        model.addAttribute("oauthUser", oAuth2User);
         return "user/oauth";
+    }
+    @RequestMapping(value="/oauth/register",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String postOauthRegister(HttpSession session,UserEntity userEntity){
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
+        Result result = this.userService.oauthRegister(oAuth2User, userEntity);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
     }
 
     @RequestMapping(value = "/recover", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)

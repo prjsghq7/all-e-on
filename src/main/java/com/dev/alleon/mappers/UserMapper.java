@@ -3,6 +3,7 @@ package com.dev.alleon.mappers;
 import com.dev.alleon.entities.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 @Mapper
 public interface UserMapper {
@@ -29,11 +30,7 @@ public interface UserMapper {
 
     int selectUserCountByEmail(@Param(value = "email") String email);
 
-
-
-
-
-
+    int selectUserCountByProviderTypeAndProviderKey(@Param(value = "providerType") String providerType, @Param(value = "providerKey") String providerKey);
 
 
 }

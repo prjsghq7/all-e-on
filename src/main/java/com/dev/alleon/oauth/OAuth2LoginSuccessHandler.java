@@ -21,10 +21,20 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         CustomOAuth2User oAuth2User = (CustomOAuth2User) authentication.getPrincipal();
-        System.out.println("로그인 성공"+oAuth2User.getAttributes());
+        System.out.println("로그인 성공: " + oAuth2User.getAttributes());
+        System.out.println("providerKey: " + oAuth2User.getProviderKey());
         HttpSession session = request.getSession();
         session.setAttribute("oauthUser", oAuth2User);
-        response.sendRedirect("/user/oauth");
+        if (this.userMapper.selectUserCountByProviderTypeAndProviderKey(oAuth2User.getProviderType(), oAuth2User.getProviderKey()) > 0) {
+            System.out.println("존재");
+            session.setAttribute("signedUser", oAuth2User);
+            response.sendRedirect("/home");
+        } else if (this.userMapper.selectUserCountByEmail(oAuth2User.getEmail()) > 0) {
+            System.out.println("존재2");
+            response.sendRedirect("/home");
+        } else {
+            response.sendRedirect("/user/oauth");
+        }
     }
 
 }

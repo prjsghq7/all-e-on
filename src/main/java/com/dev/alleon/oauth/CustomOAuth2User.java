@@ -11,10 +11,12 @@ import java.util.Map;
 public class CustomOAuth2User implements OAuth2User {
     private final Map<String, Object> attributes;
     private final String providerType;
+    private final String providerKey;
 
-    public CustomOAuth2User(Map<String, Object> attributes, String providerType) {
+    public CustomOAuth2User(Map<String, Object> attributes, String providerType, String providerKey) {
         this.attributes = attributes;
         this.providerType = providerType;
+        this.providerKey = providerKey;
     }
 
     @Override
@@ -71,6 +73,15 @@ public class CustomOAuth2User implements OAuth2User {
         return image != null ? image.toString() : null;
     }
 
+    public String getGender() {
+        Map<String, Object> response = getResponse();
+        if (response == null) {
+            return null;
+        }
+        Object gender = response.get("gender");
+        return gender != null ? gender.toString() : null;
+    }
+
     public String getMobile() {
         Map<String, Object> response = getResponse();
         if (response == null) return null;
@@ -81,6 +92,9 @@ public class CustomOAuth2User implements OAuth2User {
 
     public String getProviderType() {
         return providerType;
+    }
+    public String getProviderKey(){
+        return providerKey;
     }
 
     // 🔧 공통 response 추출 로직
