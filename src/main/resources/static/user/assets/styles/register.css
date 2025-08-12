@@ -153,9 +153,7 @@ html {
   flex-wrap: nowrap;
   gap: 0.5rem;
   justify-content: center;
-  width: 5rem;
-  height: 2.75rem;
-  padding: 0 0.875rem;
+  padding: 0.875rem 0.875rem;
   border: 0;
   border-radius: 0.5rem;
   cursor: pointer;
@@ -164,6 +162,7 @@ html {
   font-weight: 700;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   transition: transform 0.08s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  text-wrap: nowrap;
 }
 #registerForm > .button-container [data-aeo-object~=button] > * {
   flex-grow: 0;
