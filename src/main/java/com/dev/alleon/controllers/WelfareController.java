@@ -1,5 +1,6 @@
 package com.dev.alleon.controllers;
 
+import com.dev.alleon.dtos.welfare.WelfareDetailResponse;
 import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.CodeEntity;
 import com.dev.alleon.entities.welfare.WelfareEntity;
@@ -39,7 +40,7 @@ public class WelfareController {
     @RequestMapping(value = "/detail", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getDetail(@RequestParam(value = "id", required = false) String id,
                             Model model) {
-        WelfareEntity welfare = this.welfareService.getWelfareDetail(id);
+        WelfareDetailResponse welfare = this.welfareService.getWelfareDetail(id);
         model.addAttribute("welfare", welfare);
         return "welfare/detail";
     }

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.welfare.InquiryLinkMapper">
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        INSERT INTO `aeo`.`inquiry_links` (`welfare_id`, `name`, `link`)
+        VALUES (#{inquiryLink.welfareId},
+                #{inquiryLink.name},
+                #{inquiryLink.link})
+    </insert>
+
+    <select id="selectByWelfareId" resultType="com.dev.alleon.entities.welfare.InquiryLinkEntity">
+        SELECT `id`         AS `id`,
+               `welfare_id` AS `welfareId`,
+               `name`       AS `name`,
+               `link`       AS `link`
+        FROM `aeo`.`inquiry_links`
+        WHERE `welfare_id` = #{welfareId}
+    </select>
+</mapper>

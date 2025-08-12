@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.welfare.InquiryContactMapper" >
+    <insert id="insert"
+            useGeneratedKeys="true"
+            keyColumn="id"
+            keyProperty="id">
+        INSERT INTO `aeo`.`inquiry_contacts` (`welfare_id`, `name`, `contact`)
+        VALUES (#{inquiryContact.welfareId},
+                #{inquiryContact.name},
+                #{inquiryContact.contact})
+    </insert>
+
+    <select id="selectByWelfareId" resultType="com.dev.alleon.entities.welfare.InquiryContactEntity">
+        SELECT `id`         AS `id`,
+               `welfare_id` AS `welfareId`,
+               `name`       AS `name`,
+               `contact`    AS `contact`
+        FROM `aeo`.`inquiry_contacts`
+        WHERE `welfare_id` = #{welfareId}
+    </select>
+</mapper>

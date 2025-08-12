@@ -1,15 +1,13 @@
 package com.dev.alleon.services;
 
 import com.dev.alleon.dtos.home.HomeRecommendDto;
+import com.dev.alleon.dtos.welfare.WelfareDetailDto;
+import com.dev.alleon.dtos.welfare.WelfareDetailResponse;
 import com.dev.alleon.dtos.welfare.WelfareListDto;
 import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.CodeEntity;
-import com.dev.alleon.entities.UserEntity;
-import com.dev.alleon.entities.welfare.WelfareEntity;
-import com.dev.alleon.mappers.welfare.HouseholdTypeMapper;
-import com.dev.alleon.mappers.welfare.InterestSubMapper;
-import com.dev.alleon.mappers.welfare.LifeCycleMapper;
-import com.dev.alleon.mappers.welfare.WelfareMapper;
+import com.dev.alleon.entities.welfare.*;
+import com.dev.alleon.mappers.welfare.*;
 import com.dev.alleon.vos.PageVo;
 import com.dev.alleon.vos.WelfareSearchVo;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,13 +55,23 @@ public class WelfareService {
     private final InterestSubMapper interestSubMapper;
 
     private final WelfareMapper welfareMapper;
+    private final InstitutionMapper institutionMapper;
+    private final InquiryContactMapper inquiryContactMapper;
+    private final InquiryLinkMapper inquiryLinkMapper;
+    private final FormMaterialMapper formMaterialMapper;
+    private final BasisStatuteMapper basisStatuteMapper;
 
-    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, WelfareMapper welfareMapper) {
+    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, WelfareMapper welfareMapper, InstitutionMapper institutionMapper, InquiryContactMapper inquiryContactMapper, InquiryLinkMapper inquiryLinkMapper, FormMaterialMapper formMaterialMapper, BasisStatuteMapper basisStatuteMapper) {
         this.lifeCycleMapper = lifeCycleMapper;
         this.householdTypeMapper = householdTypeMapper;
         this.interestSubMapper = interestSubMapper;
 
         this.welfareMapper = welfareMapper;
+        this.institutionMapper = institutionMapper;
+        this.inquiryContactMapper = inquiryContactMapper;
+        this.inquiryLinkMapper = inquiryLinkMapper;
+        this.formMaterialMapper = formMaterialMapper;
+        this.basisStatuteMapper = basisStatuteMapper;
     }
 
     public List<CodeEntity> getWelfareSearchCodes(WelfareSearchVo.SearchType searchType) {
@@ -116,9 +124,9 @@ public class WelfareService {
             System.out.println(nodes.getLength());
 
             List<HomeRecommendDto> homeRecommendDtos = new ArrayList<>();
-            for (int i = 0; i <nodes.getLength(); i++) {
+            for (int i = 0; i < nodes.getLength(); i++) {
                 Element el = (Element) nodes.item(i);
-                System.out.println("el: "+el.getTextContent());
+                System.out.println("el: " + el.getTextContent());
                 HomeRecommendDto dto = new HomeRecommendDto();
                 dto.setServId(getTagValue(el, "servId"));
                 dto.setServNm(getTagValue(el, "servNm"));
@@ -209,7 +217,7 @@ public class WelfareService {
         }
     }
 
-    public WelfareEntity getWelfareDetail(String id) {
+    public WelfareDetailResponse getWelfareDetail(String id) {
         if (this.welfareMapper.selectCountById(id) < 1) {
             String encodedServiceKey = URLEncoder.encode(serviceKey, StandardCharsets.UTF_8);
             URI requestUrl = UriComponentsBuilder.fromHttpUrl(API_URL + DETAIL_QUERY)
@@ -224,14 +232,36 @@ public class WelfareService {
             String xmlResponse = restTemplate.getForObject(requestUrl, String.class);
             System.out.println(xmlResponse);
 
-            WelfareEntity welfare = this.parseXmlToWelfareDetail(xmlResponse);
+            WelfareDetailDto welfareDetail = this.parseXmlToWelfareDetail(xmlResponse);
 
-            this.welfareMapper.insert(welfare);
+            this.welfareMapper.insert(welfareDetail.getWelfare());
+            for (InstitutionEntity institution : welfareDetail.getInstitutions()) {
+                this.institutionMapper.insert(institution);
+            }
+            for (InquiryContactEntity inquiryContact : welfareDetail.getInquiryContacts()) {
+                this.inquiryContactMapper.insert(inquiryContact);
+            }
+            for (InquiryLinkEntity inquiryLink : welfareDetail.getInquiryLinks()) {
+                this.inquiryLinkMapper.insert(inquiryLink);
+            }
+            for (FormMaterialEntity formMaterial : welfareDetail.getFormMaterials()) {
+                this.formMaterialMapper.insert(formMaterial);
+            }
+            for (BasisStatuteEntity basisStatute : welfareDetail.getBasisStatutes()) {
+                this.basisStatuteMapper.insert(basisStatute);
+            }
         }
-        return this.welfareMapper.selectById(id);
+
+        WelfareDetailResponse welfareDetailResponse = new WelfareDetailResponse(this.welfareMapper.selectById(id));
+        welfareDetailResponse.setInstitutions(this.institutionMapper.selectByWelfareId(id));
+        welfareDetailResponse.setInquiryContacts(this.inquiryContactMapper.selectByWelfareId(id));
+        welfareDetailResponse.setInquiryLinks(this.inquiryLinkMapper.selectByWelfareId(id));
+        welfareDetailResponse.setFormMaterials(this.formMaterialMapper.selectByWelfareId(id));
+        welfareDetailResponse.setBasisStatutes(this.basisStatuteMapper.selectByWelfareId(id));
+        return welfareDetailResponse;
     }
 
-    private WelfareEntity parseXmlToWelfareDetail(String xmlResponse) {
+    private WelfareDetailDto parseXmlToWelfareDetail(String xmlResponse) {
         System.out.println("xmlResponse : " + xmlResponse);
 
         try {
@@ -239,11 +269,10 @@ public class WelfareService {
             DocumentBuilder builder = factory.newDocumentBuilder();
             Document doc = builder.parse(new InputSource(new StringReader(xmlResponse)));
 
-            WelfareEntity welfare = new WelfareEntity();
-
             Element rootElement = doc.getDocumentElement();
             System.out.println("rootElement : " + rootElement);
-            System.out.println("servId : " + getTagValue(rootElement, "servId"));
+
+            WelfareEntity welfare = new WelfareEntity();
 
             welfare.setId(getTagValue(rootElement, "servId"));
             welfare.setName(getTagValue(rootElement, "servNm"));
@@ -264,10 +293,111 @@ public class WelfareService {
 
             welfare.setViews(0);
 
-            return welfare;
+            NodeList institutionNodes = doc.getElementsByTagName("applmetList");
+            List<InstitutionEntity> institutions = parseInstitutions(institutionNodes, welfare.getId());
+
+            NodeList inquiryContactNodes = doc.getElementsByTagName("inqplCtadrList");
+            List<InquiryContactEntity> inquiryContacts = parseInquiryContacts(inquiryContactNodes, welfare.getId());
+
+            NodeList inquiryLinkNodes = doc.getElementsByTagName("inqplHmpgReldList");
+            List<InquiryLinkEntity> inquiryLinks = parseInquiryLinks(inquiryLinkNodes, welfare.getId());
+
+            NodeList formMaterialNodes = doc.getElementsByTagName("basfrmList");
+            List<FormMaterialEntity> formMaterials = parseFormMaterials(formMaterialNodes, welfare.getId());
+
+            NodeList basisStatuteNodes = doc.getElementsByTagName("baslawList");
+            List<BasisStatuteEntity> basisStatutes = parseBasisStatutes(basisStatuteNodes, welfare.getId());
+
+            return WelfareDetailDto.builder()
+                    .welfare(welfare)
+                    .institutions(institutions)
+                    .inquiryContacts(inquiryContacts)
+                    .inquiryLinks(inquiryLinks)
+                    .formMaterials(formMaterials)
+                    .basisStatutes(basisStatutes)
+                    .build();
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<InstitutionEntity> parseInstitutions(NodeList institutionNodes, String welfareId) {
+        List<InstitutionEntity> institutions = new ArrayList<>();
+        for (int i = 0; i < institutionNodes.getLength(); i++) {
+            Element el = (Element) institutionNodes.item(i);
+
+            InstitutionEntity institution = new InstitutionEntity();
+            institution.setWelfareId(welfareId);
+            institution.setName(getTagValue(el, "servSeDetailNm"));
+            institution.setDescription(getTagValue(el, "servSeDetailLink"));
+            if (institution.getName() != null && institution.getDescription() != null) {
+                institutions.add(institution);
+            }
+        }
+        return institutions;
+    }
+
+    private List<InquiryContactEntity> parseInquiryContacts(NodeList inquiryContactNodes, String welfareId) {
+        List<InquiryContactEntity> inquiryContacts = new ArrayList<>();
+        for (int i = 0; i < inquiryContactNodes.getLength(); i++) {
+            Element el = (Element) inquiryContactNodes.item(i);
+
+            InquiryContactEntity inquiryContact = new InquiryContactEntity();
+            inquiryContact.setWelfareId(welfareId);
+            inquiryContact.setName(getTagValue(el, "servSeDetailNm"));
+            inquiryContact.setContact(getTagValue(el, "servSeDetailLink"));
+            if (inquiryContact.getName() != null && inquiryContact.getContact() != null) {
+                inquiryContacts.add(inquiryContact);
+            }
+        }
+        return inquiryContacts;
+    }
+
+    private List<InquiryLinkEntity> parseInquiryLinks(NodeList inquiryLinkNodes, String welfareId) {
+        List<InquiryLinkEntity> inquiryLinks = new ArrayList<>();
+        for (int i = 0; i < inquiryLinkNodes.getLength(); i++) {
+            Element el = (Element) inquiryLinkNodes.item(i);
+
+            InquiryLinkEntity inquiryLink = new InquiryLinkEntity();
+            inquiryLink.setWelfareId(welfareId);
+            inquiryLink.setName(getTagValue(el, "servSeDetailNm"));
+            inquiryLink.setLink(getTagValue(el, "servSeDetailLink"));
+            if (inquiryLink.getName() != null && inquiryLink.getLink() != null) {
+                inquiryLinks.add(inquiryLink);
+            }
+        }
+        return inquiryLinks;
+    }
+
+    private List<FormMaterialEntity> parseFormMaterials(NodeList formMaterialNodes, String welfareId) {
+        List<FormMaterialEntity> formMaterials = new ArrayList<>();
+        for (int i = 0; i < formMaterialNodes.getLength(); i++) {
+            Element el = (Element) formMaterialNodes.item(i);
+
+            FormMaterialEntity formMaterial = new FormMaterialEntity();
+            formMaterial.setWelfareId(welfareId);
+            formMaterial.setName(getTagValue(el, "servSeDetailNm"));
+            formMaterial.setLink(getTagValue(el, "servSeDetailLink"));
+            if (formMaterial.getName() != null && formMaterial.getLink() != null) {
+                formMaterials.add(formMaterial);
+            }
+        }
+        return formMaterials;
+    }
+
+    private List<BasisStatuteEntity> parseBasisStatutes(NodeList basisStatuteNodes, String welfareId) {
+        List<BasisStatuteEntity> basisStatutes = new ArrayList<>();
+        for (int i = 0; i < basisStatuteNodes.getLength(); i++) {
+            Element el = (Element) basisStatuteNodes.item(i);
+
+            BasisStatuteEntity basisStatute = new BasisStatuteEntity();
+            basisStatute.setWelfareId(welfareId);
+            basisStatute.setName(getTagValue(el, "servSeDetailNm"));
+            if (basisStatute.getName() != null) {
+                basisStatutes.add(basisStatute);
+            }
+        }
+        return basisStatutes;
     }
 
     private String getTagValue(Element parent, String tag) {
@@ -279,7 +409,7 @@ public class WelfareService {
         String value = node.item(0).getTextContent();
         return (value == null || value.isBlank())
                 ? null
-                : value;
+                : value.trim();
     }
 
     private List<String> getTagListValue(Element parent, String tag) {
