@@ -198,10 +198,6 @@ body {
 
       }
 
-      //.stretch {
-      //  flex-grow: 1;
-      //}
-
       > .recommend-list {
         min-width: 55rem;
         height: 100%;
@@ -220,10 +216,10 @@ body {
           &::-webkit-scrollbar {
             width: 8px; /* 스크롤바 두께 */
           }
-          &::-webkit-scrollbar-track {
-            background: #f0f2f8; /* 트랙 색 (연하게) */
-            border-radius: 999rem;
-          }
+          //&::-webkit-scrollbar-track {
+          //  background: #f0f2f8; /* 트랙 색 (연하게) */
+          //  border-radius: 999rem;
+          //}
           &::-webkit-scrollbar-thumb {
             background-color: #658df8; /* 손잡이 색상 */
             border-radius: 999rem;
@@ -268,6 +264,7 @@ body {
               &:hover {
                 box-shadow: 0 0 0.2rem #ccc;
               }
+
             }
 
             &:hover {

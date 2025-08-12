@@ -296,10 +296,6 @@ body {
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list::-webkit-scrollbar {
   width: 8px; /* 스크롤바 두께 */
 }
-#defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list::-webkit-scrollbar-track {
-  background: #f0f2f8; /* 트랙 색 (연하게) */
-  border-radius: 999rem;
-}
 #defaultArea > .recommend-sec > .recommend-container > .recommend-list > .list::-webkit-scrollbar-thumb {
   background-color: #658df8; /* 손잡이 색상 */
   border-radius: 999rem;
