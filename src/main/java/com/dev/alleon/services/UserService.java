@@ -399,6 +399,7 @@ public class UserService {
                 || user.getAddressPostal() == null || user.getAddressPostal().isEmpty()
                 || user.getAddressPrimary() == null || user.getAddressPrimary().isEmpty()
                 || user.getAddressSecondary() == null || user.getAddressSecondary().isEmpty()) {
+            System.out.println("1");
             return CommonResult.FAILURE;
         }
         if (!signedUser.getNickname().equals(user.getNickname())) {
@@ -426,6 +427,7 @@ public class UserService {
         signedUser.setLifeCycleCode(user.getLifeCycleCode());
         signedUser.setHouseholdTypeCode(user.getHouseholdTypeCode());
         signedUser.setInterestSubCode(user.getInterestSubCode());
+        signedUser.setModifiedAt(LocalDateTime.now());
 
         return userMapper.update(signedUser) > 0
                 ? CommonResult.SUCCESS
