@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>Re:Book</title>
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/user/assets/styles/modify.min.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+    <script src="/common/assets/scripts/common.js" type="module"></script>
+    <script src="/user/assets/scripts/modify.js"></script>
+</head>
+<body>
+<th:block th:replace="~{fragments/header :: header}"></th:block>
+
+<div id="addressFindDialog">
+    <div class="modal"></div>
+</div>
+
+<div id="defaultArea" class="modify">
+    <form id="modifyForm" novalidate>
+        <h1 class="title">회원 정보 수정</h1>
+
+        <div class="input-wrapper">
+            <label data-aeo-object="label">
+                <span data-aeo-component="label.caption">닉네임</span>
+                <span data-aeo-component="label.row">
+                    <input data-aeo-object="field" data-aeo-stretch name="nickname" type="text" required autocomplete="off"
+                           minlength="1" maxlength="10"
+                           th:pattern="${T(com.dev.alleon.regexes.UserRegex).nickname.pattern}"
+                           th:value="${user.nickname}">
+                    <button data-aeo-object="button" name="nicknameCheckButton" type="button" disabled>중복 확인</button>
+                </span>
+                <span data-aeo-component="label.warning">닉네임 중복을 확인해 주세요.</span>
+            </label>
+
+            <label data-aeo-object="label">
+                <span data-aeo-component="label.caption">생년월일/성별</span>
+                <span data-aeo-component="label.row">
+                    <input data-aeo-object="field" name="birth" type="date" required autocomplete="off"
+                           th:pattern="${T(com.dev.alleon.regexes.UserRegex).birth.pattern}"
+                           th:value="${user.birth}">
+                    <span class="-object-radio-group">
+                        <label class="--radio-selector">
+                            <input type="radio" name="gender" value="M" th:checked="${user.gender == 'M'}">
+                            <span class="caption">남</span>
+                        </label>
+                        <label class="--radio-selector">
+                            <input type="radio" name="gender" value="F" th:checked="${user.gender == 'F'}">
+                            <span class="caption">여</span>
+                        </label>
+                    </span>
+                    <span data-aeo-stretch role="none"></span>
+                </span>
+                <span data-aeo-component="label.warning">생년월일을 입력해 주세요.</span>
+            </label>
+
+            <label data-aeo-object="label">
+                <span data-aeo-component="label.caption">연락처</span>
+                <span data-aeo-component="label.row">
+                    <select data-aeo-object="field" name="contactMvno" required>
+                        <option disabled hidden selected value="-1">통신사</option>
+                        <option th:each="mvon:${contactMvnos}" th:value="${mvon.code}"
+                                th:text="${mvon.displayText}"
+                                th:selected="${user.contactMvnoCode == mvon.code}"></option>
+                    </select>
+                    <select data-aeo-object="field" name="contactFirst" required>
+                        <option value="010" th:checked>010</option>
+                        <option value="011">011</option>
+                        <option value="016">016</option>
+                        <option value="017">017</option>
+                        <option value="019">019</option>
+                    </select>
+                    <input data-aeo-object="field" class="tel-input" name="contactSecond" type="text"
+                           required minlength="3" maxlength="4" placeholder="0000"
+                           th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactSecondRegex.pattern}"
+                           th:value="${user.contactSecond}">
+                    <input data-aeo-object="field" class="tel-input" name="contactThird" type="text"
+                           required minlength="3" maxlength="4" placeholder="0000"
+                           th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactThirdRegex.pattern}"
+                           th:value="${user.contactThird}">
+                    <button data-aeo-object="button -color-blue" name="contactCheckButton" type="button" disabled>중복 확인</button>
+                </span>
+                <span data-aeo-component="label.warning">연락처를 입력해 주세요.</span>
+            </label>
+
+            <label data-aeo-object="label">
+                <span data-aeo-component="label.caption">주소</span>
+                <span data-aeo-component="label.row">
+                    <input data-aeo-object="field" name="addressPostal" type="text" required readonly
+                           minlength="5" maxlength="5" data-aeo-stretch
+                           placeholder="우편 번호(주소 찾기 버튼을 클릭해 주세요.)"
+                           th:value="${user.addressPostal}">
+                    <button data-aeo-object="button -color-blue" name="addressFindButton" type="button">주소 찾기</button>
+                </span>
+                <input data-aeo-object="field" name="addressPrimary" type="text" required readonly
+                       minlength="10" maxlength="100"
+                       placeholder="기본 주소 (주소 찾기 버튼을 클릭해 주세요.)"
+                       th:value="${user.addressPrimary}">
+                <input data-aeo-object="field" name="addressSecondary" type="text" required
+                       minlength="0" maxlength="100"
+                       placeholder="상세 주소 (건물 이름, 동, 호)"
+                       th:value="${user.addressSecondary}">
+                <span data-aeo-component="label.warning">주소를 입력해 주세요.</span>
+            </label>
+        </div>
+
+        <div class="container" data-aeo-visible>
+            <span class="title">코드 선택</span>
+
+            <label data-aeo-object="label" data-aeo-name="house">
+                <span data-aeo-component="label.caption">가구 유형</span>
+                <select name="houseCode" data-aeo-object="field" required th:field="*{user.householdTypeCode}">
+                    <option disabled hidden value="">선택하세요</option>
+                    <option th:each="item : ${houseCode}"
+
+                            th:value="${item.code}"
+                            th:text="${item.displayText}">
+                    </option>
+                </select>
+            </label>
+
+            <label data-aeo-object="label" data-aeo-name="interest">
+                <span data-aeo-component="label.caption">관심 분야</span>
+                <select name="interestCode" data-aeo-object="field" required th:field="*{user.interestSubCode}">
+                    <option disabled hidden value="">선택하세요</option>
+                    <option th:each="item : ${interestCode}"
+                            th:value="${item.code}"
+                            th:text="${item.displayText}">
+                    </option>
+                </select>
+            </label>
+
+            <label data-aeo-object="label" data-aeo-name="lifeCode">
+                <span data-aeo-component="label.caption">생애주기</span>
+                <select name="lifeCode" data-aeo-object="field" required th:field="*{user.lifeCycleCode}">
+                    <option disabled hidden value="">선택하세요</option>
+                    <option th:each="item : ${lifeCode}"
+                            th:value="${item.code}"
+                            th:text="${item.displayText}">
+                    </option>
+                </select>
+            </label>
+        </div>
+
+        <div class="button-container">
+            <a href="/user/info" data-aeo-object="button">
+                <img class="--icon" src="/common/assets/images/button-images/cancel.png" alt="">
+                <span class="--caption">취소</span>
+            </a>
+            <button data-aeo-object="button -color-blue" type="submit">
+                <span class="--caption">수정하기</span>
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

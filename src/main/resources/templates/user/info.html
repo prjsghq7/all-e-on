@@ -24,7 +24,9 @@
 
                 <label for="profileImageInput" class="avatar-uploader" aria-label="프로필 이미지 변경">
           <span class="avatar" id="avatarBox">
-<!--            <img class="avatar-img" th:src="${signedUser.profileImg != null ? signedUser.profileImg : '/user/assets/images/profile-sample.png'}" alt="프로필 이미지">-->
+            <img class="avatar-img"
+                 th:src="${signedUser.profile != null and #arrays.length(signedUser.profile) > 0 ? signedUser.profileImg : '/user/assets/images/profile-sample.png'}"
+                 alt="프로필 이미지">
             <span class="overlay">변경</span>
           </span>
                     <span class="hint">JPG/PNG, 2MB 이하 권장</span>
