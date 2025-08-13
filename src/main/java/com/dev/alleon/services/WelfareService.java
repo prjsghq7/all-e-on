@@ -288,7 +288,7 @@ public class WelfareService {
             welfare.setServiceProvision(getTagValue(rootElement, "srvPvsnNm"));
 
             welfare.setLifeArray(getTagValue(rootElement, "lifeArray"));
-            welfare.setRgterIndvdlArray(getTagValue(rootElement, "rgterIndvdlArray"));
+            welfare.setRgterIndvdlArray(getTagValue(rootElement, "trgterIndvdlArray"));
             welfare.setIntrsThemaArray(getTagValue(rootElement, "intrsThemaArray"));
 
             welfare.setViews(0);

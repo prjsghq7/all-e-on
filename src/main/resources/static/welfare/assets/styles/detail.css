@@ -3,6 +3,7 @@ ol, ul {
 }
 
 #defaultArea {
+  padding: 2rem;
   overflow: scroll;
 }
 #defaultArea > .header {
@@ -15,7 +16,7 @@ ol, ul {
 }
 #defaultArea > .header > h2 {
   font-size: 3rem;
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: 1rem;
 }
 #defaultArea > .header > span {
@@ -164,7 +165,7 @@ ol, ul {
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: flex-start;
   list-style-type: square;
 }

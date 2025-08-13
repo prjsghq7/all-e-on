@@ -7,6 +7,7 @@ ol, ul {
 }
 
 #defaultArea {
+  padding: 2rem;
   overflow: scroll;
 
   > .header {
@@ -20,7 +21,7 @@ ol, ul {
 
     > h2 {
       font-size: 3rem;
-      font-weight: 600;
+      font-weight: 500;
       margin-bottom: 1rem;
     }
 
@@ -178,7 +179,7 @@ ol, ul {
 
             > ul {
               padding: 1.5rem 2rem;
-              @include flex(column, flex-start, flex-start, 0.5rem);
+              @include flex(column, flex-start, flex-start, 1rem);
               list-style-type: square;
 
               > li {

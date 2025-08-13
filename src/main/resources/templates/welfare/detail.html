@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>상세페이지</title>
+    <title>AEO | 상세페이지</title>
     <link href="/common/assets/styles/common.min.css" rel="stylesheet" type="text/css">
     <link href="/welfare/assets/styles/detail.min.css" rel="stylesheet" type="text/css">
 </head>
@@ -23,19 +23,19 @@
         <div class="main-box">
             <div class="category">
                 <ul class="items">
-                    <li class="item">중앙부처 복지사업</li>
-                    <li class="item">신체건강</li>
-                    <li class="item">영유아</li>
-                    <li class="item">아동</li>
-                    <li class="item">청소년</li>
+                    <li class="item" th:each="life : ${welfare.lifeArray}" th:text="${life}"></li>
+                    <li class="item" th:each="intrs : ${welfare.intrsThemaArray}" th:text="${intrs}">신체건강</li>
+<!--                    <li class="item">영유아</li>-->
+<!--                    <li class="item">아동</li>-->
+<!--                    <li class="item">청소년</li>-->
                 </ul>
             </div>
             <div class="title">
                 <h2 th:text="${welfare.name}">선청성대사이상 검사 및 환아관리</h2>
-                <span>선천성대사이사의 유무를 조기에 발견&#183;치료함으로써 장래발생을 사전에 예방하여 영유아의 건가 증진을 도모합니다.</span>
+                <span th:text="${welfare.summary}">선천성대사이사의 유무를 조기에 발견&#183;치료함으로써 장래발생을 사전에 예방하여 영유아의 건가 증진을 도모합니다.</span>
             </div>
             <div class="table">
-                <div class="charge">&#183; 담당 부처 <span>보건 복지부 출산 정책과</span></div>
+                <div class="charge">&#183; 담당 부처 <span th:text="${welfare.ministryName}">보건 복지부 출산 정책과</span></div>
                 <table class="table-basic">
                     <tr>
                         <th>기준연도</th>
@@ -44,10 +44,10 @@
                         <th>제공유형</th>
                     </tr>
                     <tr>
-                        <td>2025</td>
-                        <td>129</td>
-                        <td>분기</td>
-                        <td>현금지급, 현물지급</td>
+                        <td th:text="${welfare.criteriaYear}">2025</td>
+                        <td th:text="${welfare.inquiryContacts[0].contact}"></td>
+                        <td th:text="${welfare.supportCycle}">분기</td>
+                        <td th:text="${welfare.serviceProvision}">현금지급, 현물지급</td>
                     </tr>
                 </table>
             </div>
@@ -75,68 +75,123 @@
                     <div class="detail-explain">
                         <h3> 지원대상</h3>
                         <ul>
-                            <li>선천성대사이상 지원대상은 다음과 같습니다.</li>
-                            <ul type="square">
-                                <li>(선별검사) 신생아 선천성 대사이상 외래 선별검사를 받은 영아</li>
-                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>
-                            </ul>
-                            <li>환아관리 지원대상은 다음과 같습니다.</li>
-                            <ul>
-                                <li>확진검사 결과 선천성대사이상 및 희귀 등 기타 질환으로 진단받아 특수식이 또는 의료비 지원이 필요한, 신청일 기준 만 19세 미만* 환아 <br>* 만
-                                    나이는
-                                    출생월 기준으로 산정하며, 만 19세가 도래한 달까지만 지원
-                                </li>
-                            </ul>
+                            <li th:text="${welfare.targetDetailContent}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+<!--                            <ul type="square">-->
+<!--                                <li>(선별검사) 신생아 선천성 대사이상 외래 선별검사를 받은 영아</li>-->
+<!--                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>-->
+<!--                            </ul>-->
+<!--                            <li>환아관리 지원대상은 다음과 같습니다.</li>-->
+<!--                            <ul>-->
+<!--                                <li>확진검사 결과 선천성대사이상 및 희귀 등 기타 질환으로 진단받아 특수식이 또는 의료비 지원이 필요한, 신청일 기준 만 19세 미만* 환아 <br>* 만-->
+<!--                                    나이는-->
+<!--                                    출생월 기준으로 산정하며, 만 19세가 도래한 달까지만 지원-->
+<!--                                </li>-->
+<!--                            </ul>-->
                         </ul>
                     </div>
                     <div class="detail-explain">
                         <h3> 선정기준</h3>
                         <ul>
-                            <li>선천성대사이상 검사비 지원내용 및 지원기준은 다음과 같습니다</li>
-                            <ul>
-                                <li>
-                                    신생아 선천성대사이상 외래 선별검사비의 (일부)본인부담금 지원
-                                    <br>
-                                    - 출생 후 28일 이내에 실시하여 건강보험이 적용된 선별검사를 대상으로 함
-                                    <br>
-                                    * 단, 출생일 기준 28일 이후에 실시하였어도 건강보험이 적용된 선별검사는 지원 가능
-                                    <br>
-                                    - 1회 지원이 원칙이나, 유소견 검사결과에 따라 선별검사를 재실시한 경우에는 1회에 한하여 추가 지원 가능(최대 2회)
-                                    <br>
-                                    - 검사비 외 항목(진찰료 등)은 지원 제외
-                                    <br>
-                                    - 정상 신생아는 최초 1회에 한하여 급여를 인정하되, 검사결과 유소견자의 경우 1회에 한하여 추가 인정
-                                </li>
-                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>
-                            </ul>
-                            <li>환아관리 대상질환 및 지원내용은 다음과 같습니다.</li>
-                            <ul>
-                                <li>
-                                    (특수조제분유, 저단백햇반 지원) 선천성대사이상 질환: 고전적 페닐케톤뇨증, 타이로신혈증, 단풍시럽뇨병, 메틸말론산혈증/프로피온산혈증,
-                                    아이소발레린산혈증,
-                                    지방산대사장애, 호모시스틴뇨, 요소회로대사장애(아르지닌혈증, 시트룰린혈증 등), 글루타르산뇨, 고글라이신혈증, 갈락토스혈증, 고칼슘혈증
-                                </li>
-                                <li>
-                                    (의료비 지원) 선천성대사이상 질환: 선천성 갑상선기능저하증
-                                </li>
-                                <li>
-                                    (특수조제분유) 희귀 등 기타 질환: 단장증후군, 담도폐쇄증, 장림프관확장증
-                                </li>
-                                <li>
-                                    ※크론병 지원기간은 변경(25년4월~)지침 참조
-                                </li>
-                            </ul>
+                            <li th:text="${welfare.selectionCriteriaContent}">선천성대사이상 검사비 지원내용 및 지원기준은 다음과 같습니다</li>
+<!--                            <ul>-->
+<!--                                <li>-->
+<!--                                    신생아 선천성대사이상 외래 선별검사비의 (일부)본인부담금 지원-->
+<!--                                    <br>-->
+<!--                                    - 출생 후 28일 이내에 실시하여 건강보험이 적용된 선별검사를 대상으로 함-->
+<!--                                    <br>-->
+<!--                                    * 단, 출생일 기준 28일 이후에 실시하였어도 건강보험이 적용된 선별검사는 지원 가능-->
+<!--                                    <br>-->
+<!--                                    - 1회 지원이 원칙이나, 유소견 검사결과에 따라 선별검사를 재실시한 경우에는 1회에 한하여 추가 지원 가능(최대 2회)-->
+<!--                                    <br>-->
+<!--                                    - 검사비 외 항목(진찰료 등)은 지원 제외-->
+<!--                                    <br>-->
+<!--                                    - 정상 신생아는 최초 1회에 한하여 급여를 인정하되, 검사결과 유소견자의 경우 1회에 한하여 추가 인정-->
+<!--                                </li>-->
+<!--                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>-->
+<!--                            </ul>-->
+<!--                            <li>환아관리 대상질환 및 지원내용은 다음과 같습니다.</li>-->
+<!--                            <ul>-->
+<!--                                <li>-->
+<!--                                    (특수조제분유, 저단백햇반 지원) 선천성대사이상 질환: 고전적 페닐케톤뇨증, 타이로신혈증, 단풍시럽뇨병, 메틸말론산혈증/프로피온산혈증,-->
+<!--                                    아이소발레린산혈증,-->
+<!--                                    지방산대사장애, 호모시스틴뇨, 요소회로대사장애(아르지닌혈증, 시트룰린혈증 등), 글루타르산뇨, 고글라이신혈증, 갈락토스혈증, 고칼슘혈증-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    (의료비 지원) 선천성대사이상 질환: 선천성 갑상선기능저하증-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    (특수조제분유) 희귀 등 기타 질환: 단장증후군, 담도폐쇄증, 장림프관확장증-->
+<!--                                </li>-->
+<!--                                <li>-->
+<!--                                    ※크론병 지원기간은 변경(25년4월~)지침 참조-->
+<!--                                </li>-->
+<!--                            </ul>-->
                         </ul>
                     </div>
                 </div>
                 <div class="content" data-mt-radio="2">
-                    <a href="">서비스 내용</a>
+                    <div class="detail-explain">
+                        <h3> 서비스내용</h3>
+                        <ul>
+                            <li th:text="${welfare.allowanceServiceContent}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+                            <!--                            <ul type="square">-->
+                            <!--                                <li>(선별검사) 신생아 선천성 대사이상 외래 선별검사를 받은 영아</li>-->
+                            <!--                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>-->
+                            <!--                            </ul>-->
+                            <!--                            <li>환아관리 지원대상은 다음과 같습니다.</li>-->
+                            <!--                            <ul>-->
+                            <!--                                <li>확진검사 결과 선천성대사이상 및 희귀 등 기타 질환으로 진단받아 특수식이 또는 의료비 지원이 필요한, 신청일 기준 만 19세 미만* 환아 <br>* 만-->
+                            <!--                                    나이는-->
+                            <!--                                    출생월 기준으로 산정하며, 만 19세가 도래한 달까지만 지원-->
+                            <!--                                </li>-->
+                            <!--                            </ul>-->
+                        </ul>
+                    </div>
                 </div>
                 <div class="content" data-mt-radio="3">
-                    <a href="">서비스 내용</a>
+                    <div class="detail-explain">
+                        <h3> 신청방법</h3>
+                        <ul>
+                            <li th:text="${welfare.allowanceServiceContent}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+                            <!--                            <ul type="square">-->
+                            <!--                                <li>(선별검사) 신생아 선천성 대사이상 외래 선별검사를 받은 영아</li>-->
+                            <!--                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>-->
+                            <!--                            </ul>-->
+                            <!--                            <li>환아관리 지원대상은 다음과 같습니다.</li>-->
+                            <!--                            <ul>-->
+                            <!--                                <li>확진검사 결과 선천성대사이상 및 희귀 등 기타 질환으로 진단받아 특수식이 또는 의료비 지원이 필요한, 신청일 기준 만 19세 미만* 환아 <br>* 만-->
+                            <!--                                    나이는-->
+                            <!--                                    출생월 기준으로 산정하며, 만 19세가 도래한 달까지만 지원-->
+                            <!--                                </li>-->
+                            <!--                            </ul>-->
+                        </ul>
+                    </div>
                 </div>
                 <div class="content" data-mt-radio="4">
-                    <a href="">서비스 내용</a>
+                    <div class="detail-explain">
+                        <h3> 전화문의</h3>
+                        <ul>
+                            <li th:each="contact : ${welfare.inquiryContacts}" th:text="${contact.name} + ' ' + ${contact.contact}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+                        </ul>
+                    </div>
+                    <div class="detail-explain">
+                        <h3> 관련 웹사이트</h3>
+                        <ul>
+                            <li th:each="link : ${welfare.inquiryLinks}">   <a th:href="${link.link}" th:text="${link.name} + ' ' + ${link.link}" target="_blank"></a>  </li>
+                        </ul>
+                    </div>
+                    <div class="detail-explain">
+                        <h3> 근거법령</h3>
+                        <ul>
+                            <li th:each="law : ${welfare.basisStatutes}">   <a th:text="${law.name}"></a>  </li>
+                        </ul>
+                    </div>
+                    <div class="detail-explain">
+                        <h3> 서식자료</h3>
+                        <ul>
+                            <li th:each="data : ${welfare.formMaterials}">   <a th:href="${data.link}" th:text="${data.name}"></a>  </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>

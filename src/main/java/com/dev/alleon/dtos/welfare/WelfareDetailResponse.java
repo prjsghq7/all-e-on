@@ -62,9 +62,9 @@ public class WelfareDetailResponse {
                 : Arrays.stream(welfare.getRgterIndvdlArray().split(","))
                 .collect(Collectors.toList());
         ;
-        this.intrsThemaArray = welfare.getRgterIndvdlArray() == null
+        this.intrsThemaArray = welfare.getIntrsThemaArray() == null
                 ? null
-                : Arrays.stream(welfare.getTargetDetailContent().split(","))
+                : Arrays.stream(welfare.getIntrsThemaArray().split(","))
                 .collect(Collectors.toList());
         ;
 
