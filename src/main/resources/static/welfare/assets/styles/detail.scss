@@ -166,14 +166,28 @@ ol, ul {
         > .content {
           display: none;
           > .detail-explain {
+            padding: 1.5rem;
+            font-size: 1.25rem;
+            line-height: 2rem;
             @include flex(column, flex-start, flex-start);
             text-align: left;
+
+            > h3 {
+              @include flex(row, center, center, 1rem);
+              font-size: 1.75rem;
+              font-weight: 700;
+              text-align: center;
+            }
+
+            &:has(> ul > .none) {
+              @include flex(row, center, center);
+            }
 
             > h3::before {
               display: inline-block;
               content: "";
               width: 0.25rem;
-              height: 1rem;
+              height: 1.5rem;
               background-color: #2563eb;
             }
 
@@ -182,7 +196,14 @@ ol, ul {
               @include flex(column, flex-start, flex-start, 1rem);
               list-style-type: square;
 
-              > li {
+              > .none {
+                width: 100%;
+                list-style: none;
+                @include flex(row, center, center);
+                text-align: center;
+                font-size: 2rem;
+                font-weight: 700;
+                padding: 5rem;
               }
 
               > ul {

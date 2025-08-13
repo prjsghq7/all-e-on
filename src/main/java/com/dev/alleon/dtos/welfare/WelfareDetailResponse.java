@@ -37,6 +37,9 @@ public class WelfareDetailResponse {
     private List<InquiryLinkEntity> inquiryLinks;
     private List<FormMaterialEntity> formMaterials;
     private List<BasisStatuteEntity> basisStatutes;
+    private List<String> targetDetailContentArray;
+    private List<String> selectionCriteriaContentArray;
+    private List<String> allowanceServiceContentArray;
 
     public WelfareDetailResponse(WelfareEntity welfare) {
         this.id = welfare.getId();
@@ -51,6 +54,27 @@ public class WelfareDetailResponse {
         this.summary = welfare.getSummary();
         this.supportCycle = welfare.getSupportCycle();
         this.serviceProvision = welfare.getServiceProvision();
+
+        this.targetDetailContentArray = (welfare.getTargetDetailContent() == null || welfare.getTargetDetailContent().isBlank())
+                ? List.of()
+                : Arrays.stream(welfare.getTargetDetailContent().split("\\r?\\n"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+
+        this.selectionCriteriaContentArray = (welfare.getSelectionCriteriaContent() == null || welfare.getSelectionCriteriaContent().isBlank())
+                ? List.of()
+                : Arrays.stream(welfare.getSelectionCriteriaContent().split("\\r?\\n"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+
+        this.allowanceServiceContentArray = (welfare.getAllowanceServiceContent() == null || welfare.getAllowanceServiceContent().isBlank())
+                ? List.of()
+                : Arrays.stream(welfare.getAllowanceServiceContent().split("\\r?\\n"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
 
         this.lifeArray = welfare.getLifeArray() == null
                 ? null

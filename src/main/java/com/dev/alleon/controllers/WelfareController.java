@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping(value = "/welfare")
@@ -42,6 +43,7 @@ public class WelfareController {
     public String getDetail(@RequestParam(value = "id", required = false) String id,
                             Model model) {
         WelfareDetailResponse welfare = this.welfareService.getWelfareDetail(id);
+
         model.addAttribute("welfare", welfare);
         return "welfare/detail";
     }
