@@ -5,7 +5,8 @@
             useGeneratedKeys="true"
             keyColumn="index"
             keyProperty="index">
-        INSERT INTO `aeo`.`articles` (`user_index`, `title`, `content`, `view`, `created_at`, `modified_at`, `is_deleted`, `welfare_id`)
+        INSERT INTO `aeo`.`articles` (`user_index`, `title`, `content`, `view`, `created_at`, `modified_at`,
+                                      `is_deleted`, `welfare_id`)
         VALUES (#{article.userIndex},
                 #{article.title},
                 #{article.content},
@@ -19,35 +20,44 @@
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT COUNT(0)
         FROM `aeo`.`articles` AS `a`
-        LEFT JOIN `aeo`.`users` u ON `a`.`user_index` = `u`.article_index
+        LEFT JOIN `aeo`.`users` u ON `a`.`user_index` = `u`.`index`
         <where>
             <choose>
-                <when test="searchType == 'title'">
+                <when test="searchVo.searchType == 'title'">
                     `a`.`title` LIKE CONCAT('%', #{searchVo.keyword}, '%')
                 </when>
-                <when test="searchType == 'content'">
+                <when test="searchVo.searchType == 'content'">
                     `a`.`content` LIKE CONCAT('%', #{searchVo.keyword}, '%')
                 </when>
-                <when test="searchType == 'author'">
+                <when test="searchVo.searchType == 'author'">
                     `u`.`nickname` LIKE CONCAT('%', #{searchVo.keyword}, '%')
                 </when>
             </choose>
         </where>
     </select>
 
-    <select id="selectList" resultType="com.dev.alleon.entities.article.ArticleEntity">
-        SELECT *
+    <select id="selectList" resultType="com.dev.alleon.dtos.article.ArticleDto">
+        SELECT `a`.`index`       AS `index`,
+               `a`.`user_index`  AS `userIndex`,
+               `a`.`title`       AS `title`,
+               `a`.`content`     AS `content`,
+               `a`.`view`        AS `view`,
+               `a`.`created_at`  AS `createdAt`,
+               `a`.`modified_at` AS `modifiedAt`,
+               `a`.`is_deleted`  AS `isDeleted`,
+               `a`.`welfare_id`  AS `welfareId`,
+               `u`.`nickname`    AS `nickname`
         FROM `aeo`.`articles` AS `a`
-        LEFT JOIN `aeo`.`users` u ON `a`.`user_index` = `u`.article_index
+        LEFT JOIN `aeo`.`users` u ON `a`.`user_index` = `u`.`index`
         <where>
             <choose>
-                <when test="searchType == 'title'">
+                <when test="searchVo.searchType == 'title'">
                     `a`.`title` LIKE CONCAT('%', #{searchVo.keyword}, '%')
                 </when>
-                <when test="searchType == 'content'">
+                <when test="searchVo.searchType == 'content'">
                     `a`.`content` LIKE CONCAT('%', #{searchVo.keyword}, '%')
                 </when>
-                <when test="searchType == 'author'">
+                <when test="searchVo.searchType == 'author'">
                     `u`.`nickname` LIKE CONCAT('%', #{searchVo.keyword}, '%')
                 </when>
             </choose>
@@ -55,17 +65,19 @@
         LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset}
     </select>
 
-    <select id="selectByIndex" resultType="com.dev.alleon.entities.article.ArticleEntity">
-        SELECT `index`       AS `index`,
-               `user_index`  AS `userIndex`,
-               `title`       AS `title`,
-               `content`     AS `content`,
-               `view`        AS `view`,
-               `created_at`  AS `createdAt`,
-               `modified_at` AS `modifiedAt`,
-               `is_deleted`  AS `isDeleted`,
-               `welfare_id`  AS `welfareId`
-        FROM `aeo`.`articles`
-        WHERE `index` = #{index}
+    <select id="selectByIndex" resultType="com.dev.alleon.dtos.article.ArticleDto">
+        SELECT `a`.`index`       AS `index`,
+               `a`.`user_index`  AS `userIndex`,
+               `a`.`title`       AS `title`,
+               `a`.`content`     AS `content`,
+               `a`.`view`        AS `view`,
+               `a`.`created_at`  AS `createdAt`,
+               `a`.`modified_at` AS `modifiedAt`,
+               `a`.`is_deleted`  AS `isDeleted`,
+               `a`.`welfare_id`  AS `welfareId`,
+               `u`.`nickname`    AS `nickname`
+        FROM `aeo`.`articles` AS `a`
+        LEFT JOIN `aeo`.`users` `u` ON `a`.`user_index` = `u`.`index`
+        WHERE `a`.`index` = #{index}
     </select>
 </mapper>

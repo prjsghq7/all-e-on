@@ -5,6 +5,8 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <script defer src="/common/assets/scripts/common.js" type="module"></script>
     <title>Document</title>
     <link href="/common/assets/styles/common.min.css" rel="stylesheet" type="text/css">
@@ -51,13 +53,15 @@
         <a class="welfare" th:href="@{'/welfare/detail' (id=${welfare.servId})}" th:each="welfare : ${welfareList}">
             <div class="header">
                 <span class="name" th:text="${welfare.servNm}"></span>
-                <button class="tts">
+                <button class="tts" type="button">
                     <img src="/welfare/assets/images/welfare-speaker.png" alt="음성 안내">
-                    <span class="tts-caption">음성으로 안내</span>
+                    <span class="caption">음성안내</span>
                 </button>
             </div>
+
             <span class="sub" th:text="${welfare.jurMnofNm} + ' / ' + ${welfare.jurOrgNm}"></span>
             <span class="description" th:text="${welfare.servDgst}"></span>
+
             <div class="footer">
                 <span class="info" th:text="${welfare.srvPvsnNm}"></span>
                 <span class="slash">/</span>
@@ -67,23 +71,26 @@
                 <span class="stretch" role="none"></span>
                 <span class="regi-date" th:text="${welfare.svcfrstRegTs}"></span>
             </div>
+
             <div class="tooltip-container">
-                <span class="tooltip" th:if="${!welfare.lifeArray.isEmpty()}">
-                    <span class="caption">생애 주기</span>
-                    <span class="tag" th:each="life : ${welfare.lifeArray}" th:text="${life}"></span>
-                </span>
+      <span class="tooltip" th:if="${!welfare.lifeArray.isEmpty()}">
+        <span class="caption">생애 주기</span>
+        <span class="tag" th:each="life : ${welfare.lifeArray}" th:text="${life}"></span>
+      </span>
                 <span class="tooltip" th:if="${!welfare.trgterIndvdlArray.isEmpty()}">
-                    <span class="caption">가구 유형</span>
-                    <span class="tag" th:each="trgterIndvdl : ${welfare.trgterIndvdlArray}" th:text="${trgterIndvdl}"></span>
-                </span>
+        <span class="caption">가구 유형</span>
+        <span class="tag" th:each="trgterIndvdl : ${welfare.trgterIndvdlArray}" th:text="${trgterIndvdl}"></span>
+      </span>
                 <span class="tooltip" th:if="${!welfare.intrsThemaArray.isEmpty()}">
-                    <span class="caption">관심 주제</span>
-                    <span class="tag" th:each="intrsThema : ${welfare.intrsThemaArray}" th:text="${intrsThema}"></span>
-                </span>
+        <span class="caption">관심 주제</span>
+        <span class="tag" th:each="intrsThema : ${welfare.intrsThemaArray}" th:text="${intrsThema}"></span>
+      </span>
             </div>
         </a>
+
         <div class="empty" th:if="${welfareList == null || welfareList.isEmpty()}">조건에 맞는 복지 서비스가 없습니다.</div>
     </div>
+
 
     <div id="pageContainer" th:if="${welfareList != null && !welfareList.isEmpty()}">
         <a class="page"
