@@ -8,6 +8,7 @@ import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.CodeEntity;
 import com.dev.alleon.entities.welfare.*;
 import com.dev.alleon.mappers.welfare.*;
+import com.dev.alleon.results.welfare.WelfareApiResult;
 import com.dev.alleon.vos.PageVo;
 import com.dev.alleon.vos.WelfareSearchVo;
 import org.springframework.beans.factory.annotation.Value;
@@ -230,7 +231,12 @@ public class WelfareService {
             System.out.println("requestUrl : " + requestUrl);
 
             String xmlResponse = restTemplate.getForObject(requestUrl, String.class);
-            System.out.println(xmlResponse);
+            System.out.println("xmlResponse : " + xmlResponse);
+            WelfareApiResult welfareApiResult = getWelfareApiResult(xmlResponse);
+            System.out.println("welfareApiResult : " + welfareApiResult);
+            if (welfareApiResult != WelfareApiResult.SUCCESS) {
+                return null;
+            }
 
             WelfareDetailDto welfareDetail = this.parseXmlToWelfareDetail(xmlResponse);
 
@@ -425,5 +431,35 @@ public class WelfareService {
 
         return Arrays.stream(value.split(","))
                 .collect(Collectors.toList());
+    }
+
+    private WelfareApiResult getWelfareApiResult (String xmlResponse) {
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            Document doc = builder.parse(new InputSource(new StringReader(xmlResponse)));
+
+            Element rootElement = doc.getDocumentElement();
+            String resultCode = rootElement.getElementsByTagName("resultCode")
+                    .item(0)
+                    .getTextContent();
+            System.out.println("resultCode : " + resultCode);
+
+            return switch (resultCode) {
+                case "04" -> WelfareApiResult.HTTP_ERROR;
+                case "10" -> WelfareApiResult.INVALID_REQUEST_PARAMETER_ERROR;
+                case "12" -> WelfareApiResult.NO_OPENAPI_SERVICE_ERROR;
+                case "20" -> WelfareApiResult.SERVICE_ACCESS_DENIED_ERROR;
+                case "22" -> WelfareApiResult.LIMITED_NUMBER_OF_SERVICE_REQUESTS_EXCEEDS_ERROR;
+                case "30" -> WelfareApiResult.SERVICE_KEY_IS_NOT_REGISTERED_ERROR;
+                case "31" -> WelfareApiResult.DEADLINE_HAS_EXPIRED_ERROR;
+                case "40" -> WelfareApiResult.NO_DATA_FOUND;
+                case "99" -> WelfareApiResult.UNKNOWN_ERROR;
+                case "0" -> WelfareApiResult.SUCCESS;
+                default -> WelfareApiResult.SUCCESS;
+            };
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
