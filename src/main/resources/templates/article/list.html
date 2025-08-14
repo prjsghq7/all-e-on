@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>AEO | 게시판 목록</title>
+</head>
+<body>
+<div id="defaultArea">
+    <form id="searchForm">
+        <div class="search-container">
+            <label class="search-label">
+                <select class="search-select" name="searchType">
+                    <option th:selected="${searchVo.getSearchType() == 'title'}" value="title">제목</option>
+                    <option th:selected="${searchVo.getSearchType() == 'content'}" value="content">내용</option>
+                    <option th:selected="${searchVo.getSearchType() == 'author'}" value="author">작성자</option>
+                </select>
+            </label>
+            <label class="search-label flex-grow">
+                <input class="search-input" type="text" name="keyword" placeholder="검색어를 입력하세요"
+                       th:value="${searchVo.getKeyword()}">
+            </label>
+            <button class="search-button" type="submit">
+                <img src="/common/assets/images/search-icon.png" alt="검색" class="icon">
+            </button>
+        </div>
+    </form>
+
+    <div id="articleList">
+
+    </div>
+</div>
+</body>
+</html>

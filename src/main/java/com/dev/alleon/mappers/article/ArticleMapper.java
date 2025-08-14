@@ -1,5 +1,6 @@
 package com.dev.alleon.mappers.article;
 
+import com.dev.alleon.dtos.article.ArticleDto;
 import com.dev.alleon.entities.article.ArticleEntity;
 import com.dev.alleon.vos.ArticleSearchVo;
 import com.dev.alleon.vos.PageVo;
@@ -14,8 +15,8 @@ public interface ArticleMapper {
 
     int selectCount(@Param("searchVo") ArticleSearchVo searchVo);
 
-    List<ArticleEntity> selectList (@Param("searchVo") ArticleSearchVo searchVo,
-                                    @Param("pageVo") PageVo pageVo);
+    List<ArticleDto> selectList (@Param("searchVo") ArticleSearchVo searchVo,
+                                 @Param("pageVo") PageVo pageVo);
 
-    ArticleEntity selectByIndex (@Param("index") int index);
+    ArticleDto selectByIndex (@Param("index") int index);
 }

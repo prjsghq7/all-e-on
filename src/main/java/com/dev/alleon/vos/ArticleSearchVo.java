@@ -10,12 +10,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ArticleSearchVo {
-    private SearchType searchType;
+    private String searchType = "title";
     private String keyword;
-
-    private enum SearchType {
-        title,
-        content,
-        author
-    }
 }
