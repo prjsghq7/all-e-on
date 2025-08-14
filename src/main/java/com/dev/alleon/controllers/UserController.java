@@ -267,13 +267,61 @@ public class UserController {
         return "user/oauth";
     }
 
-    @RequestMapping(value="/oauth/register",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/oauth/register", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String postOauthRegister(HttpSession session,UserEntity userEntity){
+    public String postOauthRegister(HttpSession session, UserEntity userEntity) {
         CustomOAuth2User oAuth2User = (CustomOAuth2User) session.getAttribute("oauthUser");
         Result result = this.userService.oauthRegister(oAuth2User, userEntity);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getRemove(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, Model model) {
+        if (signedUser == null || signedUser.getActiveState() > 2) {
+            return "redirect:/user/login";
+        }
+        model.addAttribute("email", signedUser.getEmail());
+        return "user/removeAccount";
+    }
+
+    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String deleteRemoveAccount(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, EmailTokenEntity emailToken, HttpServletRequest request, HttpSession session) {
+        emailToken.setUserAgent(request.getHeader("User-Agent"));
+        Result result = this.userService.removeAccount(signedUser, emailToken);
+        if (result == CommonResult.SUCCESS) {
+            session.setAttribute("signedUser", null);
+        }
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/remove-email", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String patchRemoveAccountEmail(EmailTokenEntity emailToken,
+                                          HttpServletRequest request) {
+        emailToken.setUserAgent(request.getHeader("User-Agent"));
+        Result result = this.emailTokenService.verityEmailToken(emailToken);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/remove-email", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String postRemoveAccountEmail(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                         @RequestParam(value = "email") String email,
+                                         HttpServletRequest request) throws MessagingException {
+        String userAgent = request.getHeader("User-Agent");
+        ResultTuple<EmailTokenEntity> result = this.userService.sendRemoveAccountEmail(signedUser, email, userAgent);
+        JSONObject response = new JSONObject();
+        response.put("result", result.getResult().toStringLower());
+        if (result.getResult() == CommonResult.SUCCESS) {
+            response.put("salt", result.getPayload().getSalt());
+        }
         return response.toString();
     }
 }
