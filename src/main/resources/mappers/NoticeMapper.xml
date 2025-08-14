@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.notice.NoticeMapper">
+    <insert id="insert">
+        insert into `aeo`.`notice`
+        (`user_index`, `title`, `content`, `view`, `created_at`, `modified_at`, `is_deleted`)
+        VALUES (#{notice.userIndex},
+                #{notice.title},
+                #{notice.content},
+                #{notice.view},
+                #{notice.createdAt},
+                #{notice.modifiedAt},
+                #{notice.isDeleted})
+    </insert>
+    <select id="selectAll" resultType="com.dev.alleon.entities.notice.NoticeEntity">
+        select `index`       as `index`,
+               `user_index`  as `userIndex`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `view`        as `view`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modified_at`,
+               `is_deleted`  as `is_deleted`
+        from `aeo`.`notice`;
+    </select>
+    <select id="selectByIndex" resultType="com.dev.alleon.entities.notice.NoticeEntity">
+        select `index`       as `index`,
+               `user_index`  as `userIndex`,
+               `title`       as `title`,
+               `content`     as `content`,
+               `view`        as `view`,
+               `created_at`  as `createdAt`,
+               `modified_at` as `modified_at`,
+               `is_deleted`  as `is_deleted`
+        from `aeo`.`notice`
+        where `index`=#{index}
+        limit 1;
+    </select>
+</mapper>

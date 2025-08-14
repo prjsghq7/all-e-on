@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.images.ImageMapper">
+    <insert id="insert">
+        insert into `aeo`.`images`
+            (notice_index, article_index, name, content_type, data, created_at)
+        VALUES (#{image.noticeIndex}, #{image.articleIndex}, #{image.name}, #{image.contentType}, #{image.data},
+                #{image.createdAt});
+    </insert>
+    <select id="selectByIndex" resultType="com.dev.alleon.entities.notice.ImageEntity">
+        select `index`         as `index`,
+               `notice_index`  as `noticeIndex`,
+               `article_index` as `articleIndex`,
+               `name`          as `name`,
+               `content_type`  as `contentType`,
+               `data`          as `data`,
+               `created_at`    as `createdAt`
+        from `aeo`.`images`
+        limit 1;
+    </select>
+</mapper>
