@@ -82,12 +82,37 @@
 #welfareList .welfare {
   align-items: stretch;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: flex-start;
   padding: 0.25rem 1rem;
   border-bottom: 0.0625rem solid #dadada;
-  gap: 0.375rem;
   position: relative;
+}
+#welfareList .welfare > .welfare-info {
+  flex-grow: 1;
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 0.25rem 1rem;
+  position: relative;
+  gap: 0.375rem;
+}
+#welfareList .welfare > .welfare-button {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 0.875rem;
+}
+#welfareList .welfare > .welfare-button > .tts {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #FFFFFF;
+}
+#welfareList .welfare > .welfare-button > .tts > img {
+  width: 2.5rem;
 }
 #welfareList .welfare:first-of-type {
   border-top: 0.0625rem solid #dadada;

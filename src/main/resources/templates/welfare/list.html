@@ -51,26 +51,31 @@
     </form>
     <div id="welfareList">
         <a class="welfare" th:href="@{'/welfare/detail' (id=${welfare.servId})}" th:each="welfare : ${welfareList}">
-            <div class="header">
-                <span class="name" th:text="${welfare.servNm}"></span>
+            <div class="welfare-info">
+                <div class="header">
+                    <span class="name" th:text="${welfare.servNm}"></span>
+                </div>
+                <span class="sub" th:text="${welfare.jurMnofNm} + ' / ' + ${welfare.jurOrgNm}"></span>
+                <span class="description" th:text="${welfare.servDgst}"></span>
+
+                <div class="footer">
+                    <span class="info" th:text="${welfare.srvPvsnNm}"></span>
+                    <span class="slash">/</span>
+                    <span class="info" th:text="'지원 주기 : ' + ${welfare.sprtCycNm}"></span>
+                    <span class="slash">/</span>
+                    <span class="info" th:text="${welfare.onapPsbltYn == 'Y'} ? '온라인 신청 가능' : '온라인 신청 불가'"></span>
+                    <span class="stretch" role="none"></span>
+                </div>
+            </div>
+            <div class="welfare-button">
                 <button class="tts" type="button">
                     <img src="/welfare/assets/images/welfare-speaker.png" alt="음성 안내">
                     <span class="caption">음성안내</span>
                 </button>
-            </div>
-
-            <span class="sub" th:text="${welfare.jurMnofNm} + ' / ' + ${welfare.jurOrgNm}"></span>
-            <span class="description" th:text="${welfare.servDgst}"></span>
-
-            <div class="footer">
-                <span class="info" th:text="${welfare.srvPvsnNm}"></span>
-                <span class="slash">/</span>
-                <span class="info" th:text="'지원 주기 : ' + ${welfare.sprtCycNm}"></span>
-                <span class="slash">/</span>
-                <span class="info" th:text="${welfare.onapPsbltYn == 'Y'} ? '온라인 신청 가능' : '온라인 신청 불가'"></span>
-                <span class="stretch" role="none"></span>
                 <span class="regi-date" th:text="${welfare.svcfrstRegTs}"></span>
             </div>
+
+
 
             <div class="tooltip-container">
       <span class="tooltip" th:if="${!welfare.lifeArray.isEmpty()}">
