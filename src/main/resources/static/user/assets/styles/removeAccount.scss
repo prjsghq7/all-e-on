@@ -1,0 +1,261 @@
+@charset "UTF-8";
+@import "../../../common/assets/styles/_def";
+
+$grad-start: #e35f5f;
+$grad-end:  #fddc81;
+$card-bg:   #ffffff;
+$ink:       #272727;
+$muted:     #969aa1;
+$line:      #d9d9df;
+$ok:        #22c55e;
+$warn:      #ef4444;
+
+$radius: .625rem;
+$shadow: 0 .5rem 1.5rem rgba(0,0,0,.08);
+
+html { min-width: 90rem; }
+
+
+#deleteForm {
+  @include flex(column, stretch, flex-start, 1rem);
+  min-height: calc(100vh - var(--header-height));
+  width: 48rem;
+  margin: 5rem auto 2rem;
+  padding: 1.875rem;
+  box-sizing: border-box;
+  background: $card-bg;
+
+
+  > .header {
+    @include flex(column, stretch, flex-start, .5rem);
+    margin-bottom: .75rem;
+
+    > .title {
+      font-family: "Jua", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      font-size: 2rem;
+      letter-spacing: .2rem;
+      background: linear-gradient(112deg, $grad-start, $grad-end);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    > .caption {
+      color: $ink;
+      opacity: .85;
+      font-weight: 700;
+    }
+
+    > .guide {
+      color: $muted;
+      font-size: .9375rem;
+    }
+  }
+
+  > .input-wrapper {
+    @include flex(column, stretch, flex-start, 1.25rem);
+
+    > [data-aeo-object="label"] {
+      @include flex(column, stretch, flex-start, .5rem);
+
+      > .label\.caption,
+      > [data-aeo-component="label.caption"] {
+        font-weight: 800;
+        color: $ink;
+        letter-spacing: .06rem;
+      }
+
+      > .label\.row,
+      > [data-aeo-component="label.row"] {
+        @include flex(row, center, flex-start, .5rem);
+        flex-wrap: wrap;
+
+        > [data-aeo-object="field"],
+        > input[type="text"],
+        > input[type="password"],
+        > input[type="email"],
+        > input[type="date"],
+        > select,
+        > textarea {
+          font: inherit;
+          color: $ink;
+          background: #f8fafc;
+          border: .0625rem solid $line;
+          outline: none;
+          border-radius: .5rem;
+          padding: .625rem .75rem;
+          transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+
+          &:focus {
+            border-color: mix($grad-start, $grad-end, 50%);
+            box-shadow: 0 0 0 .2rem rgba($grad-start,.15);
+            background: #fff;
+          }
+
+          &:disabled {
+            background: #f1f5f9;
+            color: $muted;
+          }
+        }
+
+        > [data-aeo-object="field"][readonly] {
+          background: #f3f5f8;
+        }
+
+        > select[data-aeo-object="field"] { min-width: 7rem; }
+
+        > [data-aeo-object~="button"] {
+          height: 2.5rem;
+          padding: 0 .875rem;
+          border: 0;
+          border-radius: .5rem;
+          cursor: pointer;
+          background: linear-gradient(112deg, $grad-start, $grad-end);
+          color: #fff;
+          font-weight: 700;
+          box-shadow: $shadow;
+          transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+
+          &:hover   { transform: translateY(-.0625rem); filter: brightness(1.02); }
+          &:active  { transform: translateY(0); }
+          &:disabled{ opacity: .55; cursor: not-allowed; }
+        }
+      }
+
+      > .label\.warning,
+      > [data-aeo-component="label.warning"] {
+        display: none;
+        color: $muted;
+        font-size: .875rem;
+      }
+
+      &[data-aeo-invalid] {
+        > .label\.row > input,
+        > .label\.row > select,
+        > .label\.row > textarea,
+        > [data-aeo-component="label.row"] > input,
+        > [data-aeo-component="label.row"] > select,
+        > [data-aeo-component="label.row"] > textarea {
+          border-color: $warn !important;
+          box-shadow: 0 0 0 .2rem rgba($warn,.08);
+          background: #fff5f5;
+        }
+        > .label\.warning,
+        > [data-aeo-component="label.warning"] {
+          display: block;
+          color: $warn;
+        }
+      }
+
+      &[data-aeo-valid] {
+        > .label\.row > input,
+        > .label\.row > select,
+        > .label\.row > textarea,
+        > [data-aeo-component="label.row"] > input,
+        > [data-aeo-component="label.row"] > select,
+        > [data-aeo-component="label.row"] > textarea {
+          border-color: $ok !important;
+          box-shadow: 0 0 0 .2rem rgba($ok,.08);
+          background: #fbfffb;
+        }
+      }
+
+      > [data-aeo-object="check"] {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        cursor: pointer;
+        user-select: none;
+
+        > [data-aeo-object="check.input"] { display: none; }
+
+        > .--box {
+          width: 1.25rem;
+          height: 1.25rem;
+          border: .1rem solid $line;
+          border-radius: .25rem;
+          background: #fff;
+          position: relative;
+          transition: background-color .15s ease, border-color .15s ease, box-shadow .15s ease, transform .08s ease;
+          box-shadow: 0 0 0 0 rgba($grad-start, 0);
+
+          &::after {
+            content: "";
+            position: absolute;
+            inset: .2rem .25rem .25rem .25rem;
+            border-right: .1875rem solid #fff;
+            border-bottom: .1875rem solid #fff;
+            transform: rotate(45deg) scale(0);
+            transform-origin: center;
+            transition: transform .12s ease;
+          }
+        }
+
+        > .check\.caption { color: $ink; line-height: 1.25rem; }
+
+        &:hover > .--box { transform: translateY(-.03125rem); }
+
+        &:has(> [data-aeo-object="check.input"]:checked) > .--box {
+          border-color: mix($grad-start, $grad-end, 50%);
+          background: linear-gradient(112deg, $grad-start, $grad-end);
+          box-shadow: 0 0 0 .2rem rgba($grad-start,.12);
+          &::after { transform: rotate(45deg) scale(1); }
+        }
+
+        &:has(> [data-aeo-object="check.input"][disabled]) {
+          cursor: not-allowed; opacity: .55;
+        }
+      }
+    }
+
+    > [data-aeo-object="label"][data-aeo-invalid] > [data-aeo-object="check"] > .--box {
+      border-color: $warn; box-shadow: 0 0 0 .2rem rgba($warn,.08); background: #fff5f5;
+    }
+    > [data-aeo-object="label"][data-aeo-valid] > [data-aeo-object="check"] > .--box {
+      border-color: $ok; box-shadow: 0 0 0 .2rem rgba($ok,.08); background: #fbfffb;
+    }
+  }
+
+  > .button-container {
+    @include flex(row, center, flex-end, .75rem);
+    margin-top: 1rem;
+
+    > [data-aeo-object~="button"] {
+      @include flex(row, center, center, .5rem);
+      min-width: 6rem;
+      height: 2.75rem;
+      padding: 0 1rem;
+      border: 0;
+      border-radius: .5rem;
+      cursor: pointer;
+      background: linear-gradient(112deg, $grad-start, $grad-end);
+      color: #fff;
+      font-weight: 700;
+      box-shadow: $shadow;
+      transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
+
+      > .--icon { width: 1.125rem; height: 1.125rem; }
+
+      &:hover  { transform: translateY(-.0625rem); box-shadow: 0 .625rem 2rem rgba(0,0,0,.12); }
+      &:active { transform: translateY(0); }
+      &:disabled{ opacity: .5; cursor: not-allowed; }
+    }
+    ㄴ
+    > a[data-aeo-object~="button"] {
+      text-decoration: none;
+      background: #111;
+      color: #fff;
+
+      > .--caption { color: #fff; }
+    }
+
+    > [data-aeo-object~="-color-red"] {
+      background: linear-gradient(112deg, #ef4444, #f97316);
+    }
+
+    > [data-aeo-object~="-color-black"] {
+      background: #111;
+      color: #fff;
+    }
+  }
+}

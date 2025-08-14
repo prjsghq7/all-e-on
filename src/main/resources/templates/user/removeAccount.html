@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>alleon | 회원탈퇴</title>
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/user/assets/styles/removeAccount.min.css">
+    <script defer src="/user/assets/scripts/remove.js"></script>
+    <script defer src="/common/assets/scripts/common.js" type="module"></script>
+    <script defer src="/common/assets/scripts/object/dialog.js"></script>
+</head>
+<body>
+<div id="defaultArea">
+    <form novalidate id="deleteForm">
+        <div class="header">
+            <h1 class="title">회원 탈퇴</h1>
+            <span class="caption">회원 탈퇴 시 모든 기록이 삭제되며 복구 불가능합니다.</span>
+            <span class="guide"> ➥ 회원 탈퇴를 원할 경우 이메일 인증을 진행해주세요.</span>
+        </div>
+
+        <div class="input-wrapper">
+            <input hidden name="emailSalt" type="hidden">
+            <label data-aeo-object="label">
+                <span class="label.caption">이메일</span>
+                <span class="label.row">
+                    <input required type="email" name="email" autocomplete="email" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="8" placeholder="user@sample.com" th:pattern="${T(com.dev.alleon.regexes.UserRegex).email.pattern}" th:value="${email}" disabled>
+                    <button type="button" data-aeo-object="button -color-blue" name="emailCodeSendButton">인증코드 전송</button>
+                </span>
+                <span class="label.row">
+                    <input disabled required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="6" minlength="6" name="emailCode" placeholder="000000" type="text" th:pattern="${T(com.dev.alleon.regexes.EmailTokenRegex).emailCode.pattern}">
+                    <button type="button" data-aeo-object="button -color-blue" name="emailCodeVerifyButton" disabled>인증번호 확인</button>
+                </span>
+                <span class="label.warning">이메일 인증을 완료해주세요.</span>
+            </label>
+
+            <label data-aeo-object="label">
+                <span class="label.caption">회원 탈퇴 동의</span>
+                <span class="label.warning">회원 탈퇴에 동의해주세요.</span>
+                <label data-aeo-object="check">
+                    <input data-aeo-object="check.input" name="agreeRemoveAccount" type="checkbox">
+                    <span class="--box"></span>
+                    <span class="check.caption">[필수] 회원 탈퇴 후 계정은 복구할 수 없음을 확인하고 동의합니다.</span>
+                </label>
+            </label>
+        </div>
+
+        <div class="button-container">
+            <a href="/user/info" data-aeo-object="button -color-black" data-aeo-visible>
+                <img alt="" class="--icon" src="/common/assets/images/button-images/cancel.png">
+                <span class="--caption">취소</span>
+            </a>
+            <button data-aeo-object="button -color-red">
+                <span class="--caption">탈퇴하기</span>
+            </button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

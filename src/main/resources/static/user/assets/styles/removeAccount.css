@@ -1,0 +1,379 @@
+@charset "UTF-8";
+html {
+  min-width: 90rem;
+}
+
+#deleteForm {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  min-height: calc(100vh - var(--header-height));
+  width: 48rem;
+  margin: 5rem auto 2rem;
+  padding: 1.875rem;
+  box-sizing: border-box;
+  background: #ffffff;
+}
+#deleteForm > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .header {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  margin-bottom: 0.75rem;
+}
+#deleteForm > .header > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > .header > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .header > .title {
+  font-family: "Jua", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  font-size: 2rem;
+  letter-spacing: 0.2rem;
+  background: linear-gradient(112deg, #e35f5f, #fddc81);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+#deleteForm > .header > .caption {
+  color: #272727;
+  opacity: 0.85;
+  font-weight: 700;
+}
+#deleteForm > .header > .guide {
+  color: #969aa1;
+  font-size: 0.9375rem;
+}
+#deleteForm > .input-wrapper {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1.25rem;
+  justify-content: flex-start;
+}
+#deleteForm > .input-wrapper > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > .input-wrapper > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.caption,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.caption"] {
+  font-weight: 800;
+  color: #272727;
+  letter-spacing: 0.06rem;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > *,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-stretch],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object=field],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=text],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=password],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=email],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=date],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > select,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > textarea,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object=field],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=text],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=password],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=email],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=date],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > select,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > textarea {
+  font: inherit;
+  color: #272727;
+  background: #f8fafc;
+  border: 0.0625rem solid #d9d9df;
+  outline: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object=field]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=text]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=password]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=email]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=date]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > select:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > textarea:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object=field]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=text]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=password]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=email]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=date]:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > select:focus,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > textarea:focus {
+  border-color: rgb(240, 157.5, 112);
+  box-shadow: 0 0 0 0.2rem rgba(227, 95, 95, 0.15);
+  background: #fff;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object=field]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=text]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=password]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=email]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > input[type=date]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > select:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > textarea:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object=field]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=text]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=password]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=email]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > input[type=date]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > select:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > textarea:disabled {
+  background: #f1f5f9;
+  color: #969aa1;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object=field][readonly],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object=field][readonly] {
+  background: #f3f5f8;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > select[data-aeo-object=field],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > select[data-aeo-object=field] {
+  min-width: 7rem;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object~=button],
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object~=button] {
+  height: 2.5rem;
+  padding: 0 0.875rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: linear-gradient(112deg, #e35f5f, #fddc81);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+  transition: transform 0.08s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object~=button]:hover,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object~=button]:hover {
+  transform: translateY(-0.0625rem);
+  filter: brightness(1.02);
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object~=button]:active,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object~=button]:active {
+  transform: translateY(0);
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.row > [data-aeo-object~=button]:disabled,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.row"] > [data-aeo-object~=button]:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > .label\.warning,
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-component="label.warning"] {
+  display: none;
+  color: #969aa1;
+  font-size: 0.875rem;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > .label\.row > input,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > .label\.row > select,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > .label\.row > textarea,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > [data-aeo-component="label.row"] > input,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > [data-aeo-component="label.row"] > select,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > [data-aeo-component="label.row"] > textarea {
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.08);
+  background: #fff5f5;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > .label\.warning,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > [data-aeo-component="label.warning"] {
+  display: block;
+  color: #ef4444;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > .label\.row > input,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > .label\.row > select,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > .label\.row > textarea,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > [data-aeo-component="label.row"] > input,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > [data-aeo-component="label.row"] > select,
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > [data-aeo-component="label.row"] > textarea {
+  border-color: #22c55e !important;
+  box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.08);
+  background: #fbfffb;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  user-select: none;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check] > [data-aeo-object="check.input"] {
+  display: none;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check] > .--box {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 0.1rem solid #d9d9df;
+  border-radius: 0.25rem;
+  background: #fff;
+  position: relative;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.08s ease;
+  box-shadow: 0 0 0 0 rgba(227, 95, 95, 0);
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check] > .--box::after {
+  content: "";
+  position: absolute;
+  inset: 0.2rem 0.25rem 0.25rem 0.25rem;
+  border-right: 0.1875rem solid #fff;
+  border-bottom: 0.1875rem solid #fff;
+  transform: rotate(45deg) scale(0);
+  transform-origin: center;
+  transition: transform 0.12s ease;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check] > .check\.caption {
+  color: #272727;
+  line-height: 1.25rem;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check]:hover > .--box {
+  transform: translateY(-0.03125rem);
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check]:has(> [data-aeo-object="check.input"]:checked) > .--box {
+  border-color: rgb(240, 157.5, 112);
+  background: linear-gradient(112deg, #e35f5f, #fddc81);
+  box-shadow: 0 0 0 0.2rem rgba(227, 95, 95, 0.12);
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check]:has(> [data-aeo-object="check.input"]:checked) > .--box::after {
+  transform: rotate(45deg) scale(1);
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label] > [data-aeo-object=check]:has(> [data-aeo-object="check.input"][disabled]) {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-invalid] > [data-aeo-object=check] > .--box {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 0.2rem rgba(239, 68, 68, 0.08);
+  background: #fff5f5;
+}
+#deleteForm > .input-wrapper > [data-aeo-object=label][data-aeo-valid] > [data-aeo-object=check] > .--box {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 0.2rem rgba(34, 197, 94, 0.08);
+  background: #fbfffb;
+}
+#deleteForm > .button-container {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+#deleteForm > .button-container > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > .button-container > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .button-container > [data-aeo-object~=button] {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: center;
+  min-width: 6rem;
+  height: 2.75rem;
+  padding: 0 1rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: linear-gradient(112deg, #e35f5f, #fddc81);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.08);
+  transition: transform 0.08s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+#deleteForm > .button-container > [data-aeo-object~=button] > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#deleteForm > .button-container > [data-aeo-object~=button] > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#deleteForm > .button-container > [data-aeo-object~=button] > .--icon {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+#deleteForm > .button-container > [data-aeo-object~=button]:hover {
+  transform: translateY(-0.0625rem);
+  box-shadow: 0 0.625rem 2rem rgba(0, 0, 0, 0.12);
+}
+#deleteForm > .button-container > [data-aeo-object~=button]:active {
+  transform: translateY(0);
+}
+#deleteForm > .button-container > [data-aeo-object~=button]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#deleteForm > .button-container ㄴ > a[data-aeo-object~=button] {
+  text-decoration: none;
+  background: #111;
+  color: #fff;
+}
+#deleteForm > .button-container ㄴ > a[data-aeo-object~=button] > .--caption {
+  color: #fff;
+}
+#deleteForm > .button-container > [data-aeo-object~=-color-red] {
+  background: linear-gradient(112deg, #ef4444, #f97316);
+}
+#deleteForm > .button-container > [data-aeo-object~=-color-black] {
+  background: #111;
+  color: #fff;
+}
+
+/*# sourceMappingURL=removeAccount.css.map */
