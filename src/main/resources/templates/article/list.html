@@ -29,15 +29,19 @@
         </div>
     </form>
 
-    <div id="articleList">
+    <div id="articleListNone" th:if="${articleList == null || articleList.size() == 0}">
+        게시판의 내용이 없습니다.
+    </div>
 
-        <div class="table" >
-            <div class="charge">&#183; 담당 부처 <span>보건 복지부 출산 정책과</span></div>
+    <div id="articleList" th:if="${articleList != null && articleList.size() > 0}">
+        <div class="table">
             <table class="table-basic">
                 <tr>
                     <th>기준연도</th>
                     <th>문의처</th>
                     <th>지원주기</th>
+                    <th>제공유형</th>
+                    <th>제공유형</th>
                     <th>제공유형</th>
                 </tr>
                 <tr>
@@ -45,19 +49,21 @@
                     <td></td>
                     <td>분기</td>
                     <td>현금지급, 현물지급</td>
+                    <td>현금지급, 현물지급</td>
+                    <td>현금지급, 현물지급</td>
                 </tr>
             </table>
         </div>
-
     </div>
 
-    <div id="pageContainer">
+    <div id="pageContainer" th:if="${articleList.size() > 0 && articleList != null}">
         <a class="page"
            th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
            th:text="${pageNum}"
-           th:href="@{/article/list (searchType = ${searchVo.getSearchType()})}"
+           th:href="@{/article/list (searchType = ${searchVo.getSearchType()}, keyword = ${searchVo.getKeyword()})}"
            th:classappend="${pageNum == pageVo.page}? '-selected'"></a>
     </div>
+
 </div>
 </body>
 </html>

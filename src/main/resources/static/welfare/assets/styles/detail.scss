@@ -130,6 +130,7 @@ ol, ul {
 
   > .detail {
     > .detail-all {
+      margin-top: 5rem;
       > .category {
         position: relative;
         display: grid;
@@ -147,7 +148,6 @@ ol, ul {
           display: none;
         }
       }
-      margin-top: 5rem;
 
       > .category:has(input[value="1"]:checked) ~ .explain > [data-mt-radio="1"],
       > .category:has(input[value="2"]:checked) ~ .explain > [data-mt-radio="2"],

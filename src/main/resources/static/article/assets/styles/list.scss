@@ -89,6 +89,68 @@ $text-color: #FFFFFF;
   }
 }
 
+#articleListNone {
+  margin: 5rem 0;
+  font-size: 2rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+#articleList {
+  > .table {
+    > .charge {
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: #2176d0;
+
+      > span {
+        color: #000000;
+      }
+    }
+
+    .table-basic {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 2rem;
+
+      th,
+      td {
+        padding: 1.2rem 0.8rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        border-top: 0.0625rem solid #ccc;
+        border-bottom: 0.0625rem solid #ccc;
+        border-left: none;
+        border-right: 0.0625rem solid #ccc;
+      }
+
+      th:last-child,
+      td:last-child {
+        border-right: 0;
+      }
+
+      th {
+        background-color: #f5f7fb;
+        color: #2563eb;
+        font-weight: 600;
+      }
+
+      td {
+        color: #111;
+      }
+
+      tr:first-child th {
+        border-top: 0.0625rem solid #ccc;
+      }
+
+      tr:last-child td {
+        border-bottom: 0.0625rem solid #ccc;
+      }
+    }
+  }
+}
+
 #pageContainer {
   align-items: center;
   display: flex;
