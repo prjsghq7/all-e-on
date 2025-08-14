@@ -31,6 +31,6 @@ public interface UserMapper {
 
     UserEntity selectUserByProviderTypeAndProviderKey(@Param(value = "providerType") String providerType, @Param(value = "providerKey") String providerKey);
 
-    int updateProfile(@Param("index") int index, @Param("profile")byte[] profile);
+    int updateProfile(@Param("index") int userId, @Param("profile")byte[] profileBytes);
 
 }

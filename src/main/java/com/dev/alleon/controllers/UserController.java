@@ -208,7 +208,7 @@ public class UserController {
         return "user/info";
     }
 
-    @RequestMapping(value = "/profile", method = RequestMethod.POST, produces = {MediaType.IMAGE_JPEG_VALUE, MediaType.IMAGE_PNG_VALUE, MediaType.IMAGE_GIF_VALUE})
+    @RequestMapping(value = "/profile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadProfile(@RequestParam("image") MultipartFile file,
                                 @SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                                 HttpSession session) throws IOException {
@@ -216,16 +216,17 @@ public class UserController {
             return "redirect:/user/login";
         }
         if (!file.isEmpty()) {
-            if (file.getContentType() == null || !file.getContentType().startsWith("image/")) {
-                return "redirect:/user/mypage";
+            if (file.getContentType() == null) {
+                return "redirect:/user/info";
             }
             byte[] bytes = file.getBytes();
             userService.updateProfile(signedUser.getIndex(), bytes);
             signedUser.setProfile(bytes);
             session.setAttribute("signedUser", signedUser);
         }
-        return "redirect:/user/login";
+        return "redirect:/user/info";
     }
+
 
     @RequestMapping(value = "/modify", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getModify(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, String code, Model model) {
