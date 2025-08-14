@@ -8,21 +8,23 @@
     <title>AEO | 상세페이지</title>
     <link href="/common/assets/styles/common.min.css" rel="stylesheet" type="text/css">
     <link href="/welfare/assets/styles/detail.min.css" rel="stylesheet" type="text/css">
+    <script defer src="/common/assets/scripts/object/dialog.js"></script>
+    <script th:if="${welfare == null}">
+        dialog.showSimpleOk('잘못된 접근', '올바른 방식으로 접근해주세요.');
+        history.back();
+    </script>
 </head>
 <body>
 <div id="defaultArea">
     <div class="header">
-        <div class="mini-title">
-            &#183; 복지서비스(상세)
-        </div>
-        <h2>복지서비스 상세</h2>
-        <span>내 상황에 맞는 다양한 복지혜택을 찾을 수 있습니다.</span>
+        <h2 th:text="${welfare == null ? '존재하지 않는 데이터 이거나 잘못된 접근입니다.' : '복지서비스 상세'}">복지서비스 상세</h2>
+        <span th:if="${welfare != null}">내 상황에 맞는 다양한 복지혜택을 찾을 수 있습니다.</span>
     </div>
 
-    <div class="main">
+    <div class="main" th:if="${welfare != null}">
         <div class="main-box">
             <div class="category">
-                <ul class="items">
+                <ul class="items" th:if="${welfare != null}">
                     <li class="item" th:each="life : ${welfare.lifeArray}" th:text="${life}"></li>
                     <li class="item" th:each="intrs : ${welfare.intrsThemaArray}" th:text="${intrs}">신체건강</li>
                     <li class="item" th:each="trget : ${welfare.rgterIndvdlArray}" th:text="${trget}">영유아</li>
@@ -30,11 +32,11 @@
 <!--                    <li class="item">청소년</li>-->
                 </ul>
             </div>
-            <div class="title">
+            <div class="title" th:if="${welfare != null}">
                 <h2 th:text="${welfare.name}">선청성대사이상 검사 및 환아관리</h2>
                 <span th:text="${welfare.summary}">선천성대사이사의 유무를 조기에 발견&#183;치료함으로써 장래발생을 사전에 예방하여 영유아의 건가 증진을 도모합니다.</span>
             </div>
-            <div class="table">
+            <div class="table" th:if="${welfare != null}">
                 <div class="charge">&#183; 담당 부처 <span th:text="${welfare.ministryName}">보건 복지부 출산 정책과</span></div>
                 <table class="table-basic">
                     <tr>
@@ -54,7 +56,11 @@
         </div>
     </div>
 
-    <div class="detail">
+    <div class="detail" th:if="${welfare == null}">
+        불러올 수 없는 키값입니다.
+    </div>
+
+    <div class="detail" th:if="${welfare != null}">
         <div class="detail-all">
             <div class="category">
                 <input type="radio" name="tab" value="1" id="tab1" checked>
@@ -70,18 +76,20 @@
                 <label for="tab4">추가정보</label>
             </div>
 
-            <div class="explain">
+            <div class="explain" th:if="${welfare != null}">
                 <div class="content" data-mt-radio="1">
                     <div class="detail-explain">
                         <h3> 지원대상</h3>
                         <ul>
-                            <li th:each="target : ${welfare.targetDetailContentArray}" th:text="${target}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+                            <li th:if="${welfare.targetDetailContentArray == null || welfare.targetDetailContentArray.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.targetDetailContentArray != null && welfare.targetDetailContentArray.size() > 0}" th:each="target : ${welfare.targetDetailContentArray}" th:text="${target}">선천성대사이상 지원대상은 다음과 같습니다.</li>
                         </ul>
                     </div>
                     <div class="detail-explain">
                         <h3> 선정기준</h3>
                         <ul>
-                            <li th:each="selection : ${welfare.selectionCriteriaContentArray}" th:text="${selection}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+                            <li th:if="${welfare.selectionCriteriaContentArray == null || welfare.selectionCriteriaContentArray.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.selectionCriteriaContentArray != null && welfare.selectionCriteriaContentArray.size() > 0}" th:each="selection : ${welfare.selectionCriteriaContentArray}" th:text="${selection}">선천성대사이상 지원대상은 다음과 같습니다.</li>
                         </ul>
                     </div>
                 </div>
@@ -89,18 +97,8 @@
                     <div class="detail-explain">
                         <h3> 서비스내용</h3>
                         <ul>
-                            <li th:each="allowance : ${welfare.allowanceServiceContentArray}" th:text="${allowance}">선천성대사이상 지원대상은 다음과 같습니다.</li>
-                            <!--                            <ul type="square">-->
-                            <!--                                <li>(선별검사) 신생아 선천성 대사이상 외래 선별검사를 받은 영아</li>-->
-                            <!--                                <li>(확진검사) 선천성 대사이상 선별검사 결과 유소견 판정 후, 선천성 대사이상 질환 관련 확진검사 결과 선천성대사이상 환아로 판정된 영아</li>-->
-                            <!--                            </ul>-->
-                            <!--                            <li>환아관리 지원대상은 다음과 같습니다.</li>-->
-                            <!--                            <ul>-->
-                            <!--                                <li>확진검사 결과 선천성대사이상 및 희귀 등 기타 질환으로 진단받아 특수식이 또는 의료비 지원이 필요한, 신청일 기준 만 19세 미만* 환아 <br>* 만-->
-                            <!--                                    나이는-->
-                            <!--                                    출생월 기준으로 산정하며, 만 19세가 도래한 달까지만 지원-->
-                            <!--                                </li>-->
-                            <!--                            </ul>-->
+                            <li th:if="${welfare.allowanceServiceContentArray == null || welfare.allowanceServiceContentArray.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.allowanceServiceContentArray != null && welfare.allowanceServiceContentArray.size() > 0}" th:each="allowance : ${welfare.allowanceServiceContentArray}" th:text="${allowance}">선천성대사이상 지원대상은 다음과 같습니다.</li>
                         </ul>
                     </div>
                 </div>
@@ -115,25 +113,29 @@
                     <div class="detail-explain">
                         <h3> 전화문의</h3>
                         <ul>
-                            <li th:each="contact : ${welfare.inquiryContacts}" th:text="${contact.name} + ' ' + ${contact.contact}">선천성대사이상 지원대상은 다음과 같습니다.</li>
+                            <li th:if="${welfare.inquiryContacts == null || welfare.inquiryContacts.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.inquiryContacts != null && welfare.inquiryContacts.size() > 0}" th:each="contact : ${welfare.inquiryContacts}" th:text="${contact.name} + ' ' + ${contact.contact}">선천성대사이상 지원대상은 다음과 같습니다.</li>
                         </ul>
                     </div>
                     <div class="detail-explain">
                         <h3> 관련 웹사이트</h3>
                         <ul>
-                            <li th:each="link : ${welfare.inquiryLinks}">   <a th:href="${link.link}" th:text="${link.name} + ' ' + ${link.link}" target="_blank"></a>  </li>
+                            <li th:if="${welfare.inquiryLinks == null || welfare.inquiryLinks.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.inquiryLinks != null && welfare.inquiryLinks.size() > 0}" th:each="link : ${welfare.inquiryLinks}">   <a th:href="${link.link}" th:text="${link.name} + ' ' + ${link.link}" target="_blank"></a>  </li>
                         </ul>
                     </div>
                     <div class="detail-explain">
                         <h3> 근거법령</h3>
                         <ul>
-                            <li th:each="law : ${welfare.basisStatutes}">   <a th:text="${law.name}"></a>  </li>
+                            <li th:if="${welfare.basisStatutes == null || welfare.basisStatutes.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.basisStatutes != null && welfare.basisStatutes.size() > 0}" th:each="law : ${welfare.basisStatutes}">   <a th:text="${law.name}"></a>  </li>
                         </ul>
                     </div>
                     <div class="detail-explain">
                         <h3> 서식자료</h3>
                         <ul>
-                            <li th:each="data : ${welfare.formMaterials}">   <a th:href="${data.link}" th:text="${data.name}"></a>  </li>
+                            <li th:if="${welfare.formMaterials == null || welfare.formMaterials.size() == 0}">등록된 데이터 정보가 없습니다.</li>
+                            <li th:if="${welfare.formMaterials != null && welfare.formMaterials.size() > 0}" th:each="data : ${welfare.formMaterials}">  <a th:href="${data.link}" th:text="${data.name}"></a>  </li>
                         </ul>
                     </div>
 <!--                    <div class="detail-explain">-->

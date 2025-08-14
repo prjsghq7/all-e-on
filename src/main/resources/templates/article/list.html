@@ -1,11 +1,12 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>AEO | 게시판 목록</title>
+    <link rel="stylesheet" href="/article/assets/styles/list.min.css">
 </head>
 <body>
 <div id="defaultArea">
@@ -30,6 +31,32 @@
 
     <div id="articleList">
 
+        <div class="table" >
+            <div class="charge">&#183; 담당 부처 <span>보건 복지부 출산 정책과</span></div>
+            <table class="table-basic">
+                <tr>
+                    <th>기준연도</th>
+                    <th>문의처</th>
+                    <th>지원주기</th>
+                    <th>제공유형</th>
+                </tr>
+                <tr>
+                    <td>2025</td>
+                    <td></td>
+                    <td>분기</td>
+                    <td>현금지급, 현물지급</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    <div id="pageContainer">
+        <a class="page"
+           th:each="pageNum : ${#numbers.sequence(pageVo.startPage, pageVo.endPage)}"
+           th:text="${pageNum}"
+           th:href="@{/article/list (searchType = ${searchVo.getSearchType()})}"
+           th:classappend="${pageNum == pageVo.page}? '-selected'"></a>
     </div>
 </div>
 </body>
