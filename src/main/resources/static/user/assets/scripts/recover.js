@@ -21,14 +21,15 @@ $recoverForm['pRecoverEmailCodeSendButton'].addEventListener('click', () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('실패!');
+            dialog.showSimpleOk('오류', '알 수 없는 이유로 이메일을 찾을 수 없습니다. 잠시 후 다시 시도해 주세요');
             return;
         }
         const response = JSON.parse(xhr.responseText);
         switch (response.result) {
             case 'failure_absent':
-                alert('입력한 이메일 몬찾는다.');
+                dialog.showSimpleOk('오류', '입력하신 이메일을 찾을 수 없습니다.');
                 break;
             case 'success':
                 $recoverForm['emailSalt'].value = response.salt;
@@ -37,16 +38,17 @@ $recoverForm['pRecoverEmailCodeSendButton'].addEventListener('click', () => {
                 $recoverForm['pRecoverEmailCode'].setDisabled(false);
                 $recoverForm['pRecoverEmailCodeVerifyButton'].setDisabled(false);
                 $recoverForm['pRecoverEmailCode'].focus();
-                alert('인증번호 전송 성공!');
+                dialog.showSimpleOk('성공', '인증번호를 전송했습니다. 10분내로 입력해주시기 바랍니다.');
                 break;
             default:
-                alert('알 수 없는 이유 실패');
+                dialog.showSimpleOk('오류', '알 수 없는 이유로 인증을 할 수 없습니다. 잠시 후 다시 시도해주시기 바랍니다.');
         }
 
     };
     xhr.open('POST', '/user/recover-password-email');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 $recoverForm['pRecoverEmailCodeVerifyButton'].addEventListener('click', () => {
@@ -69,8 +71,9 @@ $recoverForm['pRecoverEmailCodeVerifyButton'].addEventListener('click', () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('실패');
+            dialog.showSimpleOk('오류', '알 수 없는 이유로 이메일 인증을 진행할 수 없습니다. 잠시 후 다시 시도해주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
@@ -83,15 +86,15 @@ $recoverForm['pRecoverEmailCodeVerifyButton'].addEventListener('click', () => {
                 $recoverForm['pRecoverEmailCode'].setDisabled(true);
                 $recoverForm['pRecoverEmailCodeVerifyButton'].setDisabled(true);
                 $recoverForm['pRecoverEmail'].focus();
-                alert('인증번호 만료');
+                dialog.showSimpleOk('오류', '인증번호가 만료되었습니다. 다시 시도해주세요.');
                 break;
             case 'success':
                 $recoverForm['pRecoverEmailCode'].setDisabled(true);
                 $recoverForm['pRecoverEmailCodeVerifyButton'].setDisabled(true);
-                alert('성공!');
+                dialog.showSimpleOk('성공', '인증이 완료되었습니다.');
                 break;
             default:
-                alert('인증 번호키 안올바름', () => {
+                dialog.showSimpleOk('오류','인증번호가 유효하지 않습니다. 다시 시도해주시기 바랍니다.', () => {
                     $recoverForm['pRecoverEmailCode'].focus();
                     $recoverForm['pRecoverEmailCode'].select();
                 });
@@ -100,6 +103,7 @@ $recoverForm['pRecoverEmailCodeVerifyButton'].addEventListener('click', () => {
     xhr.open('PATCH', '/user/recover-password-email');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 const recoverEmail = () => {
@@ -146,6 +150,7 @@ const recoverEmail = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('계정 복구[이메일 찾기]', `[${xhr.status}]요청을 처리하는 도중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.`);
             return;
@@ -175,12 +180,13 @@ const recoverEmail = () => {
                 });
                 break;
             default:
-                alert('알수없는이유실패!');
+                dialog.showSimpleOk('오류', '알 수 없는 이유로 계정 복구가 불가능합니다. 잠시 후 다시 시도해주세요.');
         }
     };
     xhr.open('POST', '/user/recover-email');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 };
 
 const recoverPassword = () => {
@@ -221,6 +227,7 @@ const recoverPassword = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('계정 복구[비밀번호 재설정]', `[${xhr.status}]요청을 처리하는 도중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.`);
             return;
@@ -253,6 +260,7 @@ const recoverPassword = () => {
     xhr.open('POST', '/user/recover-password');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 };
 
 $recoverForm.addEventListener('submit', (e) => {
@@ -261,7 +269,6 @@ $recoverForm.addEventListener('submit', (e) => {
     if ($recoverForm['type'].value === '') {
         return;
     }
-
     if ($recoverForm['type'].value === 'email') {
         recoverEmail();
     } else if ($recoverForm['type'].value === 'password') {

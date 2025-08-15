@@ -72,6 +72,7 @@ $modifyForm.addEventListener('submit', (e) => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('회원 정보 수정', `[${xhr.status}]요청을 처리하는 도중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.`);
             return;
@@ -102,6 +103,7 @@ $modifyForm.addEventListener('submit', (e) => {
     xhr.open('PATCH', '/user/modify');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 $modifyForm['addressFindButton'].addEventListener('click', () => {
@@ -155,6 +157,7 @@ $modifyForm['nicknameCheckButton'].addEventListener('click', () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('닉네임 중복 확인', '요청을 처리하는 도중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.');
             return;
@@ -195,6 +198,7 @@ $modifyForm['nicknameCheckButton'].addEventListener('click', () => {
     xhr.open('POST', '/user/nickname-check');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 const setDisableContactButton = () => {
@@ -239,6 +243,7 @@ $modifyForm['contactCheckButton'].addEventListener('click', () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('연락처 중복 확인', `[${xhr.status}]요청을 처리하는 도중 오류가 발생하였습니다.\n잠시 후 다시 시도해 주세요.`);
             return;
@@ -285,4 +290,5 @@ $modifyForm['contactCheckButton'].addEventListener('click', () => {
     xhr.open('POST', '/user/contact-check');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });

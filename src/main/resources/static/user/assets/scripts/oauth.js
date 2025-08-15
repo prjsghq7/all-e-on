@@ -29,22 +29,39 @@ $registerForm['nicknameCheckButton'].addEventListener('click', () => {
             return;
         }
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('실패');
+            dialog.showSimpleOk('오류', '알 수 없는 이유로 닉네임을 확인할 수 없습니다. 잠시 후 다시 시도해주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
         switch (response.result) {
             case 'failure_duplicate':
-                alert('이미 사용중');
+                dialog.showSimpleOk('오류', '이미 사용중인 닉네임입니다. 다른 닉네임을 사용해주시기 바랍니다.');
                 $registerForm['nickname'].focus();
                 break;
             case 'success':
-                alert('성공');
-                $registerForm['nickname'].setDisabled(true);
-                $registerForm['nicknameCheckButton'].setDisabled(true);
+                dialog.show({
+                    title: '닉네임 확인',
+                    content: `사용할 수 있는 닉네임입니다.\n이 닉네임을 사용하시겠습니까?`,
+                    buttons: [
+                        {
+                            caption: '확인',
+                            color: 'blue',
+                            onClickCallback: ($modal) => {
+                                $registerForm['nickname'].setDisabled(true);
+                                $registerForm['nicknameCheckButton'].setDisabled(true);
+                                dialog.hide($modal);
+                            }
+                        },
+                        {
+                            caption: '취소',
+                            color: 'gray',
+                            onClickCallback: (m) => dialog.hide(m)
+                        }
+                    ]
+                });
                 break;
             default:
-                alert('알 수 없는 이유 실패');
+                dialog.showSimpleOk('오류', '알 수 없는 이유로 닉네임 인증을 할 수 없습니다. 잠시 후 다시 시도해주세요.');
         }
 
     };
@@ -117,28 +134,29 @@ submitBtn.addEventListener('click', (e) => {
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('회원가입 처리 중 오류가 발생했습니다.');
+            dialog.showSimpleOk('오류', '회원가입 처리 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             return;
         }
         const res = JSON.parse(xhr.responseText);
         if (res.result === 'failure_duplicate_email') {
-            alert('입력하신 이메일은 이미 사용 중입니다.');
+            dialog.showSimpleOk('오류', '입력하신 이메일은 이미 사용중인 이메일입니다.');
             return;
         }
         if (res.result === 'failure_duplicate_nickname') {
-            alert('입력하신 닉네임은 이미 사용 중입니다.');
+            dialog.showSimpleOk('오류', '입력하신 닉네임은 이미 사용중입니다.');
             return;
         }
         if (res.result === 'failure_duplicate_contact') {
-            alert('입력하신 연락처는 이미 사용 중입니다.');
+            dialog.showSimpleOk('오류', '입력하신 연락처는 이미 사용중입니다.');
             return;
         }
         if (res.result === 'success') {
-            alert('회원가입이 완료되었습니다.');
-            location.href = '/user/login';
+            dialog.showSimpleOk('회원가입', '회원가입이 완료되었습니다', () => {
+                location.href = "/user/login";
+            });
             return;
         }
-        alert('알 수 없는 이유로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        dialog.showSimpleOk('오류', '알 수 없는 이유로 회원가입에 실패했습니다. 잠시 후 다시 시도해주세요.');
     };
     xhr.open('POST', '/user/oauth/register');
     xhr.setRequestHeader(header, token);

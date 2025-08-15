@@ -8,18 +8,18 @@ $loginBtn.addEventListener('click', (e) => {
     e.preventDefault();
 
     if ($loginForm['email'].validity.valueMissing) {
-        alert('이메일 입력해주세요.');
+        dialog.showSimpleOk('오류','이메일을 입력해 주세요.')
         return;
     }
     if (!$loginForm['email'].validity.valid) {
-        alert('올바른 이메일 입력 ㄱㄱ');
+        dialog.showSimpleOk('오류', '올바른 이메일을 입력해주세요.');
         return;
     }
     if ($loginForm['password'].validity.valueMissing) {
-        alert('비밀번호 입력 ㄱ');
+        dialog.showSimpleOk('오류', '비밀번호를 입력해주세요.');
     }
     if (!$loginForm['password'].validity.valid) {
-        alert('올바른 비밀번호 입력 ㄱ');
+        dialog.showSimpleOk('오류', '올바른 비밀번호를 입력해주세요.');
         return;
     }
     const xhr = new XMLHttpRequest();
@@ -31,14 +31,15 @@ $loginBtn.addEventListener('click', (e) => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('실패');
+            dialog.showSimpleOk('오류', '알 수 없는 오류로 로그인을 할 수 없습니다. 잠시 후 다시 시도해주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
         switch (response.result) {
             case 'failure_suspended':
-                alert('로그인 실패');
+                dialog.showSimpleOk('오류', '로그인을 할 수 없습니다.');
                 break;
             case 'success':
                 location.href = `${origin}/home`
@@ -47,16 +48,16 @@ $loginBtn.addEventListener('click', (e) => {
                 } else {
                     localStorage.removeItem('loginEmail');
                 }
-
                 break;
             default:
-                alert('로그인 실패');
+                dialog.showSimpleOk('오류', '로그인을 할 수 없습니다. 잠시 후 다시 시도해주세요.');
         }
 
     };
     xhr.open('POST', '/user/login');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 $loginForm['email'].value = localStorage.getItem('loginEmail') ?? '';

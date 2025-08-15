@@ -14,6 +14,11 @@ const $addressLabel = $registerForm['addressPostal'].closest('[data-aeo-object="
 const $termLabel = $registerForm['agreeServiceTerm'].closest('[data-aeo-object="label"]');
 const $privacyLabel = $registerForm['agreePrivacy'].closest('[data-aeo-object="label"]');
 
+const $emailCodeVerifyBtn = $registerForm.querySelector('[name="emailCodeVerifyButton"]');
+$emailCodeVerifyBtn.disabled = true;
+
+
+
 const $labelMap = Array.from($registerForm.querySelectorAll('[data-aeo-object="label"]'))
     .reduce((map, $label) => (map[$label.getAttribute('data-aeo-name')] = $label, map), {});
 
@@ -39,6 +44,7 @@ $registerForm['emailCodeSendButton'].addEventListener('click', () => {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('이메일 인증', '이메일 인증 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             return;
@@ -66,6 +72,7 @@ $registerForm['emailCodeSendButton'].addEventListener('click', () => {
     xhr.open('POST', '/user/register-email');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show('인증번호 전송 중');
 });
 
 $registerForm['emailCodeVerifyButton'].addEventListener('click', () => {
@@ -92,6 +99,7 @@ $registerForm['emailCodeVerifyButton'].addEventListener('click', () => {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
             dialog.showSimpleOk('이메일 인증', '이메일 인증 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.');
             return;
@@ -106,20 +114,21 @@ $registerForm['emailCodeVerifyButton'].addEventListener('click', () => {
             $registerForm['emailCode'].setDisabled(true);
             $registerForm['emailCodeVerifyButton'].setDisabled(true);
             $registerForm['email'].focus();
-            alert('인증 정보가 만료되었습니다. 다시 인증해 주세요.');
+            dialog.showSimpleOk('이메일 인증', '인증 정보가 만료되었습니다. 다시 인증해 주세요.');
             return;
         }
         if (res.result === 'success') {
             $registerForm['emailCode'].setDisabled(true);
             $registerForm['emailCodeVerifyButton'].setDisabled(true);
-            alert('이메일 인증이 완료되었습니다.');
+            dialog.showSimpleOk('이메일 인증', '이메일 인증이 완료되었습니다.');
             return;
         }
-        alert('인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
+        dialog.showSimpleOk('이메일 인증', '인증번호가 올바르지 않습니다. 다시 확인해 주세요.');
     };
     xhr.open('PATCH', '/user/register-email');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 submitBtn.addEventListener('click', (e) => {
@@ -288,41 +297,44 @@ submitBtn.addEventListener('click', (e) => {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('회원가입 처리 중 오류가 발생했습니다.');
+            dialog.showSimpleOk('회원가입', '회원가입 처리 중 오류가 발생했습니다.');
             return;
         }
         const res = JSON.parse(xhr.responseText);
 
         if (res.result === 'failure_duplicate_email') {
-            alert('입력하신 이메일은 이미 사용 중입니다.');
+            dialog.showSimpleOk('오류', '입력하신 이메일은 이미 사용중입니다.');
             $registerForm['email'].setDisabled(false);
             $registerForm['email'].focus();
             $registerForm['email'].select();
             return;
         }
         if (res.result === 'failure_duplicate_nickname') {
-            alert('입력하신 닉네임은 이미 사용 중입니다.');
+            dialog.showSimpleOk('오류', '입력하신 닉네임은 이미 사용중입니다.');
             $registerForm['nickname'].setDisabled(false);
             $registerForm['nickname'].focus();
             $registerForm['nickname'].select();
             return;
         }
         if (res.result === 'failure_duplicate_contact') {
-            alert('입력하신 연락처는 이미 사용 중입니다.');
+            dialog.showSimpleOk('오류', '입력하신 연락처는 이미 사용중입니다.');
             $registerForm['contactSecond'].focus();
             return;
         }
         if (res.result === 'success') {
-            alert('회원가입이 완료되었습니다.');
-            location.href = '/user/login';
+            dialog.showSimpleOk('회원가입', '회원가입이 완료되었습니다', () => {
+                location.href = "/user/login";
+            });
             return;
         }
-        alert('알 수 없는 이유로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.');
+        dialog.showSimpleOk('오류', '알 수 없는 이유로 회원가입에 실패했습니다. 잠시 후 다시 시도해 주세요.');
     };
     xhr.open('POST', '/user/register');
     xhr.setRequestHeader(header, token); // CSRF 적용
     xhr.send(formData);
+    loading.show();
 });
 
 $registerForm['nicknameCheckButton'].addEventListener('click', () => {
@@ -345,29 +357,48 @@ $registerForm['nicknameCheckButton'].addEventListener('click', () => {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('실패');
+            dialog.showSimpleOk('오류', '알 수 없는 이유로 닉네임 인증에 실패했습니다. 잠시 후 다시 시도해주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
         switch (response.result) {
             case 'failure_duplicate':
-                alert('이미 사용중');
+                dialog.showSimpleOk('닉네임', '이미 사용중인 닉네임입니다.');
                 $registerForm['nickname'].focus();
                 $registerForm['nickname'].select();
                 break;
             case 'success':
-                alert('성공');
-                $registerForm['nickname'].setDisabled(true);
-                $registerForm['nicknameCheckButton'].setDisabled(true);
+                dialog.show({
+                    title: '닉네임 확인',
+                    content: `사용할 수 있는 닉네임입니다.\n이 닉네임을 사용하시겠습니까?`,
+                    buttons: [
+                        {
+                            caption: '확인',
+                            color: 'blue',
+                            onClickCallback: ($modal) => {
+                                $registerForm['nickname'].setDisabled(true);
+                                $registerForm['nicknameCheckButton'].setDisabled(true);
+                                dialog.hide($modal);
+                            }
+                        },
+                        {
+                            caption: '취소',
+                            color: 'gray',
+                            onClickCallback: (m) => dialog.hide(m)
+                        }
+                    ]
+                });
                 break;
             default:
-                alert('알 수 없는 이유 실패');
+                dialog.showSimpleOk('오류', '알 수 없는 이유로 닉네임 중복확인을 할 수 없습니다. 잠시 후 다시 시도해주세요.');
         }
     };
     xhr.open('POST', '/user/nickname-check');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 $registerForm['contactCheckButton'].addEventListener('click', () => {
@@ -395,31 +426,50 @@ $registerForm['contactCheckButton'].addEventListener('click', () => {
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) return;
+        loading.hide();
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('오류');
+            dialog.showSimpleOk('오류', '알 수 없는 이유로 연락처 확인을 할 수 없습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
         const contact = $registerForm['contactFirst'].value + '-' + $registerForm['contactSecond'].value + '-' + $registerForm['contactThird'].value;
         switch (response.result) {
             case 'failure_duplicate':
-                alert('연락처 중복됨');
+                dialog.showSimpleOk('오류', '중복된 연락처입니다. 다른 연락처를 입력해주세요.');
                 $registerForm['contactSecond'].focus();
                 break;
             case 'success':
-                alert('사용 가능한 연락처입니다: ' + contact);
-                $registerForm['contactMvno'].setDisabled(true);
-                $registerForm['contactFirst'].setDisabled(true);
-                $registerForm['contactSecond'].setDisabled(true);
-                $registerForm['contactThird'].setDisabled(true);
+                dialog.show({
+                    title: '연락처 확인',
+                    content: `사용 가능한 연락처입니다.\n이 연락처를 사용하시겠습니까?`,
+                    buttons: [
+                        {
+                            caption: '확인',
+                            color: 'blue',
+                            onClickCallback: ($modal) => {
+                                $registerForm['contactMvno'].setDisabled(true);
+                                $registerForm['contactFirst'].setDisabled(true);
+                                $registerForm['contactSecond'].setDisabled(true);
+                                $registerForm['contactThird'].setDisabled(true);
+                                dialog.hide($modal);
+                            }
+                        },
+                        {
+                            caption: '취소',
+                            color: 'gray',
+                            onClickCallback: (m) => dialog.hide(m)
+                        }
+                    ]
+                });
                 break;
             default:
-                alert('ㅋ');
+                dialog.showSimpleOk('오류', '알 수 없는 이유로 연락처 확인을 할 수 없습니다. 잠시 후 다시 시도해 주세요.');
         }
     };
     xhr.open('POST', '/user/contact-check');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
+    loading.show();
 });
 
 $registerForm['addressFindButton'].addEventListener('click', () => {
