@@ -283,11 +283,6 @@ public class UserService {
         }
         UserEntity dbUser = this.userMapper.selectUserByEmail(email);
 
-        System.out.println("입력된 비밀번호: " + password);
-        System.out.println("DB 비밀번호: " + dbUser.getPassword());
-        System.out.println("BCrypt 결과: " + BCryptUtils.isMatch(password, dbUser.getPassword()));
-
-
         if (dbUser.getActiveState() > 2) {
             return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
         }
@@ -298,7 +293,14 @@ public class UserService {
 
             return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
         }
+
+        Result result = updateLoginHistory(dbUser, userAgent);
         return ResultTuple.<UserEntity>builder().result(CommonResult.SUCCESS).payload(dbUser).build();
+    }
+
+    public Result updateLoginHistory(UserEntity user, String lastLogin) {
+        user.setLastLogin(LocalDateTime.now());
+        return this.userMapper.update(user) > 0 ? CommonResult.FAILURE : CommonResult.FAILURE;
     }
 
     public ResultTuple<EmailTokenEntity> sendRecoverPasswordEmail(String email, String userAgent) throws MessagingException {
