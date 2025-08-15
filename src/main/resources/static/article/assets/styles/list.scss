@@ -64,29 +64,6 @@ $text-color: #FFFFFF;
       }
     }
   }
-
-  > .code-container {
-    align-items: stretch;
-    display: flex;
-    flex-direction: row;
-    gap: 0.5rem;
-    justify-content: center;
-
-    .all {
-      position: relative;
-      margin-right: 0.5rem;
-
-      &::after {
-        content: '';
-        position: absolute;
-        right: -0.625rem;
-        top: 0.0625rem;
-        bottom: 0.0625rem;
-        width: 0.125rem;
-        background-color: #e0e0e0;
-      }
-    }
-  }
 }
 
 #articleListNone {

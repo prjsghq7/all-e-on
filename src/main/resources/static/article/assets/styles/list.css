@@ -50,26 +50,6 @@
 #searchForm > .search-container > .search-button > .icon {
   height: 1.5rem;
 }
-#searchForm > .code-container {
-  align-items: stretch;
-  display: flex;
-  flex-direction: row;
-  gap: 0.5rem;
-  justify-content: center;
-}
-#searchForm > .code-container .all {
-  position: relative;
-  margin-right: 0.5rem;
-}
-#searchForm > .code-container .all::after {
-  content: "";
-  position: absolute;
-  right: -0.625rem;
-  top: 0.0625rem;
-  bottom: 0.0625rem;
-  width: 0.125rem;
-  background-color: #e0e0e0;
-}
 
 #articleListNone {
   margin: 5rem 0;

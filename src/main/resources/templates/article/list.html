@@ -6,9 +6,12 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>AEO | 게시판 목록</title>
-    <link rel="stylesheet" href="/article/assets/styles/list.min.css">
+    <link href="/common/assets/styles/common.min.css" rel="stylesheet" type="text/css">
+    <link href="/article/assets/styles/list.min.css" rel="stylesheet">
 </head>
 <body>
+<th:block th:replace="~{/fragments/header :: header}">
+</th:block>
 <div id="defaultArea">
     <form id="searchForm">
         <div class="search-container">
