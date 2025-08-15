@@ -1,4 +1,4 @@
-export class Loading {
+class Loading {
     #$element;
     #$caption;
 
@@ -10,7 +10,7 @@ export class Loading {
         const $icon = document.createElement('img');
         $icon.dataset.aeoComponent = "loading.icon";
         // 테스트용 임시 이미지
-        $icon.src = '/common/assets/images/button-images/check.png';
+        $icon.src = '/common/assets/images/loading.png';
 
         this.#$caption = document.createElement('span');
         this.#$caption.dataset.aeoComponent = "loading.caption";
@@ -44,3 +44,5 @@ export class Loading {
         return this.#$element.isVisible();
     }
 }
+
+const loading = new Loading();

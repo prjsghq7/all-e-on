@@ -90,5 +90,3 @@ HTMLElement.prototype.setVisible = function (b) {
 HTMLLabelElement.prototype.getWarning = function () {
     return this.querySelector('[data-aeo-component="label.warning"]');
 }
-// import { Loading } from './loading.js';
-// window.loading = new Loading();
