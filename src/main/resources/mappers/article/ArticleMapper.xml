@@ -22,17 +22,19 @@
         FROM `aeo`.`articles` AS `a`
         LEFT JOIN `aeo`.`users` u ON `a`.`user_index` = `u`.`index`
         <where>
-            <choose>
-                <when test="searchVo.searchType == 'title'">
-                    `a`.`title` LIKE CONCAT('%', #{searchVo.keyword}, '%')
-                </when>
-                <when test="searchVo.searchType == 'content'">
-                    `a`.`content` LIKE CONCAT('%', #{searchVo.keyword}, '%')
-                </when>
-                <when test="searchVo.searchType == 'author'">
-                    `u`.`nickname` LIKE CONCAT('%', #{searchVo.keyword}, '%')
-                </when>
-            </choose>
+            <if test="searchVo.keyword != null and searchVo.keyword != ''">
+                <choose>
+                    <when test="searchVo.searchType == 'title'">
+                        `a`.`title` LIKE CONCAT('%', #{searchVo.keyword}, '%')
+                    </when>
+                    <when test="searchVo.searchType == 'content'">
+                        `a`.`content` LIKE CONCAT('%', #{searchVo.keyword}, '%')
+                    </when>
+                    <when test="searchVo.searchType == 'author'">
+                        `u`.`nickname` LIKE CONCAT('%', #{searchVo.keyword}, '%')
+                    </when>
+                </choose>
+            </if>
         </where>
     </select>
 
@@ -50,17 +52,19 @@
         FROM `aeo`.`articles` AS `a`
         LEFT JOIN `aeo`.`users` u ON `a`.`user_index` = `u`.`index`
         <where>
-            <choose>
-                <when test="searchVo.searchType == 'title'">
-                    `a`.`title` LIKE CONCAT('%', #{searchVo.keyword}, '%')
-                </when>
-                <when test="searchVo.searchType == 'content'">
-                    `a`.`content` LIKE CONCAT('%', #{searchVo.keyword}, '%')
-                </when>
-                <when test="searchVo.searchType == 'author'">
-                    `u`.`nickname` LIKE CONCAT('%', #{searchVo.keyword}, '%')
-                </when>
-            </choose>
+            <if test="searchVo.keyword != null and searchVo.keyword != ''">
+                <choose>
+                    <when test="searchVo.searchType == 'title'">
+                        `a`.`title` LIKE CONCAT('%', #{searchVo.keyword}, '%')
+                    </when>
+                    <when test="searchVo.searchType == 'content'">
+                        `a`.`content` LIKE CONCAT('%', #{searchVo.keyword}, '%')
+                    </when>
+                    <when test="searchVo.searchType == 'author'">
+                        `u`.`nickname` LIKE CONCAT('%', #{searchVo.keyword}, '%')
+                    </when>
+                </choose>
+            </if>
         </where>
         LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset}
     </select>
