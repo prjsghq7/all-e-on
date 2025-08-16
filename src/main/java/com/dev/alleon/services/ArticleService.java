@@ -2,7 +2,6 @@ package com.dev.alleon.services;
 
 import com.dev.alleon.dtos.article.ArticleDto;
 import com.dev.alleon.dtos.article.ArticleListResponse;
-import com.dev.alleon.dtos.welfare.WelfareListResponse;
 import com.dev.alleon.entities.article.ArticleEntity;
 import com.dev.alleon.mappers.article.ArticleMapper;
 import com.dev.alleon.results.CommonResult;

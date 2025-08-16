@@ -32,29 +32,42 @@
         </div>
     </form>
 
+    <div id="buttonContainer">
+        <a data-aeo-object="button" type="submit" href="/article/write">글쓰기</a>
+    </div>
+
     <div id="articleListNone" th:if="${articleList == null || articleList.size() == 0}">
         게시판의 내용이 없습니다.
     </div>
 
-    <div id="articleList" th:if="${articleList != null && articleList.size() > 0}">
+    <div id="articleListArea" th:if="${articleList != null && articleList.size() > 0}">
         <div class="table">
             <table class="table-basic">
+                <colgroup>
+                    <col style="width: 5%">
+                    <col style="width: 15%">
+                    <col style="width: 65%">
+                    <col style="width: 10%">
+                    <col style="width: 5%">
+                </colgroup>
+                <thead>
                 <tr>
-                    <th>기준연도</th>
-                    <th>문의처</th>
-                    <th>지원주기</th>
-                    <th>제공유형</th>
-                    <th>제공유형</th>
-                    <th>제공유형</th>
+                    <th>번호</th>
+                    <th>작성자</th>
+                    <th>제목</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
                 </tr>
-                <tr>
-                    <td>2025</td>
-                    <td></td>
-                    <td>분기</td>
-                    <td>현금지급, 현물지급</td>
-                    <td>현금지급, 현물지급</td>
-                    <td>현금지급, 현물지급</td>
-                </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="article : ${articleList}">
+                        <td th:text="${article.index}"></td>
+                        <td th:text="${article.nickname}"></td>
+                        <td><a th:text="${article.title}" th:href="@{'/article/' (index=${article.index})}"></a></td>
+                        <td th:text="${#temporals.format(article.createdAt, 'yyyy-MM-dd')}"></td>
+                        <td th:text="${article.view}"></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

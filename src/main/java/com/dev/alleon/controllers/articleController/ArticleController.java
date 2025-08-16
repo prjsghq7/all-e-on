@@ -21,7 +21,8 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/",method= RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public String getIndex(){
+    public String getIndex(@RequestParam(value = "index", required = false) String index,
+                           Model model){
         return "article/article";
     }
 
@@ -35,5 +36,10 @@ public class ArticleController {
         model.addAttribute("searchVo", articleSearchVo);
 
         return "article/list";
+    }
+
+    @RequestMapping(value = "/write",method= RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    public String getWrite () {
+        return "article/write";
     }
 }

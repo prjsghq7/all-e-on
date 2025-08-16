@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}">
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>AEO | 등록</title>
+    <link rel="stylesheet" href="/assets/libraries/ckeditor5/ckeditor5.css">
+    <link rel="stylesheet" href="/assets/libraries/ckeditor5/ckeditor5-custom.css">
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/article/assets/styles/write.min.css">
+    <script src="/assets/libraries/ckeditor5/ckeditor5.js" type="module"></script>
+    <!--    ckeditor는 타입을 모듈로 해야 사용할수 있다.  ⬆ ⬇-->
+    <script type="importmap">
+        {
+            "imports":{
+                "ckeditor5":"/assets/libraries/ckeditor5/ckeditor5.js",
+                "ckeditor5/":"/assets/libraries/ckeditor5/"
+            }
+        }
+    </script>
+    <script defer src="/user/assets/scripts/write-ckeditor.js" type="module"></script>
+    <script defer src="/article/assets/scripts/write.js"></script>
+</head>
+<body>
+<div id="defaultArea">
+    <form novalidate id="writeForm">
+        <div class="title">
+            <span class="caption">게시글 등록</span>
+            <button data-aeo-object="button" class="submitBtn" type="submit">등록</button>
+        </div>
+        <label id="name">
+            <input data-aeo-object="field" required type="text" class="title" maxlength="50" minlength="5" name="title">
+        </label>
+        <label>
+            <textarea name="content" autocomplete="off" hidden class="text-container"></textarea>
+        </label>
+    </form>
+</div>
+
+</body>
+</html>
