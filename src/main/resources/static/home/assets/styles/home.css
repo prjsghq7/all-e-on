@@ -374,6 +374,7 @@ body {
 #defaultArea > .search-sec > .search-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  grid-column-gap: 2rem;
   /*열(세로) 7개 생성*/
   height: 100%;
 }
