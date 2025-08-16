@@ -1,17 +1,18 @@
 package com.dev.alleon.services;
 
 import com.dev.alleon.dtos.home.HomeRecommendDto;
-import com.dev.alleon.dtos.welfare.WelfareDetailDto;
-import com.dev.alleon.dtos.welfare.WelfareDetailResponse;
-import com.dev.alleon.dtos.welfare.WelfareListDto;
-import com.dev.alleon.dtos.welfare.WelfareListResponse;
+import com.dev.alleon.dtos.welfare.*;
 import com.dev.alleon.entities.CodeEntity;
+import com.dev.alleon.entities.UserEntity;
+import com.dev.alleon.entities.welfare.WelfareLikesEntity;
 import com.dev.alleon.entities.welfare.*;
 import com.dev.alleon.mappers.welfare.*;
+import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.welfare.WelfareApiResult;
 import com.dev.alleon.vos.PageVo;
 import com.dev.alleon.vos.WelfareSearchVo;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -31,6 +32,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -56,18 +58,20 @@ public class WelfareService {
     private final InterestSubMapper interestSubMapper;
 
     private final WelfareMapper welfareMapper;
+    private final WelfareLikesMapper welfareLikesMapper;
     private final InstitutionMapper institutionMapper;
     private final InquiryContactMapper inquiryContactMapper;
     private final InquiryLinkMapper inquiryLinkMapper;
     private final FormMaterialMapper formMaterialMapper;
     private final BasisStatuteMapper basisStatuteMapper;
 
-    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, WelfareMapper welfareMapper, InstitutionMapper institutionMapper, InquiryContactMapper inquiryContactMapper, InquiryLinkMapper inquiryLinkMapper, FormMaterialMapper formMaterialMapper, BasisStatuteMapper basisStatuteMapper) {
+    public WelfareService(LifeCycleMapper lifeCycleMapper, HouseholdTypeMapper householdTypeMapper, InterestSubMapper interestSubMapper, WelfareMapper welfareMapper, WelfareLikesMapper welfareLikesMapper, InstitutionMapper institutionMapper, InquiryContactMapper inquiryContactMapper, InquiryLinkMapper inquiryLinkMapper, FormMaterialMapper formMaterialMapper, BasisStatuteMapper basisStatuteMapper) {
         this.lifeCycleMapper = lifeCycleMapper;
         this.householdTypeMapper = householdTypeMapper;
         this.interestSubMapper = interestSubMapper;
 
         this.welfareMapper = welfareMapper;
+        this.welfareLikesMapper = welfareLikesMapper;
         this.institutionMapper = institutionMapper;
         this.inquiryContactMapper = inquiryContactMapper;
         this.inquiryLinkMapper = inquiryLinkMapper;
@@ -433,7 +437,7 @@ public class WelfareService {
                 .collect(Collectors.toList());
     }
 
-    private WelfareApiResult getWelfareApiResult (String xmlResponse) {
+    private WelfareApiResult getWelfareApiResult(String xmlResponse) {
         try {
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder = factory.newDocumentBuilder();
@@ -461,5 +465,60 @@ public class WelfareService {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public boolean getLikeStatus(UserEntity signedUser, String welfareId) {
+        if (signedUser == null) {
+            System.out.println("에러 - 로그인 안됨");
+            return false;
+        }
+        if (welfareId.isEmpty()) {
+            System.out.println("에러 - 복지 ID 값이 비어있음");
+            return false;
+        }
+        else {
+            return this.welfareLikesMapper.selectCountByWelfareIdAndUserIndex(welfareId, signedUser.getIndex()) > 0;
+        }
+    }
+
+    public Boolean toggleLike(UserEntity signedUser, String welfareId) {
+        // 사용자 및 음악 유효성 검사
+
+        System.out.println("서비스 도착");
+
+        if (signedUser == null || welfareId.isEmpty()) {
+            System.out.println("여기 에러인거같음");
+            return null;
+        }
+
+        // 현재 좋아요 상태 확인
+        if (this.welfareLikesMapper.selectCountByWelfareIdAndUserIndex(welfareId, signedUser.getIndex()) < 1) {
+            // 좋아요 추가
+            WelfareLikesEntity welfareLike = WelfareLikesEntity.builder()
+                    .welfareId(welfareId)
+                    .userIndex(signedUser.getIndex())
+                    .createdAt(LocalDateTime.now())
+                    .build();
+            System.out.println("좋아요 추가");
+            return this.welfareLikesMapper.insert(welfareLike) > 0 ? true : null;
+        } else {
+            // 좋아요 취소
+            System.out.println("좋아요 취소");
+            return this.welfareLikesMapper.delete(welfareId, signedUser.getIndex()) > 0 ? false : null;
+        }
+    }
+
+    public Boolean updateAlarm(String welfareId, UserEntity signedUser, LocalDate alarmAt) {
+        System.out.println("서비스 도착" + welfareId + " / " + alarmAt);
+
+        return this.welfareLikesMapper.updateAlarmAt(welfareId, signedUser.getIndex(), alarmAt) > 0;
+    }
+
+    public WelfareFavoriteDto[] getAll(UserEntity signedUser) {
+        return this.welfareLikesMapper.selectAllByWelfareIdAndUser(signedUser.getIndex());
+    }
+
+    public WelfareFavoriteDto[] getAllAlarm(UserEntity signedUser) {
+        return this.welfareLikesMapper.selectAllAlarmByWelfareIdAndUser(signedUser.getIndex());
     }
 }

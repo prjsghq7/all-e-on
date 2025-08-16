@@ -8,6 +8,7 @@
     <title>alleon | 마이페이지</title>
     <link rel="stylesheet" href="/user/assets/styles/info.min.css">
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <script defer src="/user/assets/scripts/info.js"></script>
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
@@ -15,60 +16,127 @@
 <th:block th:replace="~{fragments/header :: header}"></th:block>
 
 <div id="defaultArea">
+    <h1 class="title">마이페이지</h1>
     <div class="container">
-        <h1 class="title">마이페이지</h1>
+        <div class="tab">
+            <input type="radio" name="tab" value="1" id="tab1" checked>
+            <label for="tab1">회원정보</label>
+            <input type="radio" name="tab" value="2" id="tab2">
+            <label for="tab2">알림설정</label>
+        </div>
+        <div class="content">
+            <section class="section" id="profile-section" data-mt-radio="1">
+                <form id="profileImageForm"
+                      th:action="@{/user/profile}"
+                      method="post"
+                      enctype="multipart/form-data">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
 
-        <section id="profile-section">
-            <form id="profileImageForm"
-                  th:action="@{/user/profile}"
-                  method="post"
-                  enctype="multipart/form-data">
-                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+                    <input id="profileImageInput" class="profile-image-input" name="image" type="file" accept="image/*" style="display:none">
 
-                <input id="profileImageInput" class="profile-image-input"
-                       name="image" type="file" accept="image/*" style="display:none">
+                    <label for="profileImageInput" class="avatar-uploader" aria-label="프로필 이미지 변경">
+                        <span class="avatar" id="avatarBox">
+                            <img class="avatar-img" th:src="${profile}" alt="프로필 이미지">
+                            <span class="overlay">변경</span>
+                        </span>
+                        <span class="hint">JPG/PNG, 2MB 이하 권장</span>
+                    </label>
+                </form>
 
-                <label for="profileImageInput" class="avatar-uploader" aria-label="프로필 이미지 변경">
-    <span class="avatar" id="avatarBox">
-      <img class="avatar-img" th:src="${profile}" alt="프로필 이미지">
-      <span class="overlay">변경</span>
-    </span>
-                    <span class="hint">JPG/PNG, 2MB 이하 권장</span>
-                </label>
-            </form>
+                <div class="profile-info -flex-stretch">
+                    <span class="label">이름</span>
+                    <span th:text="${signedUser.name}"></span>
 
-            <div class="profile-info -flex-stretch">
-                <span class="label">이름</span>
-                <span th:text="${signedUser.name}"></span>
+                    <span class="label">이메일</span>
+                    <span th:text="${signedUser.email}"></span>
 
-                <span class="label">이메일</span>
-                <span th:text="${signedUser.email}"></span>
+                    <span class="label">닉네임</span>
+                    <span th:text="${signedUser.nickname}"></span>
 
-                <span class="label">닉네임</span>
-                <span th:text="${signedUser.nickname}"></span>
+                    <span class="label">성별/생년월일</span>
+                    <span th:text="|${signedUser.gender} / ${signedUser.birth}|"></span>
 
-                <span class="label">성별/생년월일</span>
-                <span th:text="|${signedUser.gender} / ${signedUser.birth}|"></span>
+                    <span class="label">연락처</span>
+                    <span th:text="|${signedUser.contactFirst}-${signedUser.contactSecond}-${signedUser.contactThird}|"></span>
 
-                <span class="label">연락처</span>
-                <span th:text="|${signedUser.contactFirst}-${signedUser.contactSecond}-${signedUser.contactThird}|"></span>
+                    <span class="label">주소</span>
+                    <span th:text="|${signedUser.addressPrimary} ${signedUser.addressSecondary}|"></span>
 
-                <span class="label">주소</span>
-                <span th:text="|${signedUser.addressPrimary} ${signedUser.addressSecondary}|"></span>
+                    <span class="label">관심 주제</span>
+                    <span>ㅋㅋ</span>
+                </div>
 
-                <span class="label">관심 주제</span>
-                <span>ㅋㅋ</span>
-            </div>
+                <div class="button-container">
+                    <a href="/user/modify" data-aeo-object="button -color-blue" aria-label="정보 수정">
+                        <span class="--caption">정보 수정</span>
+                    </a>
+                    <a href="/user/remove-account" data-aeo-object="button -color-red" aria-label="회원 탈퇴">
+                        <span class="--caption">회원 탈퇴</span>
+                    </a>
+                </div>
+            </section>
+            <section class="section" id="alarm-section" data-mt-radio="2">
+                <div class="calendar-layout">
+                    <!-- 좌측: 마크 목록 -->
+                    <div class="left-panel">
+                        <div class="marked-list-container" id="markedListContainer">
+                            <div class="marked-list-header">
+                                <h3>마크된 날짜 목록</h3>
+                                <button class="back-btn" onclick="goBackToCalendar()">
+                                    &lt;
+                                </button>
+                            </div>
+                            <div class="marked-list" id="markedList">
+                            </div>
+                        </div>
+                    </div>
 
-            <div class="button-container">
-                <a href="/user/modify" data-aeo-object="button -color-blue" aria-label="정보 수정">
-                    <span class="--caption">정보 수정</span>
-                </a>
-                <a href="/user/remove-account" data-aeo-object="button -color-red" aria-label="회원 탈퇴">
-                    <span class="--caption">회원 탈퇴</span>
-                </a>
-            </div>
-        </section>
+                    <!-- 중앙: 달력 -->
+                    <div class="center-panel">
+                        <div class="calendar">
+                            <div class="header">
+                                <div class="year-month"></div>
+                                <div class="nav-center">
+                                    <button class="nav-btn go-prev" onclick="prevMonth()">&lt;</button>
+                                    <button class="nav-btn go-today" onclick="goToday()">Today</button>
+                                    <button class="nav-btn go-next" onclick="nextMonth()">&gt;</button>
+                                </div>
+                                <div class="nav-right">
+                                    <button class="add-mark-btn" id="globalAddMarkBtn">등록하기</button>
+                                    <button class="nav-btn show-all-list" onclick="showAllMarkedList()">목록</button>
+                                </div>
+                            </div>
+                            <div class="main">
+                                <div class="days">
+                                    <div class="day">일</div>
+                                    <div class="day">월</div>
+                                    <div class="day">화</div>
+                                    <div class="day">수</div>
+                                    <div class="day">목</div>
+                                    <div class="day">금</div>
+                                    <div class="day">토</div>
+                                </div>
+                                <div class="dates"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 우측: 상세 정보 -->
+                    <div class="right-panel">
+                        <div class="detail-container" id="detailContainer">
+                            <div class="detail-header">
+                                <h3>날짜 상세 정보</h3>
+                            </div>
+                            <div class="detail-body" id="detailBody">
+                                <div class="no-selection">
+                                    <p>달력에서 날짜를 선택하면 상세 정보가 표시됩니다.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
     </div>
 </div>
 </body>

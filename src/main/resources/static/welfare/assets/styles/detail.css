@@ -31,14 +31,34 @@ ol, ul {
   border-radius: 0.5rem;
   padding: 2rem;
 }
-#defaultArea > .main > .main-box > .category > .items {
+#defaultArea > .main > .main-box > .category-box {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  justify-content: flex-start;
+  width: 100%;
+}
+#defaultArea > .main > .main-box > .category-box > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#defaultArea > .main > .main-box > .category-box > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#defaultArea > .main > .main-box > .category-box > .category {
+  flex-grow: 1;
+}
+#defaultArea > .main > .main-box > .category-box > .category > .items {
   align-items: flex-start;
   display: flex;
   flex-direction: row;
   gap: 0.5rem;
   justify-content: flex-start;
 }
-#defaultArea > .main > .main-box > .category > .items > .item {
+#defaultArea > .main > .main-box > .category-box > .category > .items > .item {
   border: 0.09rem solid #2176d0;
   color: #2176d0;
   font-weight: 500;
@@ -46,7 +66,44 @@ ol, ul {
   margin-bottom: 2rem;
   padding: 0.5rem;
 }
+#defaultArea > .main > .main-box > .category-box > .like > .button.like {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  width: 2.5rem;
+  height: 2.5rem;
+  transition: transform 0.2s ease;
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like:hover {
+  transform: scale(1.1);
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like:active {
+  transform: scale(0.95);
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like > .icon {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.3s ease;
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like > .icon.default {
+  opacity: 1;
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like > .icon.liked {
+  opacity: 0;
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like.active > .icon.default {
+  opacity: 0;
+}
+#defaultArea > .main > .main-box > .category-box > .like > .button.like.active > .icon.liked {
+  opacity: 1;
+}
 #defaultArea > .main > .main-box > .title {
+  flex-grow: 1;
   padding-bottom: 1.25rem;
 }
 #defaultArea > .main > .main-box > .title > h2 {

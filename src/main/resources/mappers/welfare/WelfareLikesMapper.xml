@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dev.alleon.mappers.welfare.WelfareLikesMapper">
+
+    <delete id="delete">
+        DELETE
+        FROM `aeo`.`welfare_likes`
+        WHERE `welfare_id` = #{welfareId}
+          AND `user_index` = #{userIndex}
+            LIMIT 1
+    </delete>
+
+    <insert id="insert">
+        INSERT INTO `aeo`.`welfare_likes` (`welfare_id`, `user_index`, `created_at`)
+        VALUES (#{welfareLikes.welfareId}, #{welfareLikes.userIndex}, #{welfareLikes.createdAt})
+    </insert>
+
+    <update id="updateAlarmAt">
+        UPDATE `aeo`.`welfare_likes`
+        SET `alarm_at` = #{alarmAt}
+        WHERE `welfare_id` = #{welfareId}
+          AND `user_index` = #{userIndex}
+        LIMIT 1
+    </update>
+
+    <select id="selectCountByWelfareIdAndUserIndex" resultType="java.lang.Integer">
+        SELECT COUNT(0)
+        FROM `aeo`.`welfare_likes`
+        WHERE `welfare_id` = #{welfareId}
+          AND `user_index` = #{userIndex}
+    </select>
+
+    <select id="selectByWelfareIdAndUserIndex" resultType="com.dev.alleon.entities.welfare.WelfareLikesEntity">
+        SELECT `welfare_id` AS `welfareId`,
+               `user_index` AS `userIndex`,
+               `created_at` AS `createdAt`
+        FROM `aeo`.`welfare_likes`
+        WHERE `welfare_id` = #{welfareId}
+          AND `user_index` = #{userIndex}
+        LIMIT 1
+    </select>
+
+    <select id="selectAllByWelfareIdAndUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
+        SELECT `l`.`index`         AS `index`,
+               `l`.`welfare_id`    AS `welfareId`,
+               `w`.`name`          AS `welfareName`,
+               `w`.`ministry_name` AS `ministryName`,
+               `w`.`summary`       AS `summary`,
+               `w`.`support_cycle` AS `supportCycle`,
+               `w`.`life_array`    AS `lifeArray`,
+               `l`.`alarm_at`      AS `alarmAt`
+        FROM `aeo`.`welfare_likes` AS `l`
+                 LEFT JOIN `aeo`.`welfares` AS `w` ON `l`.`welfare_id` = `w`.`id`
+        WHERE `l`.`user_index` = #{userIndex}
+    </select>
+
+    <select id="selectAlarmByWelfareIdAndUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
+        SELECT `l`.`index`         AS `index`,
+               `l`.`welfare_id`    AS `welfareId`,
+               `w`.`name`          AS `welfareName`,
+               `w`.`ministry_name` AS `ministryName`,
+               `w`.`summary`       AS `summary`,
+               `w`.`support_cycle` AS `supportCycle`,
+               `w`.`life_array`    AS `lifeArray`,
+               `l`.`alarm_at`      AS `alarmAt`
+        FROM `aeo`.`welfare_likes` AS `l`
+                 LEFT JOIN `aeo`.`welfares` AS `w` ON `l`.`welfare_id` = `w`.`id`
+        WHERE `l`.`welfare_id` = #{welfareId}
+          AND `l`.`user_index` = #{userIndex}
+          AND `l`.`alarm_at` IS NOT NULL
+    </select>
+
+    <select id="selectAllAlarmByWelfareIdAndUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
+        SELECT `l`.`index`         AS `index`,
+               `l`.`welfare_id`    AS `welfareId`,
+               `w`.`name`          AS `welfareName`,
+               `w`.`ministry_name` AS `ministryName`,
+               `w`.`summary`       AS `summary`,
+               `w`.`support_cycle` AS `supportCycle`,
+               `w`.`life_array`    AS `lifeArray`,
+               `l`.`alarm_at`      AS `alarmAt`
+        FROM `aeo`.`welfare_likes` AS `l`
+                 LEFT JOIN `aeo`.`welfares` AS `w` ON `l`.`welfare_id` = `w`.`id`
+        WHERE `l`.`user_index` = #{userIndex}
+        AND `l`.`alarm_at` IS NOT NULL
+    </select>
+
+</mapper>

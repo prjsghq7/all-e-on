@@ -39,26 +39,84 @@ ol, ul {
       border-radius: 0.5rem;
       padding: 2rem;
 
-      > .category {
-        > .items {
-          align-items: flex-start;
-          display: flex;
-          flex-direction: row;
-          gap: 0.5rem;
-          justify-content: flex-start;
+      > .category-box {
+        @include flex(row, flex-start, flex-start);
+        width: 100%;
 
-          > .item {
-            border: 0.09rem solid #2176d0;
-            color: #2176d0;
-            font-weight: 500;
-            border-radius: 99rem;
-            margin-bottom: 2rem;
-            padding: 0.5rem;
+        > .category {
+          flex-grow: 1;
+          
+          > .items {
+            align-items: flex-start;
+            display: flex;
+            flex-direction: row;
+            gap: 0.5rem;
+            justify-content: flex-start;
+
+            > .item {
+              border: 0.09rem solid #2176d0;
+              color: #2176d0;
+              font-weight: 500;
+              border-radius: 99rem;
+              margin-bottom: 2rem;
+              padding: 0.5rem;
+            }
+          }
+        }
+
+        > .like {
+          //display: flex;
+
+          > .button.like {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            position: relative;
+            width: 2.5rem;
+            height: 2.5rem;
+            transition: transform 0.2s ease;
+
+            &:hover {
+              transform: scale(1.1);
+            }
+
+            &:active {
+              transform: scale(0.95);
+            }
+
+            > .icon {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              transition: opacity 0.3s ease;
+
+              &.default {
+                opacity: 1;
+              }
+
+              &.liked {
+                opacity: 0;
+              }
+            }
+
+            &.active {
+              > .icon.default {
+                opacity: 0;
+              }
+
+              > .icon.liked {
+                opacity: 1;
+              }
+            }
           }
         }
       }
 
       > .title {
+        flex-grow: 1;
         padding-bottom: 1.25rem;
 
         > h2 {
@@ -131,6 +189,7 @@ ol, ul {
   > .detail {
     > .detail-all {
       margin-top: 5rem;
+
       > .category {
         position: relative;
         display: grid;
@@ -152,7 +211,7 @@ ol, ul {
       > .category:has(input[value="1"]:checked) ~ .explain > [data-mt-radio="1"],
       > .category:has(input[value="2"]:checked) ~ .explain > [data-mt-radio="2"],
       > .category:has(input[value="3"]:checked) ~ .explain > [data-mt-radio="3"],
-      > .category:has(input[value="4"]:checked) ~ .explain > [data-mt-radio="4"]{
+      > .category:has(input[value="4"]:checked) ~ .explain > [data-mt-radio="4"] {
         display: block;
       }
 
@@ -163,8 +222,10 @@ ol, ul {
         border-bottom: 0.0625rem solid #6faefb;
         border-bottom-left-radius: 0.5rem;
         border-bottom-right-radius: 0.5rem;
+
         > .content {
           display: none;
+
           > .detail-explain {
             padding: 1.5rem;
             font-size: 1.25rem;
@@ -210,7 +271,8 @@ ol, ul {
                 list-style-type: circle;
                 padding: 0.5rem 1rem;
                 @include flex(column, flex-start, flex-start, 0.75rem);
-                > li{
+
+                > li {
                   line-height: 2rem;
                 }
               }
