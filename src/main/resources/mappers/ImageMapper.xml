@@ -16,6 +16,7 @@
                `data`          as `data`,
                `created_at`    as `createdAt`
         from `aeo`.`images`
+        where `index` = #{index}
         limit 1;
     </select>
 </mapper>
