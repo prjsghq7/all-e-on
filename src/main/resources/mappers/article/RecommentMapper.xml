@@ -7,11 +7,21 @@
             keyProperty="index">
         INSERT INTO `aeo`.`recomments` (`comment_index`, `user_index`, `content`, `created_at`, `modified_at`,
                                         `is_deleted`)
-        VALUES (#{recomment.userIndex},
-                #{recomment.commentIndex},
+        VALUES (#{recomment.commentIndex},
+                #{recomment.userIndex},
                 #{recomment.content},
                 #{recomment.createdAt},
                 #{recomment.modifiedAt},
-                #{recomment.isDeleted},)
+                #{recomment.isDeleted})
     </insert>
+    <select id="getWholeRecomments" resultType="com.dev.alleon.dtos.Comment.RecommentDto">
+        select `t0`.`index`      as `index`,
+               `t0`.`content`    as `content`,
+               `t1`.`nickname`   as `nickname`,
+               `t1`.`profile`    as `profile`,
+               `t0`.`created_at` as `createdAt`
+        from `aeo`.`recomments` as `t0`
+                 left join `aeo`.`users` as `t1` on `t0`.`user_index` = `t1`.`index`
+        where `comment_index` = #{commentIndex}
+    </select>
 </mapper>

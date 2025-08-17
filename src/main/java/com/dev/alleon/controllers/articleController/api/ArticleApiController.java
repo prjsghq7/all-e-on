@@ -1,9 +1,11 @@
 package com.dev.alleon.controllers.articleController.api;
 
 import com.dev.alleon.dtos.Comment.CommentDto;
+import com.dev.alleon.dtos.Comment.RecommentDto;
 import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.article.ArticleEntity;
 import com.dev.alleon.entities.article.CommentEntity;
+import com.dev.alleon.entities.article.RecommentEntity;
 import com.dev.alleon.entities.notice.ImageEntity;
 import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.results.CommonResult;
@@ -74,5 +76,18 @@ public class ArticleApiController {
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
+    }
+
+    @RequestMapping(value="/recomments/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String postRecommentsUpload(@SessionAttribute(value="signedUser",required = false)UserEntity signedUser, RecommentEntity recomment){
+        Result result = this.commentService.addRecomment(signedUser, recomment);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
+    @RequestMapping(value="/recomments",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RecommentDto> getRecomments(@RequestParam(value="commentIndex")int commentIndex){
+        return this.commentService.getWholeRecomments(commentIndex);
     }
 }

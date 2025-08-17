@@ -5,6 +5,7 @@ import com.dev.alleon.entities.article.CommentEntity;
 import com.dev.alleon.vos.PageVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 
@@ -15,5 +16,7 @@ public interface CommentMapper {
     List<CommentDto> getCommentByArticleIndex(@Param("articleIndex") int articleIndex, PageVo pageVo);
 
     int totalCountByArticleIndex(@Param("articleIndex") int articleIndex);
+
+    CommentEntity selectByIndex(@Param("index") int index);
 
 }
