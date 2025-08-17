@@ -2,8 +2,12 @@ const $noticeForm = document.getElementById('noticeForm');
 const $title = $noticeForm.querySelector(':scope>label>.title');
 const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-$noticeForm.addEventListener('submit',(e)=>{
+$noticeForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    if ($title.value === '') {
+        alert('제목을 입력해주세요.');
+        return;
+    }
     if (editor.getData() === '') {
         alert('게시글 입력해주세요.');
         return;
@@ -12,16 +16,17 @@ $noticeForm.addEventListener('submit',(e)=>{
     const formData = new FormData();
     formData.append('title', $title.value);
     formData.append('content', editor.getData());
-    xhr.onreadystatechange=()=>{
-        if(xhr.readyState !== XMLHttpRequest.DONE){
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
-        if (xhr.status < 200 || xhr.status >= 300){
+        if (xhr.status < 200 || xhr.status >= 300) {
             alert('요청중 오류')
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        switch (response) {
+        const result = response.result;
+        switch (result) {
             case'success':
                 alert('등록 성공');
                 break;
@@ -35,7 +40,9 @@ $noticeForm.addEventListener('submit',(e)=>{
                 break;
         }
     };
-    xhr.open('POST','/api/notice/submit');
+    xhr.open('POST', '/api/notice/submit');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
 })
+
+

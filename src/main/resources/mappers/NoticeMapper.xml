@@ -12,6 +12,13 @@
                 #{notice.modifiedAt},
                 #{notice.isDeleted})
     </insert>
+    <update id="increaseView">
+        update `aeo`.`notice`
+        set `view`=`view` + 1
+        where `index` = #{index}
+        limit 1;
+
+    </update>
     <select id="selectAll" resultType="com.dev.alleon.entities.notice.NoticeEntity">
         select `index`       as `index`,
                `user_index`  as `userIndex`,
@@ -21,7 +28,9 @@
                `created_at`  as `createdAt`,
                `modified_at` as `modified_at`,
                `is_deleted`  as `is_deleted`
-        from `aeo`.`notice`;
+        from `aeo`.`notice`
+        order by `created_at` desc
+        limit #{pageVo.rowCount} offset #{pageVo.dbOffset};
     </select>
     <select id="selectByIndex" resultType="com.dev.alleon.entities.notice.NoticeEntity">
         select `index`       as `index`,
@@ -35,5 +44,9 @@
         from `aeo`.`notice`
         where `index`=#{index}
         limit 1;
+    </select>
+    <select id="selectAllNotice" resultType="java.lang.Integer">
+        select count(0)
+        from `aeo`.`notice`;
     </select>
 </mapper>

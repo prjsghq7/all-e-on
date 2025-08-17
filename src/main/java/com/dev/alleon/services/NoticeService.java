@@ -6,6 +6,7 @@ import com.dev.alleon.mappers.notice.NoticeMapper;
 import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.Result;
 import com.dev.alleon.results.ResultTuple;
+import com.dev.alleon.vos.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,16 @@ import java.time.LocalDateTime;
 
 @Service
 public class NoticeService {
+    private static final int NUMBER_OF_ROWS = 10;
     @Autowired
     private final NoticeMapper noticeMapper;
+
+    private Result incrementView(int index) {
+        if (index < 0) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+        return this.noticeMapper.increaseView(index) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
+    }
 
     public NoticeService(NoticeMapper noticeMapper) {
         this.noticeMapper = noticeMapper;
@@ -31,11 +40,13 @@ public class NoticeService {
         return this.noticeMapper.insert(notice) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 
+
     public ResultTuple<NoticeEntity> getNotice(int index) {
         if (index < 0) {
             return ResultTuple.<NoticeEntity>builder()
                     .result(CommonResult.FAILURE).build();
         }
+        this.incrementView(index);
 
         NoticeEntity notice = this.noticeMapper.selectByIndex(index);
         if (notice == null) {
@@ -45,6 +56,18 @@ public class NoticeService {
 
         return ResultTuple.<NoticeEntity>builder()
                 .payload(notice).result(CommonResult.SUCCESS).build();
+    }
+
+    public PageVo page(int page) {
+        int totalCount = this.noticeMapper.selectAllNotice();
+        return new PageVo(NUMBER_OF_ROWS, page, totalCount);
+    }
+    public ResultTuple<NoticeEntity[]> getAllNotice(PageVo pageVo) {
+        NoticeEntity[] dbNotice = this.noticeMapper.selectAll(pageVo);
+        return ResultTuple.<NoticeEntity[]>builder()
+                .result(CommonResult.SUCCESS)
+                .payload(dbNotice)
+                .build();
     }
 
 }

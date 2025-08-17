@@ -5,11 +5,27 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>AEO | 상세</title>
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/notice/assets/styles/noticeSpecific.min.css">
 </head>
 <body>
-<div th:text="${data.getTitle()}"></div>
-<div th:utext="${data.getContent()}"></div>
-<div th:utext="${data.getCreatedAt()}"></div>
+<div id="defaultArea">
+    <div class="container">
+        <div class="title-container">
+            <div class="title" th:text="${data.getTitle()}"></div>
+            <div class="etc-container">
+                <div class="date" th:text="'입력 ' + ${#temporals.format(data.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
+                <div class="view-container">
+                    <img src="/notice/assets/images/view.png" alt="">
+                    <div class="view" th:text="${data.getView()}"></div>
+                </div>
+            </div>
+        </div>
+        <div class="content-container">
+            <div class="content" th:utext="${data.getContent()}"></div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

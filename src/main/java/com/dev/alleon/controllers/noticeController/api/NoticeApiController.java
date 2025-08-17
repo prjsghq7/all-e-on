@@ -5,6 +5,7 @@ import com.dev.alleon.entities.notice.ImageEntity;
 import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.Result;
+import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.services.ImageService;
 import com.dev.alleon.services.NoticeService;
 import org.json.JSONObject;
@@ -40,17 +41,27 @@ public class NoticeApiController {
             response.put("url", "/notice/image?index=" + image.getIndex());
         } else if (result == CommonResult.FAILURE_SESSION_EXPIRED) {
             System.out.println("로그인 확인");
-        } else if(result == CommonResult.FAILURE){
+        } else if (result == CommonResult.FAILURE) {
             System.out.println("등록 실패");
         }
         return response.toString();
     }
 
     @RequestMapping(value = "/submit", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String postSumbit(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, NoticeEntity notice) {
+    public String postSubmit(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, NoticeEntity notice) {
         Result result = this.noticeService.add(signedUser, notice);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
     }
+
+//    @RequestMapping(value = "/load", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+//    public String getLoad() {
+//        ResultTuple<NoticeEntity[]> result = this.noticeService.getAllNotice();
+//        JSONObject response = new JSONObject();
+//        response.put("result", result.getResult());
+//        response.put("notices", result.getPayload());
+//        return response.toString();
+//    }
+
 }

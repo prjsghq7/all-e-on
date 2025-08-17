@@ -2,9 +2,11 @@ package com.dev.alleon.controllers.noticeController;
 
 import com.dev.alleon.entities.notice.ImageEntity;
 import com.dev.alleon.entities.notice.NoticeEntity;
+import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.services.ImageService;
 import com.dev.alleon.services.NoticeService;
+import com.dev.alleon.vos.PageVo;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +31,15 @@ public class NoticeController {
     }
 
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getIndex() {
+    public String getIndex(Model model, @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+        PageVo pageVo = this.noticeService.page(page);
+        ResultTuple<NoticeEntity[]> result = this.noticeService.getAllNotice(pageVo);
+        if (result.getResult() == CommonResult.SUCCESS) {
+            model.addAttribute("notices", result.getPayload());
+            model.addAttribute("pageVo", pageVo);
+        } else {
+            model.addAttribute("notices", null);
+        }
         return "notice/notice";
     }
 
@@ -44,6 +54,7 @@ public class NoticeController {
         model.addAttribute("data", result.getPayload());
         return "notice/noticeSpecific";
     }
+
     @RequestMapping(value = "/image", method = RequestMethod.GET)
     public ResponseEntity<byte[]> getImage(@RequestParam(value = "index", required = false) int index) {
         //responseentity는 응답을 돌려주기위한 상태 타입.

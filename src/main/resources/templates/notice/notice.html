@@ -5,9 +5,53 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <title>AEO | 공지사항</title>
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/notice/assets/styles/notice.min.css">
+    <script defer src="/notice/assets/scripts/notice.js"></script>
 </head>
 <body>
+<div id="defaultArea">
+    <span class="caption">NOTICE</span>
 
+    <div class="list-container">
+        <table class="table">
+            <colgroup>
+                <col style="width: 2%">
+                <col style="width: 50%">
+                <col style="width: 6%">
+                <col style="width: 5%">
+            </colgroup>
+            <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성일자</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody th:if="${notices!=null}">
+            <tr th:each="notice:${notices}">
+                <td th:text="${notice.getIndex()}">1</td>
+                <td>
+                    <a th:href="@{/notice/specific (index=${notice.getIndex()})}"
+                       th:text="${notice.getTitle()}"></a>
+                </td>
+                <td th:text="${#temporals.format(notice.getCreatedAt(),'yyyy-MM-dd')}">0</td>
+                <td th:text="${notice.getView()}">0</td>
+            </tr>
+            </tbody>
+        </table>
+        <div class="page-container">
+            <a class="page"
+               th:each="pageNum:${#numbers.sequence(pageVo.startPage,pageVo.endPage)}"
+               th:text="${pageNum}"
+               th:href="@{/notice/ (page=${pageNum})}"
+            th:classappend="${pageNum==pageVo.page}? '-selected'"></a>
+        </div>
+    </div>
+</div>
 </body>
 </html>

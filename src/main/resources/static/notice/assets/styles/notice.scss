@@ -1,0 +1,75 @@
+@charset "UTF-8";
+@import "../../../common/assets/styles/_def";
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Dongle&family=Gaegu&family=Jua&family=Oswald:wght@200..700&family=Poor+Story&display=swap');
+
+#defaultArea {
+  @include flex(column, flex-start, flex-start, 3.5rem);
+  height: 100vh;
+  padding: 1rem;
+
+  > .caption {
+    font-size: 3rem;
+    font-weight: 400;
+    color: #0a4380;
+    //padding-left: 2rem;
+    font-family: "Do Hyeon", sans-serif;
+  }
+
+  > .list-container {
+    @include flex(column, center, center);
+    width: 100%;
+    height: calc(100% - 9rem);
+
+    > .table {
+      height: inherit;
+      padding: 4rem;
+      //background-color: #e74c3c;
+      color: #2176d0;
+      border-collapse: collapse;
+
+      th,
+      td {
+        padding: 1.2rem 0.8rem;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: 500;
+        border-top: 0.0625rem solid #ccc;
+        border-bottom: 0.0625rem solid #ccc;
+        border-left: none;
+        border-right: 0.0625rem solid #ccc;
+      }
+
+      th:last-child,
+      td:last-child {
+        border-right: 0;
+      }
+
+      > thead {
+        tr > {
+          th {
+            text-align: center;
+            background-color: #f5f7fb;
+          }
+        }
+      }
+
+      > tbody {
+        tr > td {
+          text-align: center;
+          //background-color: #22c55e;
+        }
+      }
+    }
+
+    > .page-container {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      gap: 0.5rem;
+      justify-content: center;
+
+      margin-top: 1.25rem;
+    }
+  }
+
+}
