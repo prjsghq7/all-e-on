@@ -102,18 +102,39 @@ ol, ul {
 #defaultArea > .main > .main-box > .category-box > .like > .button.like.active > .icon.liked {
   opacity: 1;
 }
-#defaultArea > .main > .main-box > .title {
+#defaultArea > .main > .main-box .title {
   flex-grow: 1;
   padding-bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
 }
-#defaultArea > .main > .main-box > .title > h2 {
+#defaultArea > .main > .main-box .title > h2 {
   font-size: 2rem;
   font-weight: 600;
   margin-bottom: 2rem;
 }
-#defaultArea > .main > .main-box > .title > span {
+#defaultArea > .main > .main-box .title > span {
   font-size: 1rem;
   font-weight: 500;
+}
+#defaultArea > .main > .main-box .title .title-speak {
+  position: absolute;
+  top: 0.125rem;
+  right: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  z-index: 1;
+}
+#defaultArea > .main > .main-box .title .title-speak > img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 #defaultArea > .main > .main-box > .table > .charge {
   font-size: 1.2rem;
@@ -191,6 +212,23 @@ ol, ul {
 }
 #defaultArea > .detail > .detail-all > .explain > .content {
   display: none;
+  position: relative;
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .title-speak {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .title-speak > img {
+  width: 100%;
+  height: 100%;
+  display: block;
 }
 #defaultArea > .detail > .detail-all > .explain > .content > .detail-explain {
   padding: 1.5rem;
