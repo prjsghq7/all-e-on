@@ -22,6 +22,11 @@
         font-weight: 800;
       }
 
+      .modify {
+        align-self: end;
+        background-color: transparent;
+      }
+
       > .etc-container {
         @include flex(row, center, space-between, 1rem);
         width: 100%;

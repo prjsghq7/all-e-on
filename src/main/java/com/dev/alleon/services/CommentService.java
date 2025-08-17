@@ -49,6 +49,10 @@ public class CommentService {
                 recomment.getCommentIndex() < 0) {
             return CommonResult.FAILURE_ABSENT;
         }
+        CommentEntity parentComment = this.commentMapper.selectByIndex(recomment.getCommentIndex());
+        if(parentComment == null || parentComment.isDeleted()) {
+            return CommonResult.FAILURE_ABSENT;
+        }
         recomment.setUserIndex(signedUser.getIndex());
         recomment.setCreatedAt(LocalDateTime.now());
         recomment.setModifiedAt(null);
@@ -69,7 +73,6 @@ public class CommentService {
         if (articleIndex < 0) {
             return null;
         }
-
         int totalCount = this.commentMapper.totalCountByArticleIndex(articleIndex);
         PageVo pageVo = new PageVo(page, NUM_OF_ROWS, totalCount);
 

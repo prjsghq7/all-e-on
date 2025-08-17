@@ -4,6 +4,7 @@ import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.vos.PageVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.core.parameters.P;
 
 @Mapper
 public interface NoticeMapper {
@@ -16,4 +17,6 @@ public interface NoticeMapper {
     NoticeEntity selectByIndex(@Param(value = "index") int index);
 
     int increaseView(@Param(value = "index") int index);
+
+    int update(@Param("notice") NoticeEntity notice);
 }

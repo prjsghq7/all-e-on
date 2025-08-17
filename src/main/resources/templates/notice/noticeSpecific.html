@@ -5,15 +5,21 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}">
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}">
     <title>AEO | 상세</title>
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
     <link rel="stylesheet" href="/notice/assets/styles/noticeSpecific.min.css">
+    <script defer src="/notice/assets/scripts/notice.js"></script>
 </head>
 <body>
 <div id="defaultArea">
     <div class="container">
         <div class="title-container">
+            <input type="hidden" name="articleIndex" th:value="${data.index}" />
+
             <div class="title" th:text="${data.getTitle()}"></div>
+            <button type="button" class="modify">수정하기</button>
             <div class="etc-container">
                 <div class="date" th:text="'입력 ' + ${#temporals.format(data.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
                 <div class="view-container">

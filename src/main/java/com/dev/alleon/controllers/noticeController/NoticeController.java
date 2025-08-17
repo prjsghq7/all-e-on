@@ -69,4 +69,11 @@ public class NoticeController {
                 .contentType(MediaType.parseMediaType(image.getContentType())) //문자열이라서 mediatype으로 바꿔주어야한다.
                 .body(image.getData());//ok는 상태코드 200;
     }
+
+    @RequestMapping(value="/modify",method=RequestMethod.GET,produces=MediaType.TEXT_HTML_VALUE)
+    public String getModify(Model model, @RequestParam(value="index") int index){
+        ResultTuple<NoticeEntity> notice = this.noticeService.getNotice(index);
+        model.addAttribute("notice", notice.getPayload());
+        return "notice/noticeModify";
+    }
 }

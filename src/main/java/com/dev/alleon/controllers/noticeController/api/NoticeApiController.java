@@ -55,13 +55,11 @@ public class NoticeApiController {
         return response.toString();
     }
 
-//    @RequestMapping(value = "/load", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public String getLoad() {
-//        ResultTuple<NoticeEntity[]> result = this.noticeService.getAllNotice();
-//        JSONObject response = new JSONObject();
-//        response.put("result", result.getResult());
-//        response.put("notices", result.getPayload());
-//        return response.toString();
-//    }
-
+    @RequestMapping(value = "/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String getModify(NoticeEntity notice, @SessionAttribute(value = "signedUser") UserEntity signedUser) {
+        Result result = this.noticeService.modify(signedUser, notice);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
 }

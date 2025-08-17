@@ -37,13 +37,13 @@
         LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset};
     </select>
     <select id="selectByIndex" resultType="com.dev.alleon.entities.article.CommentEntity">
-        select `index`,
-               `user_index`,
-               `article_index`,
-               `content`,
-               `created_at`,
-               `modified_at`,
-               `is_deleted`
+        select `index`         as `index`,
+               `user_index`    as `userIndex`,
+               `article_index` as `articleIndex`,
+               `content`       as `content`,
+               `created_at`    as `createdAt`,
+               `modified_at`   as `modifiedAt`,
+               `is_deleted`    as `isDeleted`
         from `aeo`.`comments`
         where `index` = #{index}
     </select>

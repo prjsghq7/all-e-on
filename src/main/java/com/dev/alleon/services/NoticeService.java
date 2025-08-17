@@ -63,12 +63,30 @@ public class NoticeService {
         int totalCount = this.noticeMapper.selectAllNotice();
         return new PageVo(NUMBER_OF_ROWS, page, totalCount);
     }
+
     public ResultTuple<NoticeEntity[]> getAllNotice(PageVo pageVo) {
         NoticeEntity[] dbNotice = this.noticeMapper.selectAll(pageVo);
         return ResultTuple.<NoticeEntity[]>builder()
                 .result(CommonResult.SUCCESS)
                 .payload(dbNotice)
                 .build();
+    }
+
+    public Result modify(UserEntity signedUser, NoticeEntity notice) {
+        if (notice.getIndex() <= 0) {
+            return CommonResult.FAILURE;
+        }
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+        NoticeEntity dbNotice = this.noticeMapper.selectByIndex(notice.getIndex());
+        if (dbNotice == null || dbNotice.isDeleted()) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+        dbNotice.setModifiedAt(LocalDateTime.now());
+        dbNotice.setContent(notice.getContent());
+        dbNotice.setTitle(notice.getTitle());
+        return this.noticeMapper.update(dbNotice) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 
 }

@@ -19,6 +19,15 @@
         limit 1;
 
     </update>
+    <update id="update">
+        update `aeo`.`notice`
+        set `title`=#{notice.title},
+            `content`=#{notice.content},
+            `modified_at`=#{notice.modifiedAt}
+        where `index` = #{notice.index}
+        limit 1;
+
+    </update>
     <select id="selectAll" resultType="com.dev.alleon.entities.notice.NoticeEntity">
         select `index`       as `index`,
                `user_index`  as `userIndex`,
