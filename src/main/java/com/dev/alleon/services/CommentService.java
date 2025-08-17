@@ -74,7 +74,7 @@ public class CommentService {
             return null;
         }
         int totalCount = this.commentMapper.totalCountByArticleIndex(articleIndex);
-        PageVo pageVo = new PageVo(page, NUM_OF_ROWS, totalCount);
+        PageVo pageVo = new PageVo(NUM_OF_ROWS, page, totalCount);
 
         List<CommentDto> comments = this.commentMapper.getCommentByArticleIndex(articleIndex, pageVo);
         return comments;

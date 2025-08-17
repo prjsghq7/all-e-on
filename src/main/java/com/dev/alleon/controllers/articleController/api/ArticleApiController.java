@@ -79,7 +79,8 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value="/recomments/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String postRecommentsUpload(@SessionAttribute(value="signedUser",required = false)UserEntity signedUser, RecommentEntity recomment){
+    public String postRecommentsUpload(@SessionAttribute(value="signedUser",required = false)UserEntity signedUser,
+                                       RecommentEntity recomment){
         Result result = this.commentService.addRecomment(signedUser, recomment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
@@ -87,7 +88,7 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value="/recomments",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RecommentDto> getRecomments(@RequestParam(value="commentIndex")int commentIndex){
+    public List<RecommentDto> getRecomments(@RequestParam(value="commentIndex") int commentIndex){
         return this.commentService.getWholeRecomments(commentIndex);
     }
 }

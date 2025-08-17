@@ -47,13 +47,29 @@
                 <span class="writer">작성자 자리</span>
                 <span class="timestamp">0000-00-00 00:00:00</span>
                 <span class="-flex-stretch"></span>
+                <button class="show-recomment">대댓글 보기</button>
                 <a class="action">수정</a>
                 <a class="action">삭제</a>
             </div>
             <label class="body">
-                <input hidden name="replyCheck" type="checkbox">
-                <span class="comment">대 댓글 자리</span>
+                <span class="comment">댓글 자리</span>
             </label>
+
+            <div class="recomment-container">
+                <div class="recomment">
+                    <div class="head">
+                        <span class="writer">작성자 자리</span>
+                        <span class="timestamp">0000-00-00 00:00:00</span>
+                        <span class="-flex-stretch"></span>
+                        <a class="action">수정</a>
+                        <a class="action">삭제</a>
+                    </div>
+                    <label class="body">
+                        <span class="comment">댓글 자리</span>
+                    </label>
+                </div>
+            </div>
+
             <form class="reply-form">
                 <label class="--object-label -flex-stretch">
                     <textarea required class="--object-field -flex-stretch" minlength="1" maxlength="1000" name="content" placeholder="댓글을 입력해 주세요." rows="4"></textarea>

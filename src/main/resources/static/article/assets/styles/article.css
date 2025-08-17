@@ -103,7 +103,7 @@
 
 #commentContainer {
   width: 100%;
-  align-items: flex-start;
+  align-items: stretch;
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -165,11 +165,41 @@
 #commentContainer .comment .body .comment {
   white-space: pre-wrap;
 }
-#commentContainer .comment .reply-form {
+#commentContainer .comment .recomment-container {
+  align-items: stretch;
   display: flex;
   flex-direction: column;
+  flex-wrap: nowrap;
   gap: 0.5rem;
+  justify-content: flex-start;
+  display: none;
+  margin-left: 3rem;
+}
+#commentContainer .comment .recomment-container > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#commentContainer .comment .recomment-container > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#commentContainer .comment .reply-form {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: flex-start;
+  display: none;
   margin-top: 0.5rem;
+}
+#commentContainer .comment .reply-form > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#commentContainer .comment .reply-form > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 #commentContainer .comment .reply-form textarea.--object-field {
   resize: vertical;
