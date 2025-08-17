@@ -3,7 +3,6 @@
 
 #defaultArea {
   @include flex(column, flex-start, center);
-  height: 100vh;
 
   > .container {
     width: 100%;
@@ -49,7 +48,114 @@
   background-color: #6faefb;
 }
 
+//#commentContainer {
+//  width: 100%;
+//  background-color: #0a4380;
+//
+//  .comment {
+//    background-color: rebeccapurple;
+//  }
+//}
+
 #commentContainer {
   width: 100%;
-  background-color: #0a4380;
+
+  @include flex(column, flex-start, flex-start, 0.5rem);
+  padding: 1rem;
+
+  .comment {
+    border: 0.0625rem solid #dadada;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    background: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+
+    .head {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      color: #606060;
+
+      .writer {
+        font-weight: 600;
+        color: #222;
+      }
+
+      .timestamp {
+        font-size: 0.75rem;
+        color: #888;
+      }
+
+      .action {
+        font-size: 0.75rem;
+        color: #217cef;
+        cursor: pointer;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .-flex-stretch {
+        flex: 1;
+      }
+    }
+
+    .body {
+      display: flex;
+      align-items: flex-start;
+      font-size: 0.9rem;
+      line-height: 1.4;
+      color: #333;
+
+      .comment {
+        white-space: pre-wrap; // 줄바꿈 유지
+      }
+    }
+
+    .reply-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+
+      textarea.--object-field {
+        resize: vertical;
+        border: 0.0625rem solid #ccc;
+        border-radius: 0.375rem;
+        padding: 0.5rem;
+        font-size: 0.9rem;
+        transition: border-color 0.2s;
+
+        &:focus {
+          border-color: #217cef;
+          outline: none;
+        }
+      }
+
+      button.--object-button {
+        align-self: flex-end;
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-size: 0.9rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background 0.2s;
+
+        &.-color-green {
+          background: #2e9d4d;
+          color: #fff;
+          border: none;
+
+          &:hover {
+            background: #268a42;
+          }
+        }
+      }
+    }
+  }
 }
