@@ -52,6 +52,10 @@ body {
   align-self: end;
   margin-right: 0.0625rem;
 }
+#noticeForm > #name > .title {
+  width: 25rem;
+  border-radius: 0.625rem;
+}
 #noticeForm > label {
   width: 100%;
 }

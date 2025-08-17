@@ -21,8 +21,22 @@
   padding: 1rem;
 }
 #defaultArea > .container > .title-container {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: flex-start;
   width: 100%;
   border-bottom: 0.0625rem solid #cccccc;
+}
+#defaultArea > .container > .title-container > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#defaultArea > .container > .title-container > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 #defaultArea > .container > .title-container > .title {
   font-size: 3rem;

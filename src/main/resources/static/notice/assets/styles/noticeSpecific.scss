@@ -12,9 +12,11 @@
     padding: 1rem;
 
     > .title-container {
+      @include flex(column, flex-start, flex-start, 1rem);
+
       width: 100%;
-      //background-color: #b800b1;
       border-bottom: 0.0625rem solid #cccccc;
+
       > .title {
         font-size: 3rem;
         font-weight: 800;
@@ -26,8 +28,9 @@
         color: #929294;
         margin-bottom: 1rem;
         padding-left: 0.425rem;
-        >.view-container {
-          @include flex(row, center, flex-start,.5rem);
+
+        > .view-container {
+          @include flex(row, center, flex-start, .5rem);
           width: 3rem;
         }
       }

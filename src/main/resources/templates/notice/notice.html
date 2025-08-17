@@ -44,7 +44,7 @@
             </tr>
             </tbody>
         </table>
-        <div class="page-container">
+        <div id="pageContainer">
             <a class="page"
                th:each="pageNum:${#numbers.sequence(pageVo.startPage,pageVo.endPage)}"
                th:text="${pageNum}"

@@ -29,6 +29,12 @@ body{
       margin-right: 0.0625rem;
     }
   }
+  >#name{
+    >.title{
+      width: 25rem;
+      border-radius: 0.625rem;
+    }
+  }
 
   > label {
     width: 100%;
