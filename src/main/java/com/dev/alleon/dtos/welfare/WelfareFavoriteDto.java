@@ -17,5 +17,6 @@ public class WelfareFavoriteDto {
     private String summary;             // 서비스요약
     private String supportCycle;        // 지원주기
     private String lifeArray;           // 생애 주기
-    private LocalDate alarmAt;
+    private LocalDate alarmAt;          // 알람 등록 날짜
+    private Integer daysDiff;           // 알람 D-Day
 }

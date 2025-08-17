@@ -521,4 +521,25 @@ public class WelfareService {
     public WelfareFavoriteDto[] getAllAlarm(UserEntity signedUser) {
         return this.welfareLikesMapper.selectAllAlarmByWelfareIdAndUser(signedUser.getIndex());
     }
+
+    public WelfareFavoriteDto[] getHomeAlarms(UserEntity signedUser) {
+        if (signedUser == null) {
+            System.out.println("에러 - 로그인 안됨");
+            return new WelfareFavoriteDto[0];
+        }
+
+        // 기존 메서드 사용
+        WelfareFavoriteDto[] alarms = this.welfareLikesMapper.selectAllAlarmByWelfareIdAndUser(signedUser.getIndex());
+
+        // daysDiff 계산
+        for (WelfareFavoriteDto alarm : alarms) {
+            LocalDate today = LocalDate.now();
+            LocalDate alarmDate = alarm.getAlarmAt();
+
+            long daysDiff = alarmDate.toEpochDay() - today.toEpochDay();
+            alarm.setDaysDiff((int) daysDiff);
+        }
+
+        return alarms;
+    }
 }

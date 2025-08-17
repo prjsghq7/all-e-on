@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="/home/assets/styles/home.min.css">
     <link rel="icon" href="/common/assets/images/favicon.png">
     <script defer src="/home/assets/scripts/home.js"></script>
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
 <body>
 <header th:replace="~{fragments/header :: header}"></header>
@@ -21,33 +23,7 @@
             </span>
             <div class="slider-wrapper">
                 <ul class="list">
-                    <li class="item">
-                        <a href="#">제목1</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목2</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목3</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목4</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목5</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목6</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목7</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목8</a>
-                    </li>
-                    <li class="item">
-                        <a href="#">제목9</a>
-                    </li>
+
                 </ul>
             </div>
 
