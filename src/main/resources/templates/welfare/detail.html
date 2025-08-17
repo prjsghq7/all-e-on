@@ -175,9 +175,11 @@
                                 없습니다.
                             </li>
                             <li th:if="${welfare.inquiryLinks != null && welfare.inquiryLinks.size() > 0}"
-                                th:each="link : ${welfare.inquiryLinks}"><a th:href="${link.link}"
-                                                                            th:text="${link.name} + ' ' + ${link.link}"
-                                                                            target="_blank"></a></li>
+                                th:each="link : ${welfare.inquiryLinks}">
+                                <span th:text="${link.name}"></span>
+                                <a th:href="${link.link}" th:text="${link.link}" target="_blank"></a>
+                                <img src="/welfare/assets/images/welfare-detail-link.png" alt="">
+                            </li>
                         </ul>
                     </div>
                     <div class="detail-explain">
@@ -187,7 +189,8 @@
                                 정보가 없습니다.
                             </li>
                             <li th:if="${welfare.basisStatutes != null && welfare.basisStatutes.size() > 0}"
-                                th:each="law : ${welfare.basisStatutes}"><a th:text="${law.name}"></a></li>
+                                th:each="law : ${welfare.basisStatutes}"
+                                th:text="${law.name}"></li>
                         </ul>
                     </div>
                     <div class="detail-explain">
@@ -197,8 +200,10 @@
                                 정보가 없습니다.
                             </li>
                             <li th:if="${welfare.formMaterials != null && welfare.formMaterials.size() > 0}"
-                                th:each="data : ${welfare.formMaterials}"><a th:href="${data.link}"
-                                                                             th:text="${data.name}"></a></li>
+                                th:each="data : ${welfare.formMaterials}">
+                                <a th:href="${data.link}" th:text="${data.name}"></a>
+                                <img src="/welfare/assets/images/welfare-detail-link.png" alt="">
+                            </li>
                         </ul>
                     </div>
                 </div>

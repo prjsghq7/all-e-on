@@ -1,3 +1,4 @@
+@charset "UTF-8";
 ol, ul {
   padding: 0;
 }
@@ -232,7 +233,7 @@ ol, ul {
 }
 #defaultArea > .detail > .detail-all > .explain > .content > .detail-explain {
   padding: 1.5rem;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   line-height: 2rem;
   align-items: flex-start;
   display: flex;
@@ -309,6 +310,37 @@ ol, ul {
 #defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > [data-aeo-stretch] {
   flex-grow: 1;
   flex-shrink: 1;
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > li:has(> a) {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  list-style: none;
+  content: "";
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > li:has(> a) > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > li:has(> a) > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > li:has(> a):hover::before {
+  transition-duration: 300ms;
+  transition-property: content;
+  transition-timing-function: ease;
+  content: "➡️ ";
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > li:has(> a) > a {
+  color: #2563eb;
+}
+#defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > li:has(> a) > img {
+  width: 2rem;
+  height: 2rem;
 }
 #defaultArea > .detail > .detail-all > .explain > .content > .detail-explain > ul > .none {
   width: 100%;
