@@ -37,6 +37,7 @@ public class NoticeService {
         notice.setCreatedAt(LocalDateTime.now());
         notice.setModifiedAt(null);
         notice.setDeleted(false);
+        notice.setView(0);
         return this.noticeMapper.insert(notice) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 
