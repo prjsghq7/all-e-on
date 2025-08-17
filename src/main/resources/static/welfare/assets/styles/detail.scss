@@ -271,7 +271,7 @@ ol, ul {
 
           > .detail-explain {
             padding: 1.5rem;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             line-height: 2rem;
             @include flex(column, flex-start, flex-start);
             text-align: left;
@@ -300,6 +300,28 @@ ol, ul {
               padding: 1.5rem 2rem;
               @include flex(column, flex-start, flex-start, 1rem);
               list-style-type: square;
+
+              > li:has(> a) {
+                @include flex(row, flex-start, flex-start, 1rem);
+                list-style: none;
+                content: "";
+
+                &:hover::before {
+                  transition-duration: 300ms;
+                  transition-property: content;
+                  transition-timing-function: ease;
+                  content: "➡️ ";
+                }
+
+                > a {
+                  color: #2563eb;
+                }
+
+                > img {
+                  width: 2rem;
+                  height: 2rem;
+                }
+              }
 
               > .none {
                 width: 100%;
