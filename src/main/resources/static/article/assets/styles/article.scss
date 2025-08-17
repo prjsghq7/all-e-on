@@ -1,0 +1,45 @@
+@charset "UTF-8";
+@import "../../../common/assets/styles/_def";
+
+#defaultArea {
+  @include flex(column, flex-start, center);
+  height: 100vh;
+
+  > .container {
+    width: 100%;
+    //background-color: #e74c3c;
+    height: 80%;
+    padding: 1rem;
+
+    > .title-container {
+      @include flex(column, flex-start, flex-start, 1rem);
+
+      width: 100%;
+      border-bottom: 0.0625rem solid #cccccc;
+
+      > .title {
+        font-size: 3rem;
+        font-weight: 800;
+      }
+
+      > .etc-container {
+        @include flex(row, center, space-between, 1rem);
+        width: 100%;
+        color: #929294;
+        margin-bottom: 1rem;
+        padding-left: 0.425rem;
+
+        > .view-container {
+          @include flex(row, center, flex-start, .5rem);
+          width: 3rem;
+        }
+      }
+    }
+
+    > .content-container {
+      width: 100%;
+      @include flex(column, flex-start, center);
+    }
+  }
+
+}

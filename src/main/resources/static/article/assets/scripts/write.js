@@ -12,7 +12,7 @@ $writeForm.addEventListener('submit',(e)=>{
     }
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
-    formData.append('title', $writeForm['name'].value);
+    formData.append('title', $writeForm['title'].value);
     formData.append('content', editor.getData());
     xhr.onreadystatechange=()=>{
         if(xhr.readyState !== XMLHttpRequest.DONE){
@@ -23,9 +23,9 @@ $writeForm.addEventListener('submit',(e)=>{
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        switch (response) {
+        switch (response.result) {
             case'success':
-                alert('등록 성공');
+                location.href = `${origin}/article/list`;
                 break;
             case'failure':
                 alert('등록 실패');
