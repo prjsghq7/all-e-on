@@ -1,120 +1,126 @@
+// /welfare/assets/scripts/detail-tts.js
 (() => {
-    // 서버 TTS 설정
     const TTS_ENDPOINT = '/api/tts';
     const DEFAULT_VOICE = 'ko-KR-Wavenet-A';
     const DEFAULT_LANG  = 'ko-KR';
 
-    // CSRF 메타에서 읽기
     const getCsrf = () => {
         const t = document.querySelector('meta[name="_csrf"]')?.content;
         const h = document.querySelector('meta[name="_csrf_header"]')?.content;
         return (t && h) ? { header: h, token: t } : null;
     };
 
-    // Web Speech 폴백 준비
-    let voices = [];
-    const loadVoices = () => { voices = (window.speechSynthesis?.getVoices() || []); };
-    if ('speechSynthesis' in window) {
-        loadVoices();
-        speechSynthesis.onvoiceschanged = loadVoices;
-    }
-    const pickKo = () => {
-        if (!voices || voices.length === 0) return null;
-        return voices.find(v => /^ko([-_]|$)/i.test(v.lang)) || voices.find(v => /ko/i.test(v.lang)) || null;
-    };
-
     const TTS = {
         _audio: null,
-        _u: null,
+        _ac: null,
+        _seq: 0,
+        _isFetching: false,
+        _isPlaying: false,
+        _currentBtn: null,
+
+        isPlaying() { return this._isPlaying; },
+
+        stop() {
+            if (this._audio) {
+                try { this._audio.pause(); URL.revokeObjectURL(this._audio.src); } catch {}
+                this._audio = null;
+            }
+            if (this._ac) { try { this._ac.abort(); } catch {} this._ac = null; }
+            this._isFetching = false;
+            this._isPlaying = false;
+            this._seq++;
+            if (this._currentBtn) { this._currentBtn.classList.remove('is-speaking'); this._currentBtn = null; }
+        },
 
         async speak(text, opts = {}) {
-            if (!text || !text.trim()) return;
-            this.stop();
+            const s = (text || '').trim();
+            if (!s) return;
 
-            // 1) 서버 TTS (CSRF 포함)
+            const mySeq = ++this._seq;
+            this._isFetching = true;
+
+            const payload = {
+                text: s,
+                languageCode: DEFAULT_LANG,
+                voiceName: opts.voiceName || DEFAULT_VOICE,
+                speakingRate: (typeof opts.rate === 'number') ? opts.rate : 1.0,
+                pitch: (typeof opts.pitch === 'number') ? opts.pitch : 0.0,
+                audioEncoding: 'MP3',
+                useSsml: !!opts.useSsml
+            };
+
+            const headers = { 'Content-Type': 'application/json' };
+            const csrf = getCsrf(); if (csrf) headers[csrf.header] = csrf.token;
+
+            this._ac = new AbortController();
+
+            let blob;
             try {
-                const payload = {
-                    text: text.trim(),
-                    languageCode: DEFAULT_LANG,
-                    voiceName: opts.voiceName || DEFAULT_VOICE,
-                    speakingRate: (typeof opts.rate === 'number') ? opts.rate : 1.0,
-                    pitch: (typeof opts.pitch === 'number') ? opts.pitch : 0.0,
-                    audioEncoding: 'MP3',
-                    useSsml: !!opts.useSsml
-                };
-
-                const headers = { 'Content-Type': 'application/json' };
-                const csrf = getCsrf();
-                if (csrf) headers[csrf.header] = csrf.token;
-
                 const res = await fetch(TTS_ENDPOINT, {
                     method: 'POST',
                     headers,
                     credentials: 'same-origin',
-                    body: JSON.stringify(payload)
+                    body: JSON.stringify(payload),
+                    signal: this._ac.signal
                 });
                 if (!res.ok) throw new Error('TTS HTTP ' + res.status);
-
-                const blob = await res.blob();
-                const url = URL.createObjectURL(blob);
-
-                const audio = new Audio(url);
-                audio.onended = () => {
-                    URL.revokeObjectURL(url);
-                    if (this._audio === audio) this._audio = null;
-                };
-                this._audio = audio;
-                await audio.play();
-                return; // 서버 TTS 성공
-            } catch (err) {
-                console.warn('[TTS] server synth failed, fallback to Web Speech:', err);
+                blob = await res.blob();
+            } catch {
+                // Web Speech 폴백 없음
+                this._isFetching = false;
+                return;
             }
 
-            // 2) 폴백: Web Speech
-            if ('speechSynthesis' in window) {
-                try { speechSynthesis.cancel(); } catch {}
-                const u = new SpeechSynthesisUtterance(text);
-                u.lang = DEFAULT_LANG;
-                const v = pickKo();
-                if (v) u.voice = v;
-                u.rate = 1; u.pitch = 1; u.volume = 1;
-                this._u = u;
-                speechSynthesis.speak(u);
-            } else {
-                console.error('[TTS] No available TTS (server & browser both failed).');
-            }
-        },
+            if (mySeq !== this._seq) { this._isFetching = false; return; }
 
-        stop() {
-            if (this._audio) {
-                try {
-                    this._audio.pause();
-                    URL.revokeObjectURL(this._audio.src);
-                } catch {}
-                this._audio = null;
-            }
-            if ('speechSynthesis' in window) {
-                try { speechSynthesis.cancel(); } catch {}
-            }
-            this._u = null;
+            const url = URL.createObjectURL(blob);
+            const audio = new Audio(url);
+            this._audio = audio;
+            this._isFetching = false;
+            this._isPlaying = true;
+
+            audio.onended = () => {
+                URL.revokeObjectURL(url);
+                if (this._audio === audio) this._audio = null;
+                this._isPlaying = false;
+                if (this._currentBtn) { this._currentBtn.classList.remove('is-speaking'); this._currentBtn = null; }
+            };
+            audio.onerror = () => {
+                URL.revokeObjectURL(url);
+                this._isPlaying = false;
+                if (this._currentBtn) { this._currentBtn.classList.remove('is-speaking'); this._currentBtn = null; }
+            };
+
+            try { await audio.play(); }
+            catch { this.stop(); }
         }
     };
 
     window.TTS = TTS;
 
-    // 카드 개별 읽기(.tts 유지)
     document.addEventListener('click', (e) => {
         const btn = e.target.closest('.tts');
         if (!btn) return;
         e.preventDefault();
         e.stopPropagation();
 
+        // 같은 버튼을 재클릭하면 토글: 정지
+        if ((TTS._isPlaying || TTS._isFetching) && TTS._currentBtn === btn) {
+            TTS.stop();
+            return;
+        }
+
+        // 다른 버튼을 누르면 현재 재생 중단 후 새로 시작
+        if (TTS._isPlaying || TTS._isFetching) {
+            TTS.stop();
+        }
+
         const card = btn.closest('.welfare');
         if (!card) return;
 
         const txt = (sel) => (card.querySelector(sel)?.textContent || '').trim();
         const name = txt('.name');
-        const sub = txt('.sub');
+        const sub  = txt('.sub');
         const desc = txt('.description');
         const i1 = txt('.footer .info:nth-of-type(1)');
         const i2 = txt('.footer .info:nth-of-type(2)');
@@ -131,10 +137,14 @@
         if (i3) parts.push(`${i3}.`);
         if (tags.length) parts.push(`관련 태그: ${tags.join(', ')}.`);
 
-        TTS.speak(parts.join(' '));
+        const text = parts.join(' ').trim();
+        if (!text) return;
+
+        TTS._currentBtn = btn;
+        btn.classList.add('is-speaking');
+        TTS.speak(text);
     });
 
-    // ESC 키로 중지
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') TTS.stop();
     });

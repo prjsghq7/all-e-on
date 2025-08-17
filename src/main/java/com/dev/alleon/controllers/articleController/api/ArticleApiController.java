@@ -48,6 +48,9 @@ public class ArticleApiController {
 
     @RequestMapping(value = "/write", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String postWrite(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, ArticleEntity article) {
-        return null;
+        Result result = this.articleService.insert(signedUser, article);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
     }
 }

@@ -17,19 +17,37 @@
         return {
             _audio: null,
             _ac: null,
+            _isFetching: false,
+            _isPlaying: false,
+            _currentBtn: null,
+
+            isPlaying() { return this._isPlaying; },
+            isBusy() { return this._isPlaying || this._isFetching; },
+
             stop() {
                 if (this._audio) {
                     try { this._audio.pause(); URL.revokeObjectURL(this._audio.src); } catch {}
                     this._audio = null;
                 }
                 if (this._ac) { try { this._ac.abort(); } catch {} this._ac = null; }
+                this._isFetching = false;
+                this._isPlaying = false;
                 seq++;
+                if (this._currentBtn) {
+                    this._currentBtn.classList.remove('is-speaking');
+                    this._currentBtn = null;
+                }
+                if (window.loading?.hide) loading.hide();
             },
+
             async speak(text, opts = {}) {
                 const s = (text || '').trim();
                 if (!s) return;
+
+                // 새 요청 시 이전 재생/요청 중단
                 this.stop();
                 const mySeq = ++seq;
+                this._isFetching = true;
 
                 if (window.loading?.show) loading.show('음성을 준비하고 있어요…');
 
@@ -58,29 +76,46 @@
                     });
                     if (!res.ok) throw new Error('TTS HTTP ' + res.status);
                     blob = await res.blob();
-                } catch (e) {
+                } catch {
+                    this._isFetching = false;
                     if (window.loading?.hide) loading.hide();
-                    return; // 웹 TTS 폴백 사용 안 함
+                    return; // Web Speech 폴백 사용 안 함
                 }
 
-                if (mySeq !== seq) { if (window.loading?.hide) loading.hide(); return; }
+                if (mySeq !== seq) { // 중간에 다른 재생 요청으로 무효화됨
+                    this._isFetching = false;
+                    if (window.loading?.hide) loading.hide();
+                    return;
+                }
 
                 const url = URL.createObjectURL(blob);
                 const audio = new Audio(url);
                 this._audio = audio;
+                this._isFetching = false;
+                this._isPlaying = true;
 
                 audio.onended = () => {
                     URL.revokeObjectURL(url);
                     if (this._audio === audio) this._audio = null;
+                    this._isPlaying = false;
+                    if (this._currentBtn) {
+                        this._currentBtn.classList.remove('is-speaking');
+                        this._currentBtn = null;
+                    }
                     if (window.loading?.hide) loading.hide();
                 };
                 audio.onerror = () => {
                     URL.revokeObjectURL(url);
+                    this._isPlaying = false;
+                    if (this._currentBtn) {
+                        this._currentBtn.classList.remove('is-speaking');
+                        this._currentBtn = null;
+                    }
                     if (window.loading?.hide) loading.hide();
                 };
 
                 try { await audio.play(); }
-                catch { if (window.loading?.hide) loading.hide(); }
+                catch { this.stop(); }
             }
         };
     })();
@@ -97,7 +132,7 @@
         document.querySelectorAll('.content[data-mt-radio] > .title-speak, .title > .title-speak').forEach(btn => {
             const container = btn.closest('.content[data-mt-radio]') || btn.closest('.title');
             if (!container) return;
-            if (container.classList.contains('title')) return; // 제목 읽기 버튼은 항상 활성
+            if (container.classList.contains('title')) return; // 제목 버튼은 항상 활성
             if (!sectionHasRealItems(container)) btn.setAttribute('disabled', '');
         });
     });
@@ -110,14 +145,30 @@
         if (now - lastClickAt < CLICK_DEBOUNCE_MS) return;
         lastClickAt = now;
 
-        e.preventDefault(); e.stopPropagation();
+        e.preventDefault();
+        e.stopPropagation();
 
+        // 같은 버튼 재클릭: 재생/로딩 중이면 정지 토글
+        if (TTS.isBusy() && TTS._currentBtn === btn) {
+            TTS.stop();
+            return;
+        }
+
+        // 다른 버튼 누르면 현재 재생 중단 후 새로 시작
+        if (TTS.isBusy() && TTS._currentBtn && TTS._currentBtn !== btn) {
+            TTS.stop();
+        }
+
+        // 어떤 컨테이너인지 판별 (제목 vs 섹션)
         const titleBox = btn.closest('.title');
         if (titleBox) {
             const h2  = titleBox.querySelector('h2')?.textContent?.trim() || '';
             const sub = titleBox.querySelector('span')?.textContent?.trim() || '';
             const text = [h2, sub].filter(Boolean).join('. ').trim();
-            if (text) TTS.speak(text, { voiceName: btn.dataset.voice || undefined });
+            if (!text) return;
+            TTS._currentBtn = btn;
+            btn.classList.add('is-speaking');
+            TTS.speak(text, { voiceName: btn.dataset.voice || undefined });
             return;
         }
 
@@ -135,6 +186,8 @@
         });
 
         const text = parts.join(' ').trim() || '내용이 없습니다.';
+        TTS._currentBtn = btn;
+        btn.classList.add('is-speaking');
         TTS.speak(text, { voiceName: btn.dataset.voice || undefined });
     });
 
