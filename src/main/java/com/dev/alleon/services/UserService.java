@@ -283,6 +283,10 @@ public class UserService {
         }
         UserEntity dbUser = this.userMapper.selectUserByEmail(email);
 
+        if (dbUser == null) {
+            return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE_ABSENT).build();
+        }
+
         if (dbUser.getActiveState() > 2) {
             return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
         }
