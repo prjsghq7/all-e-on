@@ -3,6 +3,7 @@ package com.dev.alleon.controllers.articleController.api;
 import com.dev.alleon.dtos.Comment.CommentDto;
 import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.article.ArticleEntity;
+import com.dev.alleon.entities.article.CommentEntity;
 import com.dev.alleon.entities.notice.ImageEntity;
 import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.results.CommonResult;
@@ -10,6 +11,7 @@ import com.dev.alleon.results.Result;
 import com.dev.alleon.services.ArticleService;
 import com.dev.alleon.services.CommentService;
 import com.dev.alleon.services.ImageService;
+import com.google.api.client.json.Json;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -64,5 +66,13 @@ public class ArticleApiController {
     public List<CommentDto> getComments(@RequestParam(value = "articleIndex") int articleIndex,
                                         @RequestParam(value = "page") int page) {
         return this.commentService.getCommentsByArticle(articleIndex, page);
+    }
+
+    @RequestMapping(value = "/comment/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String postCommentUpload(@SessionAttribute(value = "signedUser") UserEntity signedUser, CommentEntity comment) {
+        Result result = this.commentService.addComment(signedUser, comment);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
     }
 }

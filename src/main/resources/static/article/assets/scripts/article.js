@@ -23,6 +23,6 @@ $commentForm.addEventListener('submit' , (e) => {
         const response = JSON.parse(xhr.responseText);
         alert(response);
     };
-    xhr.open('POST', 'api/article/uploads');
+    xhr.open('POST', 'api/article/comment/upload');
     xhr.send(formData);
 });
