@@ -27,6 +27,7 @@ public class CommentService {
         if (signedUser == null
                 || signedUser.getActiveState() >= 2
                 || comment == null
+                || comment.getArticleIndex() == null
                 || comment.getArticleIndex() < 0) {
             return CommonResult.FAILURE_ABSENT;
         }
@@ -36,6 +37,7 @@ public class CommentService {
         comment.setModifiedAt(null);
         return this.commentMapper.insert(comment) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
+
 
     public List<CommentDto> getCommentsByArticle(int articleIndex, int page) {
         if (articleIndex < 0) {

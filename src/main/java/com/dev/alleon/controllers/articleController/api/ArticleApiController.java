@@ -69,7 +69,7 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value = "/comment/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String postCommentUpload(@SessionAttribute(value = "signedUser") UserEntity signedUser, CommentEntity comment) {
+    public String postCommentUpload(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser, CommentEntity comment) {
         Result result = this.commentService.addComment(signedUser, comment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());

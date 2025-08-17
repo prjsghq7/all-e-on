@@ -11,9 +11,9 @@ import java.time.LocalDateTime;
 @Setter
 @EqualsAndHashCode(of = "index")
 public class CommentEntity {
-    private int index;
-    private int userIndex;
-    private int articleIndex;
+    private Integer index;
+    private Integer userIndex;
+    private Integer articleIndex;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;

@@ -12,8 +12,17 @@
                 #{comment.content},
                 #{comment.createdAt},
                 #{comment.modifiedAt},
-                #{comment.isDeleted)})
+                #{comment.isDeleted})
     </insert>
+
+    <select id="totalCountByArticleIndex" resultType="java.lang.Integer">
+        select count(0)
+        from `aeo`.`comments` as `t0`
+                 left join `aeo`.`articles` as `t1` on `t0`.`article_index` = `t1`.`index`
+                 left join aeo.`users` as `t2` on `t0`.`user_index` = `t2`.`index`
+        where `t1`.`index` = #{articleIndex}
+          and `t0`.`is_deleted` = false;
+    </select>
     <select id="getCommentByArticleIndex" resultType="com.dev.alleon.dtos.Comment.CommentDto">
         select `t0`.`index`      as `index`,
                `t0`.`content`    as `content`,
@@ -26,13 +35,5 @@
         where `t1`.`index` = #{articleIndex}
           and `t0`.`is_deleted` = false
         LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset};
-    </select>
-    <select id="totalCountByArticleIndex" resultType="java.lang.Integer">
-        select count(0)
-        from `aeo`.`comments` as `t0`
-                 left join `aeo`.`articles` as `t1` on `t0`.`article_index` = `t1`.`index`
-                 left join aeo.`users` as `t2` on `t0`.`user_index` = `t2`.`index`
-        where `t1`.`index` = #{articleIndex}
-          and `t0`.`is_deleted` = false;
     </select>
 </mapper>
