@@ -6,7 +6,8 @@ $modifyForm.addEventListener('submit',(e)=>{
     const xhr = new XMLHttpRequest();
     const formData = new FormData();
     const url = new URL(location.href);
-    formData.append('index', url.searchParams.get("index"));
+    const index = url.searchParams.get("index");
+    formData.append('index', index);
     formData.append("title", $modifyForm['title'].value);
     formData.append('content', editor.getData());
 
@@ -23,6 +24,7 @@ $modifyForm.addEventListener('submit',(e)=>{
         switch(result){
             case'success':
                 alert('수정 성공');
+                location.href=`${origin}/notice/specific?index=${index}`
                 break;
             case 'failure':
                 alert('수정 실패');
