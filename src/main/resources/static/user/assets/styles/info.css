@@ -74,6 +74,7 @@
   align-items: start;
 }
 #profile-section > #profileImageForm {
+  position: relative;
   display: grid;
   grid-template-rows: auto auto auto;
   gap: 0.75rem;
@@ -81,9 +82,9 @@
 }
 #profile-section > #profileImageForm > .profile-image-input[type=file] {
   position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  margin: -1px !important;
+  width: 0.0625rem !important;
+  height: 0.0625rem !important;
+  margin: -0.0625rem !important;
   padding: 0 !important;
   overflow: hidden !important;
   clip: rect(0, 0, 0, 0) !important;
@@ -91,6 +92,7 @@
   border: 0 !important;
 }
 #profile-section > #profileImageForm > .avatar-uploader {
+  position: relative;
   display: grid;
   grid-template-columns: 8.5rem 1fr;
   align-items: center;
@@ -104,7 +106,7 @@
   height: 8.5rem;
   border-radius: 50%;
   overflow: hidden;
-  border: 3px solid #e0e0e0;
+  border: 0.1875rem solid #e0e0e0;
 }
 #profile-section > #profileImageForm > .avatar-uploader > .avatar > .avatar-img {
   width: 100%;
@@ -132,10 +134,34 @@
   color: #969aa1;
   line-height: 1.4;
 }
-#profile-section > #profileImageForm > .button-container {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-start;
+#profile-section > #profileImageForm > .avatar-actions {
+  position: absolute;
+  top: 0.25rem;
+  left: 9.25rem;
+  display: none;
+  gap: 0.5rem;
+}
+#profile-section > #profileImageForm > .avatar-actions .pill {
+  padding: 0.25rem 0.5rem;
+  border-radius: 999rem;
+  font-size: 0.875rem;
+  border: 0;
+  cursor: pointer;
+}
+#profile-section > #profileImageForm > .avatar-actions .--apply:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#profile-section > #profileImageForm > .avatar-actions .--apply {
+  background: #3b82f6;
+  color: #fff;
+}
+#profile-section > #profileImageForm > .avatar-actions .--cancel {
+  background: #374151;
+  color: #fff;
+}
+#profile-section > #profileImageForm[data-dirty=true] > .avatar-actions {
+  display: inline-flex;
 }
 #profile-section > .profile-info {
   display: grid;

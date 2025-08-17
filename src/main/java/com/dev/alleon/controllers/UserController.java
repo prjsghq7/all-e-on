@@ -197,16 +197,19 @@ public class UserController {
         if (signedUser == null || signedUser.getActiveState() > 2) {
             return "redirect:/user/login";
         }
+
+        String profileUrl;
         if (signedUser.getProfile() != null && signedUser.getProfile().length > 0) {
-            String base64Image = "data:image/png;base64," +
-                    Base64.getEncoder().encodeToString(signedUser.getProfile());
-            model.addAttribute("profile", base64Image);
+            profileUrl = "data:image/png;base64," + Base64.getEncoder().encodeToString(signedUser.getProfile());
         } else {
-            model.addAttribute("profile", null);
+            profileUrl = "/user/assets/images/profile-sample.png";
         }
+
+        model.addAttribute("profile", profileUrl);
         model.addAttribute("signedUser", signedUser);
         return "user/info";
     }
+
 
     @RequestMapping(value = "/profile", method = RequestMethod.POST, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public String uploadProfile(@RequestParam("image") MultipartFile file,
