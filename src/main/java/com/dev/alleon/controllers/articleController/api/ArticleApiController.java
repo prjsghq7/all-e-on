@@ -1,5 +1,6 @@
 package com.dev.alleon.controllers.articleController.api;
 
+import com.dev.alleon.dtos.Comment.CommentDto;
 import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.article.ArticleEntity;
 import com.dev.alleon.entities.notice.ImageEntity;
@@ -7,6 +8,7 @@ import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.Result;
 import com.dev.alleon.services.ArticleService;
+import com.dev.alleon.services.CommentService;
 import com.dev.alleon.services.ImageService;
 import org.json.JSONObject;
 import org.springframework.http.MediaType;
@@ -14,16 +16,19 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
-@RequestMapping(value="/api/article")
+@RequestMapping(value = "/api/article")
 public class ArticleApiController {
     private final ImageService imageService;
     private final ArticleService articleService;
+    private final CommentService commentService;
 
-    public ArticleApiController(ImageService imageService, ArticleService articleService) {
+    public ArticleApiController(ImageService imageService, ArticleService articleService, CommentService commentService) {
         this.imageService = imageService;
         this.articleService = articleService;
+        this.commentService = commentService;
     }
 
     @RequestMapping(value = "/image", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,7 +45,7 @@ public class ArticleApiController {
             response.put("url", "/article/image?index=" + image.getIndex());
         } else if (result == CommonResult.FAILURE_SESSION_EXPIRED) {
             System.out.println("로그인 확인");
-        } else if(result == CommonResult.FAILURE){
+        } else if (result == CommonResult.FAILURE) {
             System.out.println("등록 실패");
         }
         return response.toString();
@@ -52,5 +57,12 @@ public class ArticleApiController {
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
+    }
+
+
+    @RequestMapping(value = "/comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<CommentDto> getComments(@RequestParam(value = "articleIndex") int articleIndex,
+                                        @RequestParam(value = "page") int page) {
+        return this.commentService.getCommentsByArticle(articleIndex, page);
     }
 }

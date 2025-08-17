@@ -15,9 +15,9 @@ import java.util.List;
 
 @Service
 public class CommentService {
+    private static final int NUM_OF_ROWS = 10;
 
     private final CommentMapper commentMapper;
-    private static final int NUM_OF_ROWS = 10;
 
     public CommentService(CommentMapper commentMapper) {
         this.commentMapper = commentMapper;
@@ -37,12 +37,16 @@ public class CommentService {
         return this.commentMapper.insert(comment) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 
-    public List<CommentDto> getCommentByArticle(int articleIndex, PageVo pageVo) {
+    public List<CommentDto> getCommentsByArticle(int articleIndex, int page) {
         if (articleIndex < 0) {
             return null;
         }
-        List<CommentDto> commentByArticleIndex = this.commentMapper.getCommentByArticleIndex(articleIndex, pageVo);
-        return commentByArticleIndex;
+
+        int totalCount = this.commentMapper.totalCountByArticleIndex(articleIndex);
+        PageVo pageVo = new PageVo(page, NUM_OF_ROWS, totalCount);
+
+        List<CommentDto> comments = this.commentMapper.getCommentByArticleIndex(articleIndex, pageVo);
+        return comments;
     }
 
 }

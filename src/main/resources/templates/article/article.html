@@ -26,6 +26,20 @@
             <div class="content" th:utext="${article.content}"></div>
         </div>
     </div>
+
+    <form id="commentForm">
+        <h2>댓글 등록</h2>
+        <label>
+            <span>댓글 내용 : </span>
+            <input type="text" name="content">
+        </label>
+
+        <button type="submit">등록</button>
+    </form>
+
+    <div id="commentContainer">
+
+    </div>
 </div>
 </body>
 </html>
