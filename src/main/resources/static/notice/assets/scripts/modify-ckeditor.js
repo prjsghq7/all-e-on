@@ -373,7 +373,7 @@ const editorConfig = {
     }
 };
 
-ClassicEditor.create(document.body.querySelector(':scope>form>label>.text-container'), {
+ClassicEditor.create(document.body.querySelector(':scope>#defaultArea>form>label>.text-container'), {
     ...editorConfig,
     simpleUpload:{
         uploadUrl:`${origin}/api/notice/image`,

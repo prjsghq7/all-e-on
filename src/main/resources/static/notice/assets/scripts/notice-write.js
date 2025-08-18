@@ -5,11 +5,13 @@ const header = document.querySelector('meta[name="_csrf_header"]').getAttribute(
 $noticeForm.addEventListener('submit', (e) => {
     e.preventDefault();
     if ($title.value === '') {
-        alert('제목을 입력해주세요.');
+        dialog.showSimpleOk('공지사항 등록','제목을 입력해주세요',()=>{
+            $title.focus();
+        })
         return;
     }
     if (editor.getData() === '') {
-        alert('게시글 입력해주세요.');
+        dialog.showSimpleOk('공지사항 등록', '게시글을 입력해주세요.');
         return;
     }
     const xhr = new XMLHttpRequest();
@@ -28,13 +30,15 @@ $noticeForm.addEventListener('submit', (e) => {
         const result = response.result;
         switch (result) {
             case'success':
-                alert('등록 성공');
+                dialog.showSimpleOk('공지사항 등록', ' 공지사항 등록에 성공하셨습니다.',()=>{
+                    location.href=`${origin}/notice/`;
+                });
                 break;
             case'failure':
-                alert('등록 실패');
+                dialog.showSimpleOk('공지사항 등록', ' 공지사항 등록에 실패하였습니다.');
                 break;
             case'failure_absent':
-                alert('로그인 필ㅇ요');
+                dialog.showSimpleOk('공지사항 등록', '공지사항을 등록하기 위해서는 로그인이 필요합니다.');
                 break;
             default:
                 break;

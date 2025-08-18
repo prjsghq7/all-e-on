@@ -21,7 +21,11 @@ public class NoticeService {
 
     private Result incrementView(int index) {
         if (index < 0) {
-            return CommonResult.FAILURE_ABSENT;
+            return CommonResult.FAILURE;
+        }
+        NoticeEntity dbNotice = this.noticeMapper.selectByIndex(index);
+        if (dbNotice == null || dbNotice.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
         }
         return this.noticeMapper.increaseView(index) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
@@ -31,9 +35,11 @@ public class NoticeService {
     }
 
     public Result add(UserEntity signedUser, NoticeEntity notice) {
-        if (signedUser == null || notice == null) {
+        if (signedUser == null || notice == null
+                || signedUser.getActiveState() > 1) {
             return CommonResult.FAILURE_ABSENT;
         }
+
         notice.setUserIndex(signedUser.getIndex());
         notice.setCreatedAt(LocalDateTime.now());
         notice.setModifiedAt(null);
@@ -49,15 +55,14 @@ public class NoticeService {
                     .result(CommonResult.FAILURE).build();
         }
         this.incrementView(index);
-
-        NoticeEntity notice = this.noticeMapper.selectByIndex(index);
-        if (notice == null) {
+        NoticeEntity dbNotice = this.noticeMapper.selectByIndex(index);
+        if (dbNotice == null) {
             return ResultTuple.<NoticeEntity>builder()
-                    .result(CommonResult.FAILURE_ABSENT).build();
+                    .result(CommonResult.FAILURE_DOESNT_EXIST).build();
         }
 
         return ResultTuple.<NoticeEntity>builder()
-                .payload(notice).result(CommonResult.SUCCESS).build();
+                .payload(dbNotice).result(CommonResult.SUCCESS).build();
     }
 
     public PageVo page(int page) {
@@ -82,7 +87,7 @@ public class NoticeService {
         }
         NoticeEntity dbNotice = this.noticeMapper.selectByIndex(notice.getIndex());
         if (dbNotice == null || dbNotice.isDeleted()) {
-            return CommonResult.FAILURE_ABSENT;
+            return CommonResult.FAILURE_DOESNT_EXIST;
         }
         dbNotice.setModifiedAt(LocalDateTime.now());
         dbNotice.setContent(notice.getContent());

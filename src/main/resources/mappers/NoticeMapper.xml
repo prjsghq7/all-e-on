@@ -36,8 +36,8 @@
                `content`     as `content`,
                `view`        as `view`,
                `created_at`  as `createdAt`,
-               `modified_at` as `modified_at`,
-               `is_deleted`  as `is_deleted`
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
         from `aeo`.`notice`
         where `is_deleted`=false
         order by `created_at` desc
@@ -50,8 +50,8 @@
                `content`     as `content`,
                `view`        as `view`,
                `created_at`  as `createdAt`,
-               `modified_at` as `modified_at`,
-               `is_deleted`  as `is_deleted`
+               `modified_at` as `modifiedAt`,
+               `is_deleted`  as `isDeleted`
         from `aeo`.`notice`
         where `index`=#{index}
         limit 1;

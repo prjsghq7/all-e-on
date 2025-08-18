@@ -50,6 +50,9 @@ deleteBtn.addEventListener('click', () => {
             case'failure':
                 dialog.showSimpleOk('삭제', '삭제에 실패하셨습니다.');
                 break;
+            case'failure_doesnt_exit':
+                dialog.showSimpleOk('삭제', '존재하지 않거나 이미 삭제된 공지사항입니다.');
+                break;
             default:
                 break;
         }

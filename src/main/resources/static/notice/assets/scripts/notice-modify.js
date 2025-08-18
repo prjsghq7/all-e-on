@@ -23,14 +23,15 @@ $modifyForm.addEventListener('submit',(e)=>{
         const result = response.result;
         switch(result){
             case'success':
-                alert('수정 성공');
-                location.href=`${origin}/notice/specific?index=${index}`
+                dialog.showSimpleOk('공지사항 수정', '공지사항 수정에 성공하였습니다.',()=>{
+                    location.href=`${origin}/notice/specific?index=${index}`
+                })
                 break;
             case 'failure':
-                alert('수정 실패');
+                dialog.showSimpleOk('공지사항 수정', '공지사항 수정에 실패하였습니다.');
                 break;
             case'failure_absent':
-                alert('로그인 필요');
+                dialog.showSimpleOk('공지사항 수정', '공지사항 수정하기 위해서는 관리자 로그인이 필요합니다.');
                 break;
             default:
                 break;

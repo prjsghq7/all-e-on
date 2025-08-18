@@ -14,16 +14,22 @@
     <script defer src="/common/assets/scripts/object/dialog.js"></script>
     <script defer src="/notice/assets/scripts/notice.js"></script>
 </head>
+<script th:if="${data.isDeleted()}">
+    alert('삭제된 게시글 입니다.');
+    location.href = `${origin}/notice/`;
+</script>
 <body>
 <div id="defaultArea">
     <div class="container">
         <div class="title-container">
             <input type="hidden" name="articleIndex" th:value="${data.index}"/>
             <div class="title" th:text="${data.getTitle()}"></div>
-            <div class="adjust-container" th:if="${session.signedUser.activeState<1}">
+            <div class="adjust-container"
+                 th:if="${session.signedUser != null and session.signedUser.activeState < 1}">
                 <button type="button" class="modify">수정하기</button>
                 <button type="button" class="delete">삭제하기</button>
             </div>
+
             <div class="etc-container">
                 <div class="date" th:text="'입력 ' + ${#temporals.format(data.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
                 <div class="view-container">

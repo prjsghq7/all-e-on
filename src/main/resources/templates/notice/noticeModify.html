@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="/assets/libraries/ckeditor5/ckeditor5.css">
     <link rel="stylesheet" href="/assets/libraries/ckeditor5/ckeditor5-custom.css">
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
-    <link rel="stylesheet" href="/notice/assets/styles/noticeWrite.min.css">
+    <link rel="stylesheet" href="/notice/assets/styles/noticeModify.min.css">
     <script src="/assets/libraries/ckeditor5/ckeditor5.js" type="module"></script>
     <script type="importmap">
         {
@@ -21,22 +21,39 @@
             }
         }
     </script>
+    <script src="/common/assets/scripts/common.js"></script>
+    <script defer src="/common/assets/scripts/object/dialog.js"></script>
     <script defer src="/notice/assets/scripts/modify-ckeditor.js" type="module"></script>
     <script defer src="/notice/assets/scripts/notice-modify.js"></script>
 </head>
+<script th:if="${session.signedUser!=null and session.signedUser.activeState>0}">
+    alert('관리자 로그인이 필요합니다.');
+    history.back();
+</script>
+<script th:if="${session.signedUser==null}">
+    alert('로그인이 필요합니다.');
+    location.href = `${origin}/user/login`;
+</script>
 <body>
-<form novalidate id="modifyForm">
-    <div class="title-container">
-        <span>제목</span>
-        <button type="submit">수정</button>
+<div id="defaultArea">
+    <form novalidate id="modifyForm">
+        <div class="title">
+            <span class="caption">공지사항 수정</span>
+            <button data-aeo-object="button" type="submit" class="modifyBtn">수정</button>
+        </div>
+        <div class="title-container">
+            <span class="caption">제목</span>
+            <label>
+                <input  name="index" type="hidden" th:value="${notice.getIndex}">
+                <input data-aeo-object="field" type="text" placeholder="제목을 입력해 주세요." minlength="1" maxlength="60" name="title"
+                       th:value="${notice.getTitle()}">
+            </label>
+        </div>
         <label>
-            <input name="index" type="hidden" th:value="${notice.getIndex}">
-            <input required type="text" placeholder="제목을 입력해 주세요." minlength="1" maxlength="60" name="title" th:value="${notice.getTitle()}">
+        <textarea name="content" autocomplete="off" hidden class="text-container"
+                  th:utext="${notice.content}"></textarea>
         </label>
-    </div>
-    <label>
-        <textarea name="content" autocomplete="off" hidden class="text-container" th:utext="${notice.content}"></textarea>
-    </label>
-</form>
+    </form>
+</div>
 </body>
 </html>

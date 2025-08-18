@@ -3,6 +3,11 @@ const header = document.querySelector('meta[name="_csrf_header"]').getAttribute(
 
 const $loginForm = document.getElementById('loginForm');
 const $loginBtn = $loginForm.querySelector('.login-button')
+const $login = document.getElementById('login');
+
+$login.querySelector(':scope>.title').addEventListener('click',()=>{
+    location.href = `${origin}/home`;
+})
 
 $loginBtn.addEventListener('click', (e) => {
     e.preventDefault();
