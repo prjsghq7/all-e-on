@@ -20,6 +20,10 @@
     <div class="container">
         <div class="title-container">
             <div class="title" th:text="${article.title}"></div>
+            <div class="adjust-container" th:if="${session.signedUser.getIndex()==article.getUserIndex()}">
+                <button type="button" class="modify">수정하기</button>
+                <button type="button" class="delete">삭제하기</button>
+            </div>
             <div class="etc-container">
                 <div class="date" th:text="'입력 ' + ${#temporals.format(article.createdAt, 'yyyy-MM-dd HH:mm')}"></div>
                 <div class="view-container">

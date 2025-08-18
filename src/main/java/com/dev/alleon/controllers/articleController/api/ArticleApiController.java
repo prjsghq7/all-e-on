@@ -3,6 +3,7 @@ package com.dev.alleon.controllers.articleController.api;
 import com.dev.alleon.dtos.Comment.CommentDto;
 import com.dev.alleon.dtos.Comment.CommentsResponse;
 import com.dev.alleon.dtos.Comment.RecommentDto;
+import com.dev.alleon.dtos.article.ArticleDto;
 import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.article.ArticleEntity;
 import com.dev.alleon.entities.article.CommentEntity;
@@ -72,7 +73,7 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value = "/comment/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String postCommentUpload(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser, CommentEntity comment) {
+    public String postCommentUpload(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, CommentEntity comment) {
         Result result = this.commentService.addComment(signedUser, comment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
@@ -80,7 +81,7 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value = "/comment/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String patchCommentModify(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
+    public String patchCommentModify(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                                      CommentEntity comment) {
         Result result = this.commentService.modifyComment(signedUser, comment);
         JSONObject response = new JSONObject();
@@ -89,31 +90,31 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value = "/comment/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String deleteComment(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
-                                     CommentEntity comment) {
+    public String deleteComment(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                CommentEntity comment) {
         Result result = this.commentService.deleteComment(signedUser, comment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
     }
 
-    @RequestMapping(value="/recomments/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String postRecommentsUpload(@SessionAttribute(value="signedUser",required = false)UserEntity signedUser,
-                                       RecommentEntity recomment){
+    @RequestMapping(value = "/recomments/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String postRecommentsUpload(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                       RecommentEntity recomment) {
         Result result = this.commentService.addRecomment(signedUser, recomment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
     }
 
-    @RequestMapping(value="/recomments",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RecommentDto> getRecomments(@RequestParam(value="commentIndex") int commentIndex){
+    @RequestMapping(value = "/recomments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<RecommentDto> getRecomments(@RequestParam(value = "commentIndex") int commentIndex) {
         return this.commentService.getWholeRecomments(commentIndex);
     }
 
     @RequestMapping(value = "/recomment/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String patchRecommentModify(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
-                                     RecommentEntity recomment) {
+    public String patchRecommentModify(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                       RecommentEntity recomment) {
         Result result = this.commentService.modifyRecomment(signedUser, recomment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
@@ -121,11 +122,28 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value = "/recomment/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String deleteRecomment (@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
-                                       RecommentEntity recomment) {
+    public String deleteRecomment(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                  RecommentEntity recomment) {
         Result result = this.commentService.deleteRecomment(signedUser, recomment);
         JSONObject response = new JSONObject();
         response.put("result", result.toStringLower());
         return response.toString();
     }
+
+    @RequestMapping(value = "/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String patchModify(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, ArticleEntity article) {
+        Result result = this.articleService.modify(signedUser, article);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String delete(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, @RequestParam(value = "index", defaultValue = "0") int index) {
+        Result result = this.articleService.delete(signedUser, index);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
 }

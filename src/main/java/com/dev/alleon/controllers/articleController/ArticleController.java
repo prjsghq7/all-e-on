@@ -3,6 +3,8 @@ package com.dev.alleon.controllers.articleController;
 import com.dev.alleon.dtos.article.ArticleDto;
 import com.dev.alleon.dtos.article.ArticleListResponse;
 import com.dev.alleon.entities.notice.ImageEntity;
+import com.dev.alleon.entities.notice.NoticeEntity;
+import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.services.ArticleService;
 import com.dev.alleon.services.ImageService;
 import com.dev.alleon.vos.ArticleSearchVo;
@@ -19,7 +21,7 @@ import org.springframework.web.util.UriUtils;
 import java.nio.charset.StandardCharsets;
 
 @Controller
-@RequestMapping(value="/article")
+@RequestMapping(value = "/article")
 public class ArticleController {
     private final ArticleService articleService;
     private final ImageService imageService;
@@ -29,7 +31,7 @@ public class ArticleController {
         this.imageService = imageService;
     }
 
-    @RequestMapping(value = "/",method= RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getIndex(@RequestParam(value = "index", required = false) int index,
                            Model model) {
         ArticleDto article = this.articleService.getArticleByIndex(index);
@@ -37,10 +39,10 @@ public class ArticleController {
         return "article/article";
     }
 
-    @RequestMapping(value = "/list",method= RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public String getList (ArticleSearchVo articleSearchVo,
-                           @RequestParam(value = "page", required = false, defaultValue = "1") int page,
-                           Model model) {
+    @RequestMapping(value = "/list", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getList(ArticleSearchVo articleSearchVo,
+                          @RequestParam(value = "page", required = false, defaultValue = "1") int page,
+                          Model model) {
         ArticleListResponse articleListResponse = this.articleService.getArticleList(articleSearchVo, page);
         model.addAttribute("articleList", articleListResponse.getArticles());
         model.addAttribute("pageVo", articleListResponse.getPageVo());
@@ -49,8 +51,8 @@ public class ArticleController {
         return "article/list";
     }
 
-    @RequestMapping(value = "/write",method= RequestMethod.GET,produces = MediaType.TEXT_HTML_VALUE)
-    public String getWrite () {
+    @RequestMapping(value = "/write", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getWrite() {
         return "article/write";
     }
 
@@ -67,5 +69,12 @@ public class ArticleController {
                 .contentLength(image.getData().length)
                 .contentType(MediaType.parseMediaType(image.getContentType())) //문자열이라서 mediatype으로 바꿔주어야한다.
                 .body(image.getData());//ok는 상태코드 200;
+    }
+
+    @RequestMapping(value = "/modify", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    public String getModify(Model model, @RequestParam(value = "index") int index) {
+        ArticleDto article = this.articleService.getArticleByIndex(index);
+        model.addAttribute("article", article);
+        return "article/modify";
     }
 }

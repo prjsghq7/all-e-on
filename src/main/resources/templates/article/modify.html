@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}">
+    <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}">
+    <title>AEO | 등록</title>
+    <link rel="stylesheet" href="/assets/libraries/ckeditor5/ckeditor5.css">
+    <link rel="stylesheet" href="/assets/libraries/ckeditor5/ckeditor5-custom.css">
+    <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="stylesheet" href="/article/assets/styles/modify.min.css">
+    <script src="/assets/libraries/ckeditor5/ckeditor5.js" type="module"></script>
+    <!--    ckeditor는 타입을 모듈로 해야 사용할수 있다.  ⬆ ⬇-->
+    <script type="importmap">
+        {
+            "imports":{
+                "ckeditor5":"/assets/libraries/ckeditor5/ckeditor5.js",
+                "ckeditor5/":"/assets/libraries/ckeditor5/"
+            }
+        }
+    </script>
+    <script src="/common/assets/scripts/common.js"></script>
+    <script defer src="/common/assets/scripts/object/dialog.js"></script>
+    <script defer src="/article/assets/scripts/modify-ckeditor.js" type="module"></script>
+    <script defer src="/article/assets/scripts/modify.js"></script>
+</head>
+<body>
+<div id="defaultArea">
+    <form novalidate id="modifyForm">
+        <div class="title">
+            <span class="caption">게시글 수정</span>
+            <button data-aeo-object="button" class="submitBtn" type="submit">수정</button>
+        </div>
+        <div class="title-container">
+            <span class="caption">제목</span>
+            <label>
+                <input  name="index" type="hidden" th:value="${article.getIndex()}">
+                <input data-aeo-object="field" type="text" placeholder="제목을 입력해 주세요." minlength="1" maxlength="60" name="title"
+                       th:value="${article.getTitle()}">
+            </label>
+        </div>
+        <label>
+            <textarea name="content" autocomplete="off" hidden class="text-container" th:utext="${article.getContent()}"></textarea>
+        </label>
+    </form>
+</div>
+
+</body>
+</html>

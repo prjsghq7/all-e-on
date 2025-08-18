@@ -41,6 +41,16 @@
   font-size: 3rem;
   font-weight: 800;
 }
+#defaultArea > .container > .title-container > .adjust-container {
+  align-self: end;
+}
+#defaultArea > .container > .title-container > .adjust-container > button {
+  background-color: transparent;
+  color: #2563eb;
+}
+#defaultArea > .container > .title-container > .adjust-container > button:hover {
+  text-decoration: underline;
+}
 #defaultArea > .container > .title-container > .etc-container {
   align-items: center;
   display: flex;
@@ -312,7 +322,7 @@
   background-color: #126ac9;
 }
 #commentContainer .comment:hover {
-  box-shadow: 0 0 2px #2563eb;
+  box-shadow: 0 0 0.125rem #2563eb;
 }
 
 #pageContainer {

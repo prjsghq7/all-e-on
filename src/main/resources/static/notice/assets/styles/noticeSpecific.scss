@@ -27,6 +27,10 @@
 
         > button {
           background-color: transparent;
+          color: #2563eb;
+          &:hover{
+            text-decoration:underline;
+          }
         }
       }
 

@@ -47,6 +47,10 @@
 }
 #defaultArea > .container > .title-container .adjust-container > button {
   background-color: transparent;
+  color: #2563eb;
+}
+#defaultArea > .container > .title-container .adjust-container > button:hover {
+  text-decoration: underline;
 }
 #defaultArea > .container > .title-container > .etc-container {
   align-items: center;

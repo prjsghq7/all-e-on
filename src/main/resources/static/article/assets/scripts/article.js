@@ -1,9 +1,17 @@
 const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
-
+const $defaultArea = document.getElementById('defaultArea');
 const $commentForm = document.getElementById("commentForm");
 const $commentContainer = document.getElementById('commentContainer');
 const $pageContainer = document.getElementById('pageContainer');
+const modifyBtn = $defaultArea.querySelector(':scope>.container>.title-container>.adjust-container>.modify');
+const deleteBtn = $defaultArea.querySelector(':scope>.container>.title-container>.adjust-container>.delete');
+
+modifyBtn.addEventListener('click', () => {
+    const url = new URL(location.href);
+    const index = url.searchParams.get('index');
+    location.href = `${origin}/article/modify?index=${index}`
+})
 
 document.addEventListener('DOMContentLoaded', () => {
     loadComments(1);
@@ -278,6 +286,69 @@ const uploadRecomment = (e) => {
     xhr.send(formData);
 }
 
+
+const deleteArticle = (articleIndex) => {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('index', articleIndex);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            dialog.showSimpleOk('요청', `요청 중 오류${xhr.status}`);
+            return;
+        }
+        const response = JSON.parse(xhr.responseText);
+        const result = response.result;
+        switch (result) {
+            case'success':
+                dialog.showSimpleOk('게시글', '게시글 삭제에 성공하였습니다.', () => {
+                    location.href = `${origin}/article/list`;
+                })
+                break;
+            case'failure':
+                dialog.showSimpleOk('게시글', '게시글 삭제에 실패하였습니다.');
+                break;
+            case 'failure_doesnt_exit':
+                dialog.showSimpleOk('게시글', '게시글이 존재하지 않습니다.');
+                break;
+            case'failure_not_same':
+                dialog.showSimpleOk('게시글', '게시글 삭제할 권한이 없습니다.');
+                break;
+            default:
+                break;
+        }
+    };
+    xhr.open('DELETE', '/api/article/delete');
+    xhr.setRequestHeader(header, token);
+    xhr.send(formData);
+}
+const openDeleteArticleModal = (e) => {
+    const url = new URL(location.href);
+    const index = url.searchParams.get('index');
+    dialog.show({
+        title: '게시글 삭제',
+        content: '게시글 삭제 시, 복구가 불가능 합니다.\n정말로 삭제하시겠습니까?',
+        buttons: [
+            {
+                caption: '취소',
+                color: 'gray',
+                onClickCallback: ($modal) => dialog.hide($modal)
+            },
+            {
+                caption: '삭제',
+                color: 'blue',
+                onClickCallback: ($modal) => {
+                    dialog.hide($modal);
+                    deleteArticle(index);
+                }
+            }
+        ]
+    })
+}
+deleteBtn.addEventListener('click', openDeleteArticleModal);
+
 const deleteComment = (commentIndex, commentType) => {
     let requestUrl;
     if (commentType === 'comment') {
@@ -343,8 +414,8 @@ const openDeleteModal = (e) => {
 }
 
 const $modifyModal = document.getElementById('modifyModal');
-const $modifyForm  = $modifyModal.querySelector('.modify-form');
-const $closeBtn    = $modifyModal.querySelector('.modal-close');
+const $modifyForm = $modifyModal.querySelector('.modify-form');
+const $closeBtn = $modifyModal.querySelector('.modal-close');
 
 const openModifyModal = (e) => {
     const $btn = e.currentTarget;
@@ -411,3 +482,4 @@ $modifyForm.addEventListener('submit', (e) => {
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
 });
+

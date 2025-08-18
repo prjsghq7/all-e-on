@@ -15,8 +15,12 @@ public interface ArticleMapper {
 
     int selectCount(@Param("searchVo") ArticleSearchVo searchVo);
 
-    List<ArticleDto> selectList (@Param("searchVo") ArticleSearchVo searchVo,
-                                 @Param("pageVo") PageVo pageVo);
+    List<ArticleDto> selectList(@Param("searchVo") ArticleSearchVo searchVo,
+                                @Param("pageVo") PageVo pageVo);
 
-    ArticleDto selectByIndex (@Param("index") int index);
+    ArticleDto selectByIndex(@Param("index") int index);
+
+    ArticleEntity selectArticleEntityByIndex(@Param("index") int index);
+
+    int update(@Param("article") ArticleEntity article);
 }

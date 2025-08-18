@@ -1,0 +1,47 @@
+@charset "UTF-8";
+@import "../../../common/assets/styles/_def";
+
+body{
+  background-color: #f8fbfe !important;
+}
+#defaultArea {
+  height: 100vh;
+  background-color: #f8fbfe;
+  box-shadow: none;
+}
+
+#modifyForm {
+  @include flex(column, flex-start, space-evenly);
+  width: inherit;
+  height: inherit;
+  >.title {
+    @include flex(row, center, space-between);
+    width: 100%;
+
+    > .caption {
+      font-size: 4.5rem;
+      font-weight: 900;
+      //-webkit-text-stroke: 0.05rem #2563eb;
+      color: #000;
+    }
+    >.submitBtn{
+      align-self: end;
+      margin-right: 0.0625rem;
+    }
+  }
+  > .title-container {
+    width: 100%;
+    > label {
+      width: 100%;
+
+      > input[name="title"] {
+        width: 25rem;
+        border-radius: 0.625rem;
+      }
+    }
+  }
+
+  > label {
+    width: 100%;
+  }
+}

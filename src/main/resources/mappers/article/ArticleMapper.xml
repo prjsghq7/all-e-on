@@ -16,6 +16,14 @@
                 #{article.isDeleted},
                 #{article.welfareId})
     </insert>
+    <update id="update">
+        update `aeo`.`articles`
+        set `title`=#{article.title},
+            `content`=#{article.content},
+            `is_deleted`=#{article.isDeleted},
+            `modified_at`=#{article.modifiedAt}
+        where `index` = #{article.index};
+    </update>
 
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT COUNT(0)
@@ -83,5 +91,18 @@
         FROM `aeo`.`articles` AS `a`
         LEFT JOIN `aeo`.`users` `u` ON `a`.`user_index` = `u`.`index`
         WHERE `a`.`index` = #{index}
+    </select>
+    <select id="selectArticleEntityByIndex" resultType="com.dev.alleon.entities.article.ArticleEntity">
+        SELECT `index`       AS `index`,
+               `user_index`  AS `userIndex`,
+               `title`       AS `title`,
+               `content`     AS `content`,
+               `view`        AS `view`,
+               `created_at`  AS `createdAt`,
+               `modified_at` AS `modifiedAt`,
+               `is_deleted`  AS `isDeleted`,
+               `welfare_id`  AS `welfareId`
+        FROM `aeo`.`articles`
+        WHERE `index` = #{index}
     </select>
 </mapper>
