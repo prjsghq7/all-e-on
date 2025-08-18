@@ -23,13 +23,32 @@ $header-font-size: 1.875rem;
   font-weight: 600;
 
   > .logo {
-    width: 10rem;
-
     > .title {
       align-items: center;
       display: flex;
       flex-direction: row;
       justify-content: flex-start;
+      font-weight: 800;
+      font-size: 2.5rem;
+      background-image: url("../../../user/assets/images/flag.png");
+      background-size: 350% auto;
+      background-position: center center;
+      background-repeat: no-repeat;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: transparent;
+      text-decoration: none;
+      
+      // 텍스트 그림자로 가독성 향상
+      text-shadow: 
+        2px 2px 4px rgba(0, 0, 0, 0.3),
+        -2px -2px 4px rgba(255, 255, 255, 0.3);
+      
+      &:hover {
+        transform: scale(1.05);
+        transition: transform 0.2s ease;
+      }
     }
   }
 
@@ -41,7 +60,62 @@ $header-font-size: 1.875rem;
     justify-content: flex-start;
 
     .item {
+      position: relative; // 하위 메뉴 위치 기준점
+      
       > .link {
+        padding: 0.5rem 1rem;
+        border-radius: 0.25rem;
+        transition: background-color 0.2s ease;
+        
+        &:hover {
+          background-color: #f8f9fa;
+        }
+      }
+      
+      // 하위 메뉴
+      > .submenu {
+        padding: 0;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background-color: white;
+        border: 1px solid #e0e0e0;
+        border-radius: 0.5rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        min-width: 8rem;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(1.25rem);
+        transition: all 0.3s ease;
+        z-index: 1000;
+        
+        > .submenu-item {
+          > .submenu-link {
+            display: block;
+            padding: 1rem 0.875rem;
+            color: #495057;
+            text-decoration: none;
+            border-bottom: 0.0625rem solid #f8f9fa;
+            transition: background-color 0.2s ease;
+            font-size: 1.25rem;
+            
+            &:last-child {
+              border-bottom: none;
+            }
+            
+            &:hover {
+              background-color: #f8f9fa;
+              color: #007bff;
+            }
+          }
+        }
+      }
+      
+      // hover 시 하위 메뉴 표시
+      &:hover > .submenu {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0.875rem);
       }
     }
   }

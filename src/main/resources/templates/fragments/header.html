@@ -2,20 +2,41 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <header id="header" th:fragment="header">
     <div class="logo">
-        <a href="/home" class="title">A-E-O</a>
+        <a href="/home" class="title">AEO</a>
     </div>
     <span role="none" data-aeo-stretch></span>
     <ul class="menu">
         <li class="item">
-            <a href="#" class="link">Search</a>
+            <span class="link">검색</span>
+            <ul class="submenu">
+                <li class="submenu-item">
+                    <a href="/welfare/list?searchType=lifeArray" class="submenu-link">생애주기</a>
+                </li>
+                <li class="submenu-item">
+                    <a href="/welfare/list?searchType=IntrsThemaArray" class="submenu-link">관심유형</a>
+                </li>
+                <li class="submenu-item">
+                    <a href="/welfare/list?searchType=trgterIndvdlArray" class="submenu-link">가족유형</a>
+                </li>
+            </ul>
         </li>
         <li class="item">
-            <a href="/user/info" class="link">MyPage</a>
+            <span class="link">커뮤니티</span>
+            <ul class="submenu">
+                <li class="submenu-item">
+                    <a href="/notice/" class="submenu-link">공지사항</a>
+                </li>
+                <li class="submenu-item">
+                    <a href="/article/list" class="submenu-link">자유게시판</a>
+                </li>
+            </ul>
+        </li>
+        <li class="item">
+            <a href="/user/info" class="link">마이페이지</a>
         </li>
     </ul>
     <span role="none" data-aeo-stretch></span>
-    <a href="/user/login" class="account-link" th:if="${session.signedUser==null}">Login</a>
-    <a href="/user/logout" class="account-link" th:if="${session.signedUser!=null}">Logout</a>
-<!--    <a href="/user/logout" class="account-link">Logout</a>-->
+    <a href="/user/login" class="account-link" th:if="${session.signedUser==null}">로그인</a>
+    <a href="/user/logout" class="account-link" th:if="${session.signedUser!=null}">로그아웃</a>
 </header>
 </html>
