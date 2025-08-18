@@ -28,8 +28,8 @@
 
     <select id="selectByIndex" resultType="com.dev.alleon.entities.article.RecommentEntity">
         SELECT `index`         AS `index`,
-               `comment_index` AS `userIndex`,
-               `user_index`    AS `commentIndex`,
+               `comment_index` AS `commentIndex`,
+               `user_index`    AS `userIndex`,
                `content`       AS `content`,
                `created_at`    AS `createdAt`,
                `modified_at`   AS `modifiedAt`,
