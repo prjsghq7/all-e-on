@@ -134,44 +134,54 @@ $radius: .625rem;
     }
 
     > .avatar-extra {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
+    }
 
-      > .avatar-actions {
-        display: none;
-        gap: 0.5rem;
+    > .avatar-extra > .avatar-actions {
+      display: flex;
+      gap: 0.5rem;
+      min-height: 2rem;
+      visibility: hidden;
+      pointer-events: none;
+    }
 
-        .pill {
-          padding: 0.25rem 0.5rem;
-          border-radius: 999rem;
-          font-size: 0.875rem;
-          border: 0;
-          cursor: pointer;
-        }
-        .--apply { background: #3b82f6; color: #fff; }
-        .--apply:disabled { opacity: .5; cursor: not-allowed; }
-        .--cancel { background: #374151; color: #fff; }
-      }
+    > .avatar-extra > .avatar-actions .pill {
+      padding: 0.25rem 0.5rem;
+      border-radius: 999rem;
+      font-size: 0.875rem;
+      border: 0;
+      cursor: pointer;
+    }
 
-      > .hint {
-        font-size: 0.875rem;
-        color: $muted;
-        line-height: 1.4;
-        white-space: nowrap;
-      }
+    > .avatar-extra > .avatar-actions .--apply { background: #3b82f6; color: #fff; }
+    > .avatar-extra > .avatar-actions .--apply:disabled { opacity: .5; cursor: not-allowed; }
+    > .avatar-extra > .avatar-actions .--cancel { background: #374151; color: #fff; }
 
-      &[data-dirty="true"] > .avatar-actions { display: inline-flex; }
+    > .avatar-extra[data-dirty="true"] > .avatar-actions {
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    > .avatar-extra > .hint {
+      font-size: 0.875rem;
+      color: $muted;
+      line-height: 1.4;
+      white-space: nowrap;
     }
   }
 
   > .button-container {
+    grid-column: 1 / 2;
+    grid-row: 2;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     gap: 0.5rem;
     align-items: stretch;
-    margin-bottom: 5rem;
+    margin: 0;
 
     [data-aeo-object~="button"] {
       min-width: auto;
@@ -202,6 +212,7 @@ $radius: .625rem;
     > span { line-height: 1.6; }
   }
 }
+
 
 
 

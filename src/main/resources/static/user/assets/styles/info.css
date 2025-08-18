@@ -134,14 +134,18 @@
   transform: translateY(0);
 }
 #profile-section > #profileImageForm > .avatar-extra {
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
 }
 #profile-section > #profileImageForm > .avatar-extra > .avatar-actions {
-  display: none;
+  display: flex;
   gap: 0.5rem;
+  min-height: 2rem;
+  visibility: hidden;
+  pointer-events: none;
 }
 #profile-section > #profileImageForm > .avatar-extra > .avatar-actions .pill {
   padding: 0.25rem 0.5rem;
@@ -162,21 +166,24 @@
   background: #374151;
   color: #fff;
 }
+#profile-section > #profileImageForm > .avatar-extra[data-dirty=true] > .avatar-actions {
+  visibility: visible;
+  pointer-events: auto;
+}
 #profile-section > #profileImageForm > .avatar-extra > .hint {
   font-size: 0.875rem;
   color: #969aa1;
   line-height: 1.4;
   white-space: nowrap;
 }
-#profile-section > #profileImageForm > .avatar-extra[data-dirty=true] > .avatar-actions {
-  display: inline-flex;
-}
 #profile-section > .button-container {
+  grid-column: 1/2;
+  grid-row: 2;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   gap: 0.5rem;
   align-items: stretch;
-  margin-bottom: 5rem;
+  margin: 0;
 }
 #profile-section > .button-container [data-aeo-object~=button] {
   min-width: auto;
