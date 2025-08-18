@@ -131,13 +131,13 @@
   font-weight: 600;
   border: none;
   border-radius: 0.375rem;
-  background-color: #2e9d4d;
+  background-color: #0a4380;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 #commentForm button:hover {
-  background-color: #268a42;
+  background-color: #126ac9;
 }
 
 #commentContainer {
@@ -158,6 +158,7 @@
   flex-shrink: 1;
 }
 #commentContainer .comment {
+  width: 100%;
   border: 0.0625rem solid #dadada;
   border-radius: 0.5rem;
   padding: 1rem;
@@ -173,6 +174,25 @@
   font-size: 0.875rem;
   color: #606060;
 }
+#commentContainer .comment .head > .show-recomments, #commentContainer .comment .head .write-recomment {
+  background-color: transparent;
+}
+#commentContainer .comment .head > .show-recomments > img {
+  width: 1rem;
+  height: 1rem;
+}
+#commentContainer .comment .head > .show-recomments > .down {
+  display: inline-block;
+}
+#commentContainer .comment .head > .show-recomments > .up {
+  display: none;
+}
+#commentContainer .comment .head > .show-recomments[aria-expanded=true] > .down {
+  display: none;
+}
+#commentContainer .comment .head > .show-recomments[aria-expanded=true] > .up {
+  display: inline-block;
+}
 #commentContainer .comment .head .writer {
   font-weight: 600;
   color: #222;
@@ -183,9 +203,10 @@
 }
 #commentContainer .comment .head .action {
   font-size: 0.75rem;
-  color: #217cef;
+  color: #0a4380;
   cursor: pointer;
   text-decoration: none;
+  background-color: transparent;
 }
 #commentContainer .comment .head .action:hover {
   text-decoration: underline;
@@ -208,10 +229,12 @@
   display: flex;
   flex-direction: column;
   flex-wrap: nowrap;
-  gap: 0.5rem;
+  gap: 1rem;
   justify-content: flex-start;
   display: none;
-  margin-left: 3rem;
+  background-color: rgba(10, 67, 128, 0.5);
+  padding: 3rem;
+  border-radius: 0.625rem;
 }
 #commentContainer .comment .recomment-container > * {
   flex-grow: 0;
@@ -220,6 +243,29 @@
 #commentContainer .comment .recomment-container > [data-aeo-stretch] {
   flex-grow: 1;
   flex-shrink: 1;
+}
+#commentContainer .comment .recomment-container > .recomment {
+  align-items: stretch;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.625rem;
+  justify-content: flex-start;
+}
+#commentContainer .comment .recomment-container > .recomment > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#commentContainer .comment .recomment-container > .recomment > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#commentContainer .comment .recomment-container > .recomment > .head > img {
+  width: 1rem;
+  height: 1rem;
+}
+#commentContainer .comment .recomment-container > .recomment > .head > .timestamp {
+  color: #fff5f5;
 }
 #commentContainer .comment .reply-form {
   align-items: center;
@@ -257,13 +303,16 @@
   font-weight: 600;
   border: none;
   border-radius: 0.375rem;
-  background-color: #2e9d4d;
+  background-color: #0a4380;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 #commentContainer .comment .reply-form button:hover {
-  background-color: #268a42;
+  background-color: #126ac9;
+}
+#commentContainer .comment:hover {
+  box-shadow: 0 0 2px #2563eb;
 }
 
 #modifyModal {
@@ -340,13 +389,13 @@
   font-weight: 600;
   border: none;
   border-radius: 0.375rem;
-  background-color: #2e9d4d;
+  background-color: #0a4380;
   color: #ffffff;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 #modifyModal .modal .modal-body .modify-form button[type=submit]:hover {
-  background-color: #268a42;
+  background-color: #126ac9;
 }
 #modifyModal .modal .modal-body .modify-form button[type=submit]:disabled {
   background-color: #cccccc;

@@ -58,6 +58,17 @@ const loadComments = (page) => {
     xhr.send();
 }
 
+$commentContainer.addEventListener('click', (e) => {
+    const btn = e.target.closest('.show-recomments');
+    if (!btn || !$commentContainer.contains(btn)) return;
+
+    const expanded = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!expanded));
+
+    const box = btn.closest('.comment')?.querySelector('.recomment-container');
+    if (box) box.classList.toggle('is-open', !expanded);
+});
+
 const updateComments = (comments) => {
     $commentContainer.innerHTML = '';
 
@@ -68,8 +79,12 @@ const updateComments = (comments) => {
                     <span class="writer">${comment['nickname']}</span>
                     <span class="timestamp">${comment['createdAt'].split('T').join(' ')}</span>
                     <span class="-flex-stretch"></span>
-                    <button class="show-recomments" type="button" data-comment-index="${comment['index']}">대댓글 보기</button>
-                    <button class="write-recomment" type="button">대댓글 작성</button>
+                    <button class="show-recomments" type="button" data-comment-index="${comment['index']}"
+                    aria-expanded="false">
+                    <img src="/article/assets/images/down.png" class="down" alt="댓글 더보기">
+                    <img src="/article/assets/images/up.png" class="up" alt="댓글 안보기">
+                    </button>
+                    <button class="write-recomment" type="button">댓글 작성</button>
                     <button class="action modify" 
                         data-comment-type="comment"
                         data-comment-index="${comment['index']}"
@@ -92,7 +107,7 @@ const updateComments = (comments) => {
                 <form class="reply-form">
                     <input hidden name="commentIndex" type="hidden" value="${comment['index']}">
                     <input class="content" type="text" name="content">
-                    <button type="submit">댓글 등록하기</button>
+                    <button type="submit">등록하기</button>
                 </form>
             </div>`);
 
@@ -122,6 +137,7 @@ const updateRecomments = ($recommentContainer, recomments) => {
         $recommentContainer.insertAdjacentHTML('beforeend', `
             <div class="recomment">
                 <div class="head">
+                <img src="/article/assets/images/replyArrow.png" class="reply" alt="">
                     <span class="writer">${recomment['nickname']}</span>
                     <span class="timestamp">${recomment['createdAt'].split('T').join(' ')}</span>
                     <span class="-flex-stretch"></span>

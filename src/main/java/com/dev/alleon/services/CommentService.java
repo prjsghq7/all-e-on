@@ -69,10 +69,12 @@ public class CommentService {
         }
 
         RecommentEntity dbRecomment = this.recommentMapper.selectByIndex(recomment.getIndex());
+        System.out.println("자손" + dbRecomment.getCommentIndex());
         if (dbRecomment == null || dbRecomment.isDeleted()) {
             return CommonResult.FAILURE_DOESNT_EXIST;
         }
         CommentEntity dbComment = this.commentMapper.selectByIndex(dbRecomment.getCommentIndex());
+        System.out.println("ㅂ부모" + dbComment.getIndex());
         if (dbComment == null || dbComment.isDeleted()) {
             return CommentResult.FAILURE_PARENT_DOESNT_EXIST;
         }
