@@ -24,6 +24,7 @@
         from `aeo`.`recomments` as `t0`
                  left join `aeo`.`users` as `t1` on `t0`.`user_index` = `t1`.`index`
         where `t0`.`comment_index` = #{commentIndex}
+        AND `t0`.`is_deleted` = false
     </select>
 
     <select id="selectByIndex" resultType="com.dev.alleon.entities.article.RecommentEntity">
