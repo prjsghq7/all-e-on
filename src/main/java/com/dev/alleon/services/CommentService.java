@@ -10,6 +10,7 @@ import com.dev.alleon.mappers.article.CommentMapper;
 import com.dev.alleon.mappers.article.RecommentMapper;
 import com.dev.alleon.results.CommonResult;
 import com.dev.alleon.results.Result;
+import com.dev.alleon.results.comment.CommentResult;
 import com.dev.alleon.vos.PageVo;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +74,7 @@ public class CommentService {
         }
         CommentEntity dbComment = this.commentMapper.selectByIndex(dbRecomment.getCommentIndex());
         if (dbComment == null || dbComment.isDeleted()) {
-            return CommonResult.FAILURE_DOESNT_EXIST;
+            return CommentResult.FAILURE_PARENT_DOESNT_EXIST;
         }
 
         dbRecomment.setContent(recomment.getContent());
