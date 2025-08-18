@@ -21,7 +21,7 @@
                  left join `aeo`.`articles` as `t1` on `t0`.`article_index` = `t1`.`index`
                  left join aeo.`users` as `t2` on `t0`.`user_index` = `t2`.`index`
         where `t1`.`index` = #{articleIndex}
-          and `t0`.`is_deleted` = false;
+          and `t0`.`is_deleted` = false
     </select>
 
     <select id="getCommentByArticleIndex" resultType="com.dev.alleon.dtos.Comment.CommentDto">
@@ -35,7 +35,8 @@
                  left join aeo.`users` as `t2` on `t0`.`user_index` = `t2`.`index`
         where `t0`.`article_index` = #{articleIndex}
           and `t0`.`is_deleted` = false
-        LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset};
+        ORDER BY `t0`.`created_at` DESC
+        LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset}
     </select>
 
     <select id="selectByIndex" resultType="com.dev.alleon.entities.article.CommentEntity">

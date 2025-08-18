@@ -33,8 +33,12 @@ $commentForm.addEventListener('submit', (e) => {
         }
 
         const response = JSON.parse(xhr.responseText);
-        alert(response.result);
-        loadComments(1);
+        switch (response.result) {
+            case 'success':
+                loadComments(1);
+                $commentForm['content'].value = '';
+                break;
+        }
     };
     xhr.open('POST', '/api/article/comment/upload');
     xhr.setRequestHeader(header, token);
@@ -264,6 +268,7 @@ const uploadRecomment = (e) => {
             case 'success':
                 alert('대댓글 작성 성공');
                 $replyForm['content'].value = '';
+                $replyForm.style.display = 'none';
                 break;
             default:
         }

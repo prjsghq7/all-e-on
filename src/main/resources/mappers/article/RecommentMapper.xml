@@ -24,7 +24,8 @@
         from `aeo`.`recomments` as `t0`
                  left join `aeo`.`users` as `t1` on `t0`.`user_index` = `t1`.`index`
         where `t0`.`comment_index` = #{commentIndex}
-        AND `t0`.`is_deleted` = false
+          AND `t0`.`is_deleted` = false
+        ORDER BY t0.`created_at` DESC
     </select>
 
     <select id="selectByIndex" resultType="com.dev.alleon.entities.article.RecommentEntity">
@@ -37,6 +38,7 @@
                `is_deleted`    AS `isDeleted`
         FROM `aeo`.`recomments`
         WHERE `index` = #{index}
+        LIMIT 1
     </select>
 
     <update id="update">
