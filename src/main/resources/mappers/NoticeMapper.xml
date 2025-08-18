@@ -17,7 +17,6 @@
         set `view`=`view` + 1
         where `index` = #{index}
         limit 1;
-
     </update>
     <update id="update">
         update `aeo`.`notice`
