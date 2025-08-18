@@ -41,12 +41,15 @@
                             <img class="avatar-img" th:src="${profile}" alt="프로필 이미지">
                             <span class="overlay">변경</span>
                         </span>
-                        <span class="hint">JPG/PNG, 2MB 이하 권장</span>
                     </label>
-                    <div class="avatar-actions">
-                        <button type="button" id="applyProfileBtn" class="pill --apply" disabled>적용</button>
-                        <button type="button" id="cancelProfileBtn" class="pill --cancel">취소</button>
+                    <div class="avatar-extra">
+                        <div class="avatar-actions">
+                            <button id="applyProfileBtn" type="button" class="pill --apply" disabled>적용</button>
+                            <button id="cancelProfileBtn" type="button" class="pill --cancel">취소</button>
+                        </div>
+                        <span class="hint">JPG/PNG, 2MB 이하 권장</span>
                     </div>
+
 
                 </form>
 

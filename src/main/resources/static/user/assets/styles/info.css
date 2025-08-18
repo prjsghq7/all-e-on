@@ -74,11 +74,11 @@
   align-items: start;
 }
 #profile-section > #profileImageForm {
-  position: relative;
   display: grid;
-  grid-template-rows: auto auto auto;
-  gap: 0.75rem;
-  align-content: start;
+  grid-template-columns: 8.5rem 1fr;
+  grid-auto-rows: auto;
+  gap: 1.375rem;
+  align-items: start;
 }
 #profile-section > #profileImageForm > .profile-image-input[type=file] {
   position: absolute !important;
@@ -92,21 +92,22 @@
   border: 0 !important;
 }
 #profile-section > #profileImageForm > .avatar-uploader {
+  grid-column: 1/2;
+  grid-row: 1/2;
   position: relative;
-  display: grid;
-  grid-template-columns: 8.5rem 1fr;
-  align-items: center;
-  gap: 0.75rem;
-  cursor: pointer;
-  user-select: none;
-}
-#profile-section > #profileImageForm > .avatar-uploader > .avatar {
-  position: relative;
+  display: block;
   width: 8.5rem;
   height: 8.5rem;
   border-radius: 50%;
   overflow: hidden;
   border: 0.1875rem solid #e0e0e0;
+  cursor: pointer;
+  user-select: none;
+}
+#profile-section > #profileImageForm > .avatar-uploader > .avatar {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 #profile-section > #profileImageForm > .avatar-uploader > .avatar > .avatar-img {
   width: 100%;
@@ -119,7 +120,7 @@
   left: 0;
   right: 0;
   background: rgba(0, 0, 0, 0.7);
-  color: white;
+  color: #fff;
   text-align: center;
   padding: 0.5rem;
   font-size: 0.875rem;
@@ -129,38 +130,45 @@
 #profile-section > #profileImageForm > .avatar-uploader > .avatar:hover > .overlay {
   transform: translateY(0);
 }
-#profile-section > #profileImageForm > .avatar-uploader > .hint {
-  font-size: 0.875rem;
-  color: #969aa1;
-  line-height: 1.4;
+#profile-section > #profileImageForm > .avatar-extra {
+  grid-column: 1/2;
+  grid-row: 2/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
-#profile-section > #profileImageForm > .avatar-actions {
-  position: absolute;
-  top: 0.25rem;
-  left: 9.25rem;
+#profile-section > #profileImageForm > .avatar-extra > .avatar-actions {
   display: none;
   gap: 0.5rem;
 }
-#profile-section > #profileImageForm > .avatar-actions .pill {
+#profile-section > #profileImageForm > .avatar-extra > .avatar-actions .pill {
   padding: 0.25rem 0.5rem;
   border-radius: 999rem;
   font-size: 0.875rem;
   border: 0;
   cursor: pointer;
 }
-#profile-section > #profileImageForm > .avatar-actions .--apply:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-#profile-section > #profileImageForm > .avatar-actions .--apply {
+#profile-section > #profileImageForm > .avatar-extra > .avatar-actions .--apply {
   background: #3b82f6;
   color: #fff;
 }
-#profile-section > #profileImageForm > .avatar-actions .--cancel {
+#profile-section > #profileImageForm > .avatar-extra > .avatar-actions .--apply:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+#profile-section > #profileImageForm > .avatar-extra > .avatar-actions .--cancel {
   background: #374151;
   color: #fff;
 }
-#profile-section > #profileImageForm[data-dirty=true] > .avatar-actions {
+#profile-section > #profileImageForm > .avatar-extra > .hint {
+  font-size: 0.875rem;
+  color: #969aa1;
+  line-height: 1.4;
+  text-wrap: nowrap;
+  padding-left: 0.5rem;
+}
+#profile-section > #profileImageForm > .avatar-extra[data-dirty=true] > .avatar-actions {
   display: inline-flex;
 }
 #profile-section > .profile-info {
