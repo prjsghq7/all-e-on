@@ -23,7 +23,8 @@
         update `aeo`.`notice`
         set `title`=#{notice.title},
             `content`=#{notice.content},
-            `modified_at`=#{notice.modifiedAt}
+            `modified_at`=#{notice.modifiedAt},
+            `is_deleted`=#{notice.isDeleted}
         where `index` = #{notice.index}
         limit 1;
 
@@ -38,6 +39,7 @@
                `modified_at` as `modified_at`,
                `is_deleted`  as `is_deleted`
         from `aeo`.`notice`
+        where `is_deleted`=false
         order by `created_at` desc
         limit #{pageVo.rowCount} offset #{pageVo.dbOffset};
     </select>
@@ -56,6 +58,7 @@
     </select>
     <select id="selectAllNotice" resultType="java.lang.Integer">
         select count(0)
-        from `aeo`.`notice`;
+        from `aeo`.`notice`
+        where `is_deleted`=false;
     </select>
 </mapper>

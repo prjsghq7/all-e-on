@@ -42,8 +42,10 @@
   font-size: 3rem;
   font-weight: 800;
 }
-#defaultArea > .container > .title-container .modify {
+#defaultArea > .container > .title-container .adjust-container {
   align-self: end;
+}
+#defaultArea > .container > .title-container .adjust-container > button {
   background-color: transparent;
 }
 #defaultArea > .container > .title-container > .etc-container {

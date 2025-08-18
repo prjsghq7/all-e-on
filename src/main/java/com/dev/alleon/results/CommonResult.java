@@ -6,5 +6,6 @@ public enum CommonResult implements Result{
     FAILURE_DUPLICATE,      //중복
     FAILURE_SESSION_EXPIRED,      //로그인 필요 | 권한 없음
     FAILURE_SUSPENDED,      //정지 상태
+    FAILURE_DOESNT_EXIST,
     SUCCESS
 }

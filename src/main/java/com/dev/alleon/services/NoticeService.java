@@ -8,6 +8,7 @@ import com.dev.alleon.results.Result;
 import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.vos.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -86,6 +87,23 @@ public class NoticeService {
         dbNotice.setModifiedAt(LocalDateTime.now());
         dbNotice.setContent(notice.getContent());
         dbNotice.setTitle(notice.getTitle());
+        dbNotice.setDeleted(false);
+        return this.noticeMapper.update(dbNotice) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
+    }
+
+    public Result delete(UserEntity signedUser, int index) {
+        if (signedUser == null || index < 0) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+        if (signedUser.getActiveState() >= 1) {
+            return CommonResult.FAILURE;
+        }
+        NoticeEntity dbNotice = this.noticeMapper.selectByIndex(index);
+        if (dbNotice == null || dbNotice.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+        dbNotice.setDeleted(true);
+        dbNotice.setModifiedAt(LocalDateTime.now());
         return this.noticeMapper.update(dbNotice) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 

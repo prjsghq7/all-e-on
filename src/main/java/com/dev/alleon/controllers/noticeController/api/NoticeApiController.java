@@ -62,4 +62,13 @@ public class NoticeApiController {
         response.put("result", result.toStringLower());
         return response.toString();
     }
+
+    @RequestMapping(value = "/delete", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String delete(@SessionAttribute(value = "signedUser") UserEntity signedUser, @RequestParam(value = "index") int index) {
+        Result result = this.noticeService.delete(signedUser, index);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
 }

@@ -22,9 +22,12 @@
         font-weight: 800;
       }
 
-      .modify {
+      .adjust-container {
         align-self: end;
-        background-color: transparent;
+
+        > button {
+          background-color: transparent;
+        }
       }
 
       > .etc-container {
