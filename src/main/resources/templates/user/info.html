@@ -55,7 +55,7 @@
 
                 </form>
 
-                <div class="profile-info -flex-stretch">
+                <div class="profile-info" data-aeo-stretch>
                     <span class="label">이름</span>
                     <span th:text="${signedUser.name}"></span>
 
@@ -74,15 +74,34 @@
                     <span class="label">주소</span>
                     <span th:text="|${signedUser.addressPrimary} ${signedUser.addressSecondary}|"></span>
 
-                    <span class="label">관심 주제</span>
-                    <span>ㅋㅋ</span>
+                    <span class="label">가구 유형</span>
+                    <span>
+    <strong th:each="item : ${interestCode}"
+            th:if="${item.code == signedUser.getHouseholdTypeCode()}"
+            th:text="${item.displayText}">-</strong>
+
+  </span>
+
+                    <span class="label">생애 주기</span>
+                    <span>
+    <strong th:each="item : ${lifeCode}"
+            th:if="${item.code == signedUser.getLifeCycleCode()}"
+            th:text="${item.displayText}">-</strong>
+  </span>
+
+                    <span class="label">관심 분야</span>
+                    <span>
+    <strong th:each="item : ${interestCode}"
+            th:if="${item.code == signedUser.getInterestSubCode()}"
+            th:text="${item.displayText}">-</strong>
+  </span>
                 </div>
 
                 <div class="button-container">
                     <a href="/user/modify" data-aeo-object="button -color-blue" aria-label="정보 수정">
                         <span class="--caption">정보 수정</span>
                     </a>
-                    <a href="/user/remove-account" data-aeo-object="button -color-red" aria-label="회원 탈퇴">
+                    <a href="/user/removeAccount" data-aeo-object="button -color-red" aria-label="회원 탈퇴">
                         <span class="--caption">회원 탈퇴</span>
                     </a>
                 </div>

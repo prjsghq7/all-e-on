@@ -66,16 +66,20 @@ $radius: .625rem;
 
 #profile-section {
   display: grid;
-  grid-template-columns: 18rem 1fr;
-  gap: 1.25rem 2rem;
+  grid-template-columns: 15rem 1fr;
+  column-gap: 2rem;
+  row-gap: 1rem;
   align-items: start;
+  margin-left: 2rem;
+  padding: 2rem;
 
   > #profileImageForm {
+    grid-column: 1 / 2;
+    grid-row: 1;
     display: grid;
-    grid-template-columns: 8.5rem 1fr;
-    grid-auto-rows: auto;
-    gap: 1.375rem;
-    align-items: start;
+    grid-template-rows: auto auto;
+    justify-items: center;
+    gap: 0.75rem;
 
     > .profile-image-input[type="file"] {
       position: absolute !important;
@@ -90,8 +94,6 @@ $radius: .625rem;
     }
 
     > .avatar-uploader {
-      grid-column: 1 / 2;
-      grid-row: 1 / 2;
       position: relative;
       display: block;
       width: 8.5rem;
@@ -107,11 +109,17 @@ $radius: .625rem;
         width: 100%;
         height: 100%;
 
-        > .avatar-img { width: 100%; height: 100%; object-fit: cover; }
+        > .avatar-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
 
         > .overlay {
           position: absolute;
-          bottom: 0; left: 0; right: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
           background: rgba(0,0,0,.7);
           color: #fff;
           text-align: center;
@@ -120,13 +128,12 @@ $radius: .625rem;
           transform: translateY(100%);
           transition: transform .3s ease;
         }
+
         &:hover > .overlay { transform: translateY(0); }
       }
     }
 
     > .avatar-extra {
-      grid-column: 1 / 2;
-      grid-row: 2 / 3;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -152,29 +159,54 @@ $radius: .625rem;
         font-size: 0.875rem;
         color: $muted;
         line-height: 1.4;
-        text-wrap: nowrap;
-        padding-left: .5rem;
+        white-space: nowrap;
       }
 
       &[data-dirty="true"] > .avatar-actions { display: inline-flex; }
     }
   }
 
-  > .profile-info {
-    display: grid;
-    grid-template-columns: auto 1fr;
-    gap: 1rem 2rem;
-    align-items: center;
-
-    > .label { font-weight: 600; color: $ink; min-width: 6rem; }
-  }
-
   > .button-container {
     display: flex;
-    gap: 1rem;
-    margin-top: 2rem;
+    flex-direction: row;
+    gap: 0.5rem;
+    align-items: stretch;
+    margin-bottom: 5rem;
+
+    [data-aeo-object~="button"] {
+      min-width: auto;
+      padding: 0.375rem 0.7rem;
+      border-radius: 0.375rem;
+      font-size: 0.875rem;
+      box-shadow: none;
+      width: 100%;
+    }
+  }
+
+  > .profile-info {
+    grid-column: 2 / 3;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    column-gap: 2rem;
+    row-gap: 1.125rem;
+    align-items: center;
+
+    > .label {
+      font-weight: 600;
+      color: $ink;
+      min-width: 6rem;
+      line-height: 1.6;
+    }
+
+    > span { line-height: 1.6; }
   }
 }
+
+
+
+
+
 
 
 
