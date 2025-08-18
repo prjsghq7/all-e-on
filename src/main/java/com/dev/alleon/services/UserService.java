@@ -452,7 +452,10 @@ public class UserService {
         if (this.userMapper.selectUserCountByEmail(customOAuth2User.getEmail()) > 0) {
             return CommonResult.FAILURE_DUPLICATE;
         }
-        ;
+        if (this.userMapper.selectCountByContact(contactFrist, contactSecond, contactThird) > 0) {
+            return CommonResult.FAILURE_DUPLICATE_CONTACT;
+        }
+
         user.setName(customOAuth2User.getName());
         user.setEmail(customOAuth2User.getEmail());
         user.setGender(customOAuth2User.getGender());
