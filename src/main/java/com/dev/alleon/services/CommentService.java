@@ -1,6 +1,7 @@
 package com.dev.alleon.services;
 
 import com.dev.alleon.dtos.Comment.CommentDto;
+import com.dev.alleon.dtos.Comment.CommentsResponse;
 import com.dev.alleon.dtos.Comment.RecommentDto;
 import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.article.ArticleEntity;
@@ -62,6 +63,24 @@ public class CommentService {
                 : CommonResult.FAILURE;
     }
 
+    public Result deleteComment(UserEntity signedUser, CommentEntity comment) {
+        if (signedUser == null
+                || signedUser.getActiveState() >= 2) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        CommentEntity dbComment = this.commentMapper.selectByIndex(comment.getIndex());
+        if (dbComment == null || dbComment.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+
+        dbComment.setDeleted(true);
+        dbComment.setModifiedAt(LocalDateTime.now());
+        return this.commentMapper.update(dbComment) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
     public Result modifyRecomment(UserEntity signedUser, RecommentEntity recomment) {
         if (signedUser == null
                 || signedUser.getActiveState() >= 2) {
@@ -69,17 +88,37 @@ public class CommentService {
         }
 
         RecommentEntity dbRecomment = this.recommentMapper.selectByIndex(recomment.getIndex());
-        System.out.println("자손" + dbRecomment.getCommentIndex());
         if (dbRecomment == null || dbRecomment.isDeleted()) {
             return CommonResult.FAILURE_DOESNT_EXIST;
         }
         CommentEntity dbComment = this.commentMapper.selectByIndex(dbRecomment.getCommentIndex());
-        System.out.println("ㅂ부모" + dbComment.getIndex());
         if (dbComment == null || dbComment.isDeleted()) {
             return CommentResult.FAILURE_PARENT_DOESNT_EXIST;
         }
 
         dbRecomment.setContent(recomment.getContent());
+        dbRecomment.setModifiedAt(LocalDateTime.now());
+        return this.recommentMapper.update(dbRecomment) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public Result deleteRecomment(UserEntity signedUser, RecommentEntity recomment) {
+        if (signedUser == null
+                || signedUser.getActiveState() >= 2) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        RecommentEntity dbRecomment = this.recommentMapper.selectByIndex(recomment.getIndex());
+        if (dbRecomment == null || dbRecomment.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+        CommentEntity dbComment = this.commentMapper.selectByIndex(dbRecomment.getCommentIndex());
+        if (dbComment == null || dbComment.isDeleted()) {
+            return CommentResult.FAILURE_PARENT_DOESNT_EXIST;
+        }
+
+        dbRecomment.setDeleted(true);
         dbRecomment.setModifiedAt(LocalDateTime.now());
         return this.recommentMapper.update(dbRecomment) > 0
                 ? CommonResult.SUCCESS
@@ -112,7 +151,7 @@ public class CommentService {
         return wholeRecomments;
     }
 
-    public List<CommentDto> getCommentsByArticle(int articleIndex, int page) {
+    public CommentsResponse getCommentsByArticle(int articleIndex, int page) {
         if (articleIndex < 0) {
             return null;
         }
@@ -120,7 +159,7 @@ public class CommentService {
         PageVo pageVo = new PageVo(NUM_OF_ROWS, page, totalCount);
 
         List<CommentDto> comments = this.commentMapper.getCommentByArticleIndex(articleIndex, pageVo);
-        return comments;
+        return new CommentsResponse(comments, pageVo);
     }
 
 }

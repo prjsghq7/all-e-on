@@ -3,6 +3,11 @@ const header = document.querySelector('meta[name="_csrf_header"]').getAttribute(
 
 const $commentForm = document.getElementById("commentForm");
 const $commentContainer = document.getElementById('commentContainer');
+const $pageContainer = document.getElementById('pageContainer');
+
+document.addEventListener('DOMContentLoaded', () => {
+    loadComments(1);
+});
 
 $commentForm.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -50,8 +55,9 @@ const loadComments = (page) => {
             return;
         }
 
-        const comments = JSON.parse(xhr.responseText);
-        updateComments(comments)
+        const commentsResponse = JSON.parse(xhr.responseText);
+        updateComments(commentsResponse.comments);
+        updatePageContainer(commentsResponse.pageVo);
     };
     xhr.open('GET', `${origin}/api/article/comments?articleIndex=${articleIndex}&page=${page}`);
     xhr.setRequestHeader(header, token);
@@ -68,6 +74,28 @@ $commentContainer.addEventListener('click', (e) => {
     const box = btn.closest('.comment')?.querySelector('.recomment-container');
     if (box) box.classList.toggle('is-open', !expanded);
 });
+
+const updatePageContainer = (pageVo) => {
+    $pageContainer.innerHTML = '';
+    for (let pageNum = pageVo.startPage; pageNum <= pageVo.endPage; pageNum++) {
+        const $button = document.createElement('button');
+        $button.className = 'page';
+        $button.innerText = pageNum;
+
+        if (pageNum === pageVo.page) {
+            $button.classList.add('-selected');
+        }
+
+        $pageContainer.appendChild($button);
+    }
+
+    $pageContainer.querySelectorAll('.page').forEach(($btn) => {
+        $btn.addEventListener('click', () => {
+            const pageNum = $btn.innerText;
+            loadComments(pageNum);
+        });
+    });
+}
 
 const updateComments = (comments) => {
     $commentContainer.innerHTML = '';
@@ -89,7 +117,9 @@ const updateComments = (comments) => {
                         data-comment-type="comment"
                         data-comment-index="${comment['index']}"
                         data-comment-content="${comment['content']}">수정</button>
-                    <button class="action">삭제</button>
+                    <button class="action delete"
+                        data-comment-type="comment"
+                        data-comment-index="${comment['index']}">삭제</button>
                 </div>
                 <div class="body">
                     <span class="comment">${comment['content']}</span>
@@ -113,6 +143,10 @@ const updateComments = (comments) => {
 
         $commentContainer.querySelectorAll('.action.modify').forEach(($btnModify) => {
             $btnModify.addEventListener('click', openModifyModal);
+        });
+
+        $commentContainer.querySelectorAll('.action.delete').forEach(($btnDelete) => {
+            $btnDelete.addEventListener('click', openDeleteModal);
         });
 
         $commentContainer.querySelectorAll('.write-recomment').forEach(($toggleRecomments) => {
@@ -145,7 +179,9 @@ const updateRecomments = ($recommentContainer, recomments) => {
                         data-comment-type="recomment"
                         data-comment-index="${recomment['index']}"
                         data-comment-content="${recomment['content']}">수정</button>
-                    <button class="action">삭제</button>
+                    <button class="action delete"
+                        data-comment-type="recomment"
+                        data-comment-index="${recomment['index']}">삭제</button>
                 </div>
                 <label class="body">
                     <span class="comment">${recomment['content']}</span>
@@ -155,6 +191,10 @@ const updateRecomments = ($recommentContainer, recomments) => {
 
     $recommentContainer.querySelectorAll('.action.modify').forEach(($btnModify) => {
         $btnModify.addEventListener('click', openModifyModal);
+    });
+
+    $recommentContainer.querySelectorAll('.action.delete').forEach(($btnDelete) => {
+        $btnDelete.addEventListener('click', openDeleteModal);
     });
 }
 
@@ -233,11 +273,69 @@ const uploadRecomment = (e) => {
     xhr.send(formData);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    loadComments(1);
-});
+const deleteComment = (commentIndex, commentType) => {
+    let requestUrl;
+    if (commentType === 'comment') {
+        requestUrl = '/api/article/comment/delete';
+    } else if (commentType === 'recomment') {
+        requestUrl = '/api/article/recomment/delete';
+    } else {
+        alert('잘못된 접근입니다.');
+        return;
+    }
 
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('index', commentIndex);
+    formData.append('content', commentType);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            alert(`${xhr.status} 에러`);
+            return;
+        }
 
+        const response = JSON.parse(xhr.responseText);
+        alert(response.result);
+        switch (response.result) {
+            case 'success':
+                loadComments(1);
+                break;
+            default:
+        }
+    };
+    xhr.open('DELETE', requestUrl);
+    xhr.setRequestHeader(header, token);
+    xhr.send(formData);
+}
+
+const openDeleteModal = (e) => {
+    const $btn = e.currentTarget;
+    const commentType = $btn.dataset.commentType;
+    const commentIndex = $btn.dataset.commentIndex;
+
+    dialog.show({
+        title: '댓글 삭제',
+        content: '댓글 삭제 시, 복구가 불가능 합니다.\n정말로 삭제하시겠습니까?',
+        buttons: [
+            {
+                caption: '취소',
+                color: 'gray',
+                onClickCallback: ($modal) => dialog.hide($modal)
+            },
+            {
+                caption: '삭제',
+                color: 'blue',
+                onClickCallback: ($modal, $btn) => {
+                    dialog.hide($modal);
+                    deleteComment(commentIndex, commentType);
+                }
+            }
+        ]
+    })
+}
 
 const $modifyModal = document.getElementById('modifyModal');
 const $modifyForm  = $modifyModal.querySelector('.modify-form');
