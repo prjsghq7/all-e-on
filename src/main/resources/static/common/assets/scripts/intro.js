@@ -25,3 +25,8 @@ const invalidIndex = setInterval(()=>{
     currentIndex++;
 },2000)
 
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        location.href="/home";
+    }
+});

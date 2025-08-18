@@ -207,6 +207,9 @@ public class UserController {
 
         model.addAttribute("profile", profileUrl);
         model.addAttribute("signedUser", signedUser);
+        model.addAttribute("houseCode", userService.getCode(CodeEntity.CodeType.trgterIndvdlArray));
+        model.addAttribute("interestCode", userService.getCode(CodeEntity.CodeType.IntrsThemaArray));
+        model.addAttribute("lifeCode", userService.getCode(CodeEntity.CodeType.lifeArray));
         return "user/info";
     }
 
@@ -281,7 +284,7 @@ public class UserController {
         return response.toString();
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
+    @RequestMapping(value = "/removeAccount", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getRemove(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, Model model) {
         if (signedUser == null || signedUser.getActiveState() > 2) {
             return "redirect:/user/login";
@@ -290,7 +293,7 @@ public class UserController {
         return "user/removeAccount";
     }
 
-    @RequestMapping(value = "/remove", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/removeAccount", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public String deleteRemoveAccount(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser, EmailTokenEntity emailToken, HttpServletRequest request, HttpSession session) {
         emailToken.setUserAgent(request.getHeader("User-Agent"));

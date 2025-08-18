@@ -10,6 +10,19 @@
         return (t && h) ? { header: h, token: t } : null;
     };
 
+    const setBtnState = (btn, speaking) => {
+        if (!btn) return;
+        btn.classList.toggle('is-speaking', !!speaking);
+        btn.setAttribute('aria-pressed', speaking ? 'true' : 'false');
+
+        const capSpeak = btn.querySelector('.caption.speak');
+        const capCancel = btn.querySelector('.caption.cancel');
+        if (!capSpeak && !capCancel) {
+            const cap = btn.querySelector('.caption');
+            if (cap) cap.textContent = speaking ? '중지' : '음성안내';
+        }
+    };
+
     const TTS = {
         _audio: null,
         _ac: null,
@@ -29,7 +42,11 @@
             this._isFetching = false;
             this._isPlaying = false;
             this._seq++;
-            if (this._currentBtn) { this._currentBtn.classList.remove('is-speaking'); this._currentBtn = null; }
+
+            if (this._currentBtn) {
+                setBtnState(this._currentBtn, false);
+                this._currentBtn = null;
+            }
         },
 
         async speak(text, opts = {}) {
@@ -66,7 +83,6 @@
                 if (!res.ok) throw new Error('TTS HTTP ' + res.status);
                 blob = await res.blob();
             } catch {
-                // Web Speech 폴백 없음
                 this._isFetching = false;
                 return;
             }
@@ -83,12 +99,18 @@
                 URL.revokeObjectURL(url);
                 if (this._audio === audio) this._audio = null;
                 this._isPlaying = false;
-                if (this._currentBtn) { this._currentBtn.classList.remove('is-speaking'); this._currentBtn = null; }
+                if (this._currentBtn) {
+                    setBtnState(this._currentBtn, false);
+                    this._currentBtn = null;
+                }
             };
             audio.onerror = () => {
                 URL.revokeObjectURL(url);
                 this._isPlaying = false;
-                if (this._currentBtn) { this._currentBtn.classList.remove('is-speaking'); this._currentBtn = null; }
+                if (this._currentBtn) {
+                    setBtnState(this._currentBtn, false);
+                    this._currentBtn = null;
+                }
             };
 
             try { await audio.play(); }
@@ -104,13 +126,11 @@
         e.preventDefault();
         e.stopPropagation();
 
-        // 같은 버튼을 재클릭하면 토글: 정지
         if ((TTS._isPlaying || TTS._isFetching) && TTS._currentBtn === btn) {
             TTS.stop();
             return;
         }
 
-        // 다른 버튼을 누르면 현재 재생 중단 후 새로 시작
         if (TTS._isPlaying || TTS._isFetching) {
             TTS.stop();
         }
@@ -141,7 +161,7 @@
         if (!text) return;
 
         TTS._currentBtn = btn;
-        btn.classList.add('is-speaking');
+        setBtnState(btn, true);
         TTS.speak(text);
     });
 

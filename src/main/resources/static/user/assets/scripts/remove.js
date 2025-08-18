@@ -67,7 +67,7 @@ $deleteForm.addEventListener('submit', (e) => {
                 dialog.showSimpleOk('회원 탈퇴', '알 수 없는 이유로 회원 탈퇴에 실패하였습니다.\n잠시 후 다시 시도해 주세요.');
         }
     };
-    xhr.open('DELETE', '/user/remove');
+    xhr.open('DELETE', '/user/removeAccount');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
     loading.show();
