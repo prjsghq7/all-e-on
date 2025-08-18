@@ -74,11 +74,11 @@ const loadAlarmData = () => {
         for (const item of response) {
             // D+/- 계산
             const today = new Date();
-            const alarmDate = new Date(item.alarmAt);
+            const alarmDate = new Date(item['alarmAt']);
             const timeDiff = alarmDate.getTime() - today.getTime();
             const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
-// statusText에 클래스 추가
+            // statusText에 클래스 추가
             let statusClass = '';
             let statusText = '';
             if (daysDiff < 0) {
@@ -95,14 +95,14 @@ const loadAlarmData = () => {
 // HTML에 클래스 추가
             $listHTML += `
                     <li class="item">
-                        <a href="#" class="link">
-                            <span class="text title">${item.welfareName}</span>
-                            <span class="text ministry"><span class="label">부처 :</span> ${item.ministryName}</span>
-                            <span class="text summary"><span class="label">요약 :</span> ${item.summary}</span>
-                            <span class="text cycle"><span class="label">지원주기 :</span> ${item.supportCycle}</span>
+                        <a href="/welfare/detail?id=${item['welfareId']}" class="link">
+                            <span class="text title">${item['welfareName']}</span>
+                            <span class="text ministry"><span class="label">부처 :</span> ${item['ministryName']}</span>
+                            <span class="text summary"><span class="label">요약 :</span> ${item['summary']}</span>
+                            <span class="text cycle"><span class="label">지원주기 :</span> ${item['supportCycle']}</span>
                             <span role="none" data-aeo-stretch></span>
                             <div class="day-box">
-                                <span class="day"><span class="label">알람 :</span> ${item.alarmAt}</span>
+                                <span class="day"><span class="label">알람 :</span> ${item['alarmAt']}</span>
                                 <span class="day-text ${statusClass}">${statusText}</span>
                             </div>
                         </a>

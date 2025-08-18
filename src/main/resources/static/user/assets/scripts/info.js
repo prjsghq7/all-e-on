@@ -1,6 +1,9 @@
 const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
 const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 
+const $favoriteSection = document.getElementById('favorite-section');
+const $list = $favoriteSection.querySelector(`:scope > .favorite-container > .favorite-list`);
+
 let date = new Date();
 let markedDates = []; // 마크된 날짜들을 저장할 배열
 let selectedDate = null; // 현재 선택된 날짜
@@ -405,15 +408,15 @@ const renderCalender = () => {
 
     dates.forEach((d, i) => {
         const condition = i >= firstDateIndex && i < lastDateIndex + 1 ? 'this' : 'other';
-    
+
         // 여기에 조건부 마크 표시 로직 추가
-        const isMarked = condition === 'this' && markedDates.some(md => 
-            md.year === viewYear && 
-            md.month === viewMonth + 1 && 
+        const isMarked = condition === 'this' && markedDates.some(md =>
+            md.year === viewYear &&
+            md.month === viewMonth + 1 &&
             md.day === d
         );
         const markedClass = isMarked ? ' marked' : '';
-    
+
         dates[i] = `<div class="date">
                         <button class="date-button">
                         <span class="${condition}${markedClass}">${d}</span>
@@ -566,7 +569,7 @@ const updateMarkedList = () => {
     const unique = [...new Set(markedDates.map(d => `${d.year}-${d.month}-${d.day}`))].sort((a, b) => {
         const [yearA, monthA, dayA] = a.split('-').map(Number);
         const [yearB, monthB, dayB] = b.split('-').map(Number);
-        
+
         if (yearA !== yearB) return yearB - yearA;  // yearA - yearB → yearB - yearA
         if (monthA !== monthB) return monthB - monthA;  // monthA - monthB → monthB - monthA
         return dayB - dayA;  // dayA - dayB → dayB - dayA
@@ -664,7 +667,6 @@ const showDateDetail = (data) => {
         </a>
     `;
 };
-
 
 
 // 달력 네비게이션 함수들
@@ -942,29 +944,29 @@ const saveNotification = (year, month, day) => {
 
         if (response.result) {
             // 서버 저장 성공 시 markedDates 배열에 직접 추가하지 않음
-            
+
             // 서버에서 최신 데이터를 다시 가져와서 markedDates 업데이트
             initializeMarkedDates();
-            
+
             // 성공 메시지 표시
             alert('선택된 서비스의 알림이 성공적으로 등록되었습니다!');
-            
+
             // 우측 패널을 선택된 날짜의 마크 목록으로 변경
             showMarkedListForDate({year: year, month: month, day: day});
-            
+
             // 전역 등록하기 버튼 다시 표시
             const globalAddMarkBtn = document.getElementById('globalAddMarkBtn');
             globalAddMarkBtn.style.display = 'block';
-            
+
             // 라디오 버튼 초기화
             selectedRadio.checked = false;
-            
+
             // 선택 상태 제거
             const allItems = document.querySelectorAll('.favorited-service-item');
             allItems.forEach(item => {
                 item.classList.remove('selected');
             });
-            
+
             // 저장 버튼 숨기기
             const saveSection = document.querySelector('.save-section');
             saveSection.style.display = 'none';
@@ -1140,3 +1142,76 @@ setTimeout(() => {
         });
     }
 }, 100);
+
+const favoriteDelete = (welfareId) => {
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('welfareId', welfareId);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+
+        if (xhr.status < 200 || xhr.status >= 300) {
+            console.log("에러");
+            return;
+        }
+        const response = JSON.parse(xhr.responseText);
+        if (response.result === true) {
+            console.log(response.result.toString());
+            location.href = `${origin}/user/info`
+        } else {
+            console.log(response.result.toString());
+        }
+    };
+    xhr.open('DELETE', '/welfare/like');
+    xhr.setRequestHeader(header, token);
+    xhr.send(formData);
+}
+
+const favoriteSectionList = () => {
+    const xhr = new XMLHttpRequest();
+
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            alert(`[${xhr.status}] 알림 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.`);
+            return;
+        }
+
+        const response = JSON.parse(xhr.responseText);
+        let $listHTML = ``;
+        for (const item of response) {
+            $listHTML += `
+                        <li class="favorite-item">
+                            <a href="/welfare/detail?id=${item['welfareId']}" class="favorite-link">
+                                <div class="favorite-content">
+                                    <span class="favorite-title">${item['welfareName']}</span>
+                                    <span class="favorite-summary">${item['summary']}</span>
+                                </div>
+                            </a>
+                            <span role="none" data-aeo-stretch></span>
+                            <div class="favorite-action">
+                                    <button class="favorite-remove-btn" type="button" data-id=${item['welfareId']}>
+                                        <img src="/welfare/assets/images/welfare-like-liked.png" alt="" class="icon">
+                                    </button>
+                            </div>
+                        </li>
+                    `;
+        }
+        $list.innerHTML += $listHTML;
+
+        $list.querySelectorAll(':scope > .favorite-item > .favorite-action > .favorite-remove-btn').forEach($item => {
+            $item.addEventListener('click', () => {
+                alert($item.getAttribute('data-id'));
+                favoriteDelete($item.getAttribute('data-id'));
+            });
+        });
+    };
+    xhr.open('GET', `/welfare/list`);
+    xhr.send();
+};
+
+favoriteSectionList();

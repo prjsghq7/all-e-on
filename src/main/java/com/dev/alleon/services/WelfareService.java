@@ -475,17 +475,12 @@ public class WelfareService {
         if (welfareId.isEmpty()) {
             System.out.println("에러 - 복지 ID 값이 비어있음");
             return false;
-        }
-        else {
+        } else {
             return this.welfareLikesMapper.selectCountByWelfareIdAndUserIndex(welfareId, signedUser.getIndex()) > 0;
         }
     }
 
     public Boolean toggleLike(UserEntity signedUser, String welfareId) {
-        // 사용자 및 음악 유효성 검사
-
-        System.out.println("서비스 도착");
-
         if (signedUser == null || welfareId.isEmpty()) {
             System.out.println("여기 에러인거같음");
             return null;
@@ -505,6 +500,20 @@ public class WelfareService {
             // 좋아요 취소
             System.out.println("좋아요 취소");
             return this.welfareLikesMapper.delete(welfareId, signedUser.getIndex()) > 0 ? false : null;
+        }
+    }
+
+    public boolean deleteLike(UserEntity signedUser, String welfareId) {
+        if (signedUser == null || welfareId.isEmpty()) {
+            System.out.println("여기 에러인거같음");
+            return false;
+        }
+
+        // 현재 좋아요 상태 확인
+        if (this.welfareLikesMapper.selectCountByWelfareIdAndUserIndex(welfareId, signedUser.getIndex()) > 0) {
+            return this.welfareLikesMapper.delete(welfareId, signedUser.getIndex()) > 0;
+        } else {
+            return false;
         }
     }
 

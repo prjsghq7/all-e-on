@@ -83,6 +83,7 @@
                  LEFT JOIN `aeo`.`welfares` AS `w` ON `l`.`welfare_id` = `w`.`id`
         WHERE `l`.`user_index` = #{userIndex}
         AND `l`.`alarm_at` IS NOT NULL
+        ORDER BY `l`.`alarm_at` DESC
     </select>
 
 </mapper>

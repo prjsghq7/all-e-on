@@ -49,7 +49,7 @@ public class WelfareController {
         WelfareDetailResponse welfare = this.welfareService.getWelfareDetail(id);
 
         model.addAttribute("welfare", welfare);
-        model.addAttribute("likeStatus", this.welfareService.getLikeStatus(signedUser,id));
+        model.addAttribute("likeStatus", this.welfareService.getLikeStatus(signedUser, id));
         model.addAttribute("signedUser", signedUser);
 
         return "welfare/detail";
@@ -71,6 +71,16 @@ public class WelfareController {
         // {result: failure} : 실패한 것
         // {result: true} : 좋아하게 된 것
         // {result: false} : 좋아하지 않게 된 것
+    }
+
+    @RequestMapping(value = "/like", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public String deleteLike(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                             @RequestParam(value = "welfareId", required = false) String welfareId) {
+        boolean result = this.welfareService.deleteLike(signedUser, welfareId);
+        JSONObject response = new JSONObject();
+        response.put("result", result);
+        return response.toString();
     }
 
     @RequestMapping(value = "/alarm", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
