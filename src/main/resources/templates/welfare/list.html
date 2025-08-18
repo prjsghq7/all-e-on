@@ -68,10 +68,13 @@
                 </div>
             </div>
             <div class="welfare-button">
-                <button class="tts" type="button">
-                    <img src="/welfare/assets/images/welfare-speaker.png" alt="음성 안내">
-                    <span class="caption">음성안내</span>
+                <button class="tts" type="button" aria-pressed="false">
+                    <img class="tts-icon speak"  src="/welfare/assets/images/welfare-speaker.png" alt="">
+                    <img class="tts-icon cancel" src="/welfare/assets/images/tts-cancel.png"   alt="">
+                    <span class="caption speak">음성안내</span>
+                    <span class="caption cancel">중지</span>
                 </button>
+
                 <span class="regi-date" th:text="${welfare.svcfrstRegTs}"></span>
             </div>
 

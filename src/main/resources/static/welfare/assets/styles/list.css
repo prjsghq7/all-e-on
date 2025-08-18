@@ -98,21 +98,64 @@
   position: relative;
   gap: 0.375rem;
 }
-#welfareList .welfare > .welfare-button {
+#welfareList .welfare .welfare-button {
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
   gap: 0.875rem;
 }
-#welfareList .welfare > .welfare-button > .tts {
+#welfareList .welfare .welfare-button > .tts {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #FFFFFF;
+  gap: 0.625rem;
+  cursor: pointer;
+  background-color: #fff;
+  border: none;
+  padding: 0;
+  outline: none;
 }
-#welfareList .welfare > .welfare-button > .tts > img {
-  width: 4rem;
+#welfareList .welfare .welfare-button > .tts .tts-icon {
+  width: 3rem;
+  height: auto;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+#welfareList .welfare .welfare-button > .tts .tts-icon.cancel {
+  display: none;
+}
+#welfareList .welfare .welfare-button > .tts .caption.cancel {
+  display: none;
+}
+#welfareList .welfare .welfare-button > .tts.is-speaking .tts-icon.speak, #welfareList .welfare .welfare-button > .tts[aria-pressed=true] .tts-icon.speak {
+  display: none;
+}
+#welfareList .welfare .welfare-button > .tts.is-speaking .tts-icon.cancel, #welfareList .welfare .welfare-button > .tts[aria-pressed=true] .tts-icon.cancel {
+  display: block;
+}
+#welfareList .welfare .welfare-button > .tts.is-speaking .caption.speak, #welfareList .welfare .welfare-button > .tts[aria-pressed=true] .caption.speak {
+  display: none;
+}
+#welfareList .welfare .welfare-button > .tts.is-speaking .caption.cancel, #welfareList .welfare .welfare-button > .tts[aria-pressed=true] .caption.cancel {
+  display: inline;
+}
+#welfareList .welfare .welfare-button > .tts .caption {
+  font-size: 0.875rem;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+#welfareList .welfare .welfare-button > .tts:hover {
+  filter: brightness(0.98);
+}
+#welfareList .welfare .welfare-button > .tts:active {
+  transform: translateY(1px);
+}
+#welfareList .welfare .welfare-button > .tts:focus-visible {
+  outline: 2px solid #2a6ef1;
+  outline-offset: 2px;
+  border-radius: 0.5rem;
 }
 #welfareList .welfare:first-of-type {
   border-top: 0.0625rem solid #dadada;

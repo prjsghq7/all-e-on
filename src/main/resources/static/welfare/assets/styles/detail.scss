@@ -251,24 +251,6 @@ ol, ul {
           display: none;
           position: relative;
 
-          > .title-speak {
-            position: absolute;
-            top: .25rem;
-            right: .25rem;
-            width: 3.5rem;
-            height: 3.5rem;
-            border: 0;
-            padding: 0;
-            background: transparent;
-            cursor: pointer;
-
-            > img {
-              width: 100%;
-              height: 100%;
-              display: block;
-            }
-          }
-
           > .detail-explain {
             padding: 1.5rem;
             font-size: 1.5rem;
@@ -358,5 +340,67 @@ ol, ul {
         border-bottom: 0;
       }
     }
+  }
+}
+
+.tts {
+  position: absolute;
+  top: .25rem;
+  right: .25rem;
+  width: 3rem;
+  height: auto;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: .375rem;
+
+  // 아이콘 사이즈
+  .tts-icon {
+    width: 100%;
+    height: auto;
+    display: block;
+    user-select: none;
+    pointer-events: none; // 클릭 타깃은 버튼 자신
+  }
+
+  // 기본: 스피커/음성안내
+  .tts-icon.cancel { display: none; }
+  .caption.cancel  { display: none; }
+
+  // 재생 중: cancel 아이콘/중지 캡션 표시
+  &.is-speaking,
+  &[aria-pressed="true"] {
+    .tts-icon.speak  { display: none; }
+    .tts-icon.cancel { display: block; }
+    .caption.speak   { display: none; }
+    .caption.cancel  { display: inline; }
+  }
+
+  .caption {
+    font-size: .75rem;
+    line-height: 1;
+    white-space: nowrap;
+    text-align: center;
+  }
+
+  &:hover { filter: brightness(0.98); }
+  &:active { transform: translateY(1px); }
+  &:focus-visible {
+    outline: 2px solid #2a6ef1;
+    outline-offset: 2px;
+    border-radius: .5rem;
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    opacity: .45;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }
