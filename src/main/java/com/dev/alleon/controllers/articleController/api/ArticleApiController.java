@@ -78,6 +78,15 @@ public class ArticleApiController {
         return response.toString();
     }
 
+    @RequestMapping(value = "/comment/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String patchCommentModify(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
+                                     CommentEntity comment) {
+        Result result = this.commentService.modifyComment(signedUser, comment);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
+    }
+
     @RequestMapping(value="/recomments/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String postRecommentsUpload(@SessionAttribute(value="signedUser",required = false)UserEntity signedUser,
                                        RecommentEntity recomment){
@@ -90,5 +99,14 @@ public class ArticleApiController {
     @RequestMapping(value="/recomments",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public List<RecommentDto> getRecomments(@RequestParam(value="commentIndex") int commentIndex){
         return this.commentService.getWholeRecomments(commentIndex);
+    }
+
+    @RequestMapping(value = "/recomment/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String patchRecommentModify(@SessionAttribute(value = "signedUser",required = false) UserEntity signedUser,
+                                     RecommentEntity recomment) {
+        Result result = this.commentService.modifyRecomment(signedUser, recomment);
+        JSONObject response = new JSONObject();
+        response.put("result", result.toStringLower());
+        return response.toString();
     }
 }

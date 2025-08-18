@@ -70,23 +70,35 @@ const updateComments = (comments) => {
                     <span class="-flex-stretch"></span>
                     <button class="show-recomments" type="button" data-comment-index="${comment['index']}">대댓글 보기</button>
                     <button class="write-recomment" type="button">대댓글 작성</button>
-                    <a class="action">수정</a>
-                    <a class="action">삭제</a>
+                    <button class="action modify" 
+                        data-comment-type="comment"
+                        data-comment-index="${comment['index']}"
+                        data-comment-content="${comment['content']}">수정</button>
+                    <button class="action">삭제</button>
                 </div>
-                <label class="body">
+                <div class="body">
                     <span class="comment">${comment['content']}</span>
-                </label>
+                </div>
+<!--
+                <form class="modify-form">
+                    <input type="hidden" name="index">
+                    <input class="content" type="text" name="content" value="${comment['content']}">
+                    <button type="submit">수정하기</button>
+                </form>
+-->
                 
                 <div class="recomment-container"></div>
 
                 <form class="reply-form">
                     <input hidden name="commentIndex" type="hidden" value="${comment['index']}">
-                    <label class="--object-label -flex-stretch">
-                        <textarea required class="--object-field -flex-stretch" minlength="1" maxlength="1000" name="content" placeholder="댓글을 입력해 주세요." rows="4"></textarea>
-                    </label>
-                    <button class="--object-button -color-green" type="submit">댓글 등록하기</button>
+                    <input class="content" type="text" name="content">
+                    <button type="submit">댓글 등록하기</button>
                 </form>
             </div>`);
+
+        $commentContainer.querySelectorAll('.action.modify').forEach(($btnModify) => {
+            $btnModify.addEventListener('click', openModifyModal);
+        });
 
         $commentContainer.querySelectorAll('.write-recomment').forEach(($toggleRecomments) => {
             $toggleRecomments.addEventListener('click', toggleReplyForm);
@@ -113,14 +125,21 @@ const updateRecomments = ($recommentContainer, recomments) => {
                     <span class="writer">${recomment['nickname']}</span>
                     <span class="timestamp">${recomment['createdAt'].split('T').join(' ')}</span>
                     <span class="-flex-stretch"></span>
-                    <a class="action">수정</a>
-                    <a class="action">삭제</a>
+                    <button class="action modify" 
+                        data-comment-type="recomment"
+                        data-comment-index="${recomment['index']}"
+                        data-comment-content="${recomment['content']}">수정</button>
+                    <button class="action">삭제</button>
                 </div>
                 <label class="body">
                     <span class="comment">${recomment['content']}</span>
                 </label>
             </div>`);
     }
+
+    $recommentContainer.querySelectorAll('.action.modify').forEach(($btnModify) => {
+        $btnModify.addEventListener('click', openModifyModal);
+    });
 }
 
 const loadRecomments = ($recommentContainer, commentIndex) => {
@@ -200,4 +219,76 @@ const uploadRecomment = (e) => {
 
 document.addEventListener('DOMContentLoaded', () => {
     loadComments(1);
+});
+
+
+
+const $modifyModal = document.getElementById('modifyModal');
+const $modifyForm  = $modifyModal.querySelector('.modify-form');
+const $closeBtn    = $modifyModal.querySelector('.modal-close');
+
+const openModifyModal = (e) => {
+    const $btn = e.currentTarget;
+
+    $modifyForm['commentType'].value = $btn.dataset.commentType;
+    $modifyForm['index'].value = $btn.dataset.commentIndex;
+    $modifyForm['content'].value = $btn.dataset.commentContent;
+    $modifyModal.classList.add('-show');
+};
+
+const closeModifyModal = () => {
+    $modifyModal.classList.remove('-show');
+};
+
+// 닫기 버튼 / 배경 클릭 / ESC
+$closeBtn.addEventListener('click', closeModifyModal);
+$modifyModal.addEventListener('click', (e) => {
+    if (e.target === $modifyModal) {
+        closeModifyModal();
+    }
+});
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeModifyModal();
+    }
+});
+
+$modifyForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    if ($modifyForm['content'].value === '') {
+        alert('내용을 입력해 주세요.');
+        $modifyForm['content'].focus();
+        return;
+    }
+
+    let requestUrl;
+    if ($modifyForm['commentType'].value === 'comment') {
+        requestUrl = '/api/article/comment/modify';
+    } else if ($modifyForm['commentType'].value === 'recomment') {
+        requestUrl = '/api/article/recomment/modify';
+    } else {
+        alert('잘못된 접근입니다.');
+        return;
+    }
+
+    const xhr = new XMLHttpRequest();
+    const formData = new FormData();
+    formData.append('index', $modifyForm['index'].value);
+    formData.append('content', $modifyForm['content'].value);
+    xhr.onreadystatechange = () => {
+        if (xhr.readyState !== XMLHttpRequest.DONE) {
+            return;
+        }
+        if (xhr.status < 200 || xhr.status >= 300) {
+            alert(`${xhr.status} 에러`);
+            return;
+        }
+
+        const response = JSON.parse(xhr.responseText);
+        alert(response.result);
+    };
+    xhr.open('PATCH', requestUrl);
+    xhr.setRequestHeader(header, token);
+    xhr.send(formData);
 });

@@ -14,6 +14,7 @@
                 #{recomment.modifiedAt},
                 #{recomment.isDeleted})
     </insert>
+
     <select id="getWholeRecomments" resultType="com.dev.alleon.dtos.Comment.RecommentDto">
         select `t0`.`index`      as `index`,
                `t0`.`content`    as `content`,
@@ -24,4 +25,25 @@
                  left join `aeo`.`users` as `t1` on `t0`.`user_index` = `t1`.`index`
         where `t0`.`comment_index` = #{commentIndex}
     </select>
+
+    <select id="selectByIndex" resultType="com.dev.alleon.entities.article.RecommentEntity">
+        SELECT `index`         AS `index`,
+               `comment_index` AS `userIndex`,
+               `user_index`    AS `commentIndex`,
+               `content`       AS `content`,
+               `created_at`    AS `createdAt`,
+               `modified_at`   AS `modifiedAt`,
+               `is_deleted`    AS `isDeleted`
+        FROM `aeo`.`recomments`
+        WHERE `index` = #{index}
+    </select>
+
+    <update id="update">
+        UPDATE `aeo`.`recomments`
+        SET `content`     = #{recomment.content},
+            `modified_at` = #{recomment.modifiedAt},
+            `is_deleted`  = #{recomment.isDeleted}
+        WHERE `index` = #{recomment.index}
+        LIMIT 1
+    </update>
 </mapper>

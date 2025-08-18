@@ -13,4 +13,7 @@ public interface RecommentMapper {
 
     List<RecommentDto> getWholeRecomments(@Param("commentIndex") int commentIndex);
 
+    RecommentEntity selectByIndex(@Param("index") int index);
+
+    int update(@Param("recomment") RecommentEntity recomment);
 }

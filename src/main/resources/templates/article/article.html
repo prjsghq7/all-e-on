@@ -31,50 +31,28 @@
         </div>
     </div>
 
+    <h2>댓글 등록</h2>
     <form id="commentForm">
-        <h2>댓글 등록</h2>
-        <label>
-            <span>댓글 내용 : </span>
-            <input type="text" name="content">
-        </label>
-
-        <button type="submit">등록</button>
+        <input class="content" type="text" name="content">
+        <button type="submit">등록하기</button>
     </form>
 
     <div id="commentContainer">
-        <div class="comment">
-            <div class="head">
-                <span class="writer">작성자 자리</span>
-                <span class="timestamp">0000-00-00 00:00:00</span>
-                <span class="-flex-stretch"></span>
-                <button class="show-recomment">대댓글 보기</button>
-                <a class="action">수정</a>
-                <a class="action">삭제</a>
-            </div>
-            <label class="body">
-                <span class="comment">댓글 자리</span>
-            </label>
+    </div>
+</div>
 
-            <div class="recomment-container">
-                <div class="recomment">
-                    <div class="head">
-                        <span class="writer">작성자 자리</span>
-                        <span class="timestamp">0000-00-00 00:00:00</span>
-                        <span class="-flex-stretch"></span>
-                        <a class="action">수정</a>
-                        <a class="action">삭제</a>
-                    </div>
-                    <label class="body">
-                        <span class="comment">댓글 자리</span>
-                    </label>
-                </div>
-            </div>
-
-            <form class="reply-form">
-                <label class="--object-label -flex-stretch">
-                    <textarea required class="--object-field -flex-stretch" minlength="1" maxlength="1000" name="content" placeholder="댓글을 입력해 주세요." rows="4"></textarea>
-                </label>
-                <button class="--object-button -color-green" type="submit">댓글 등록하기</button>
+<div id="modifyModal" class="modal-backdrop" hidden>
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modifyModalTitle">
+        <div class="modal-header">
+            <h3 id="modifyModalTitle">댓글 수정</h3>
+            <button type="button" class="modal-close" aria-label="닫기">&times;</button>
+        </div>
+        <div class="modal-body">
+            <form class="modify-form">
+                <input type="hidden" name="commentType">
+                <input type="hidden" name="index">
+                <input class="content" type="text" name="content" value="">
+                <button type="submit">수정하기</button>
             </form>
         </div>
     </div>

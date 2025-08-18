@@ -43,6 +43,46 @@ public class CommentService {
         return this.commentMapper.insert(comment) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 
+    public Result modifyComment(UserEntity signedUser, CommentEntity comment) {
+        if (signedUser == null
+                || signedUser.getActiveState() >= 2) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        CommentEntity dbComment = this.commentMapper.selectByIndex(comment.getIndex());
+        if (dbComment == null || dbComment.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+
+        dbComment.setContent(comment.getContent());
+        dbComment.setModifiedAt(LocalDateTime.now());
+        return this.commentMapper.update(dbComment) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
+    public Result modifyRecomment(UserEntity signedUser, RecommentEntity recomment) {
+        if (signedUser == null
+                || signedUser.getActiveState() >= 2) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+
+        RecommentEntity dbRecomment = this.recommentMapper.selectByIndex(recomment.getIndex());
+        if (dbRecomment == null || dbRecomment.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+        CommentEntity dbComment = this.commentMapper.selectByIndex(dbRecomment.getCommentIndex());
+        if (dbComment == null || dbComment.isDeleted()) {
+            return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+
+        dbRecomment.setContent(recomment.getContent());
+        dbRecomment.setModifiedAt(LocalDateTime.now());
+        return this.recommentMapper.update(dbRecomment) > 0
+                ? CommonResult.SUCCESS
+                : CommonResult.FAILURE;
+    }
+
     public Result addRecomment(UserEntity signedUser, RecommentEntity recomment) {
         if (signedUser == null || recomment == null ||
                 signedUser.getActiveState() >= 2 ||
@@ -50,7 +90,7 @@ public class CommentService {
             return CommonResult.FAILURE_ABSENT;
         }
         CommentEntity parentComment = this.commentMapper.selectByIndex(recomment.getCommentIndex());
-        if(parentComment == null || parentComment.isDeleted()) {
+        if (parentComment == null || parentComment.isDeleted()) {
             return CommonResult.FAILURE_ABSENT;
         }
         recomment.setUserIndex(signedUser.getIndex());

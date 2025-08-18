@@ -23,6 +23,7 @@
         where `t1`.`index` = #{articleIndex}
           and `t0`.`is_deleted` = false;
     </select>
+
     <select id="getCommentByArticleIndex" resultType="com.dev.alleon.dtos.Comment.CommentDto">
         select `t0`.`index`      as `index`,
                `t0`.`content`    as `content`,
@@ -36,6 +37,7 @@
           and `t0`.`is_deleted` = false
         LIMIT #{pageVo.rowCount} OFFSET #{pageVo.dbOffset};
     </select>
+
     <select id="selectByIndex" resultType="com.dev.alleon.entities.article.CommentEntity">
         select `index`         as `index`,
                `user_index`    as `userIndex`,
@@ -47,4 +49,14 @@
         from `aeo`.`comments`
         where `index` = #{index}
     </select>
+
+
+    <update id="update">
+        UPDATE `aeo`.`comments`
+        SET `content`     = #{comment.content},
+            `modified_at` = #{comment.modifiedAt},
+            `is_deleted`  = #{comment.isDeleted}
+        WHERE `index` = #{comment.index}
+        LIMIT 1
+    </update>
 </mapper>

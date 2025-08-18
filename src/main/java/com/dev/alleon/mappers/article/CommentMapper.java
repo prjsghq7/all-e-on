@@ -19,4 +19,5 @@ public interface CommentMapper {
 
     CommentEntity selectByIndex(@Param("index") int index);
 
+    int update(@Param("comment") CommentEntity comment);
 }
