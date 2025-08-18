@@ -127,6 +127,7 @@ body {
         @include flex(row, center, flex-start);
         width: 66rem;
         overflow: hidden;
+        position: relative; // empty-message 위치 기준점
 
         > .list {
           @include flex(row, center, flex-start, 2rem);
@@ -242,6 +243,32 @@ body {
             }
           }
         }
+
+        // Empty 메시지 스타일
+        > .empty-message {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: calc(100% - 2rem); // 좌우 여백 확보
+          height: calc(100% - 2rem); // 상하 여백 확보
+          margin: 1rem; // 중앙 정렬을 위한 여백
+          @include flex(column, center, center, 1.5rem);
+          background-color: transparent;
+          box-shadow: 0 0 0.15rem rgba(204, 204, 204, 0.6);
+          
+          > .caption {
+            text-align: center;
+            font-size: 2rem;
+          }
+          
+          > .content {
+            text-align: center;
+          }
+          
+          &:hover {
+            box-shadow: 0 0 0.15rem rgba(204, 204, 204, 0.6);
+          }
+        }
       }
     }
   }
@@ -342,10 +369,14 @@ body {
             }
 
             &.empty {
-              @include flex(column, center, center, 1.5rem);
+              position: relative;
+              width: 100%;
               height: 100%;
+              @include flex(column, center, center, 1.5rem);
               background-color: transparent;
-              box-shadow: 0 0 0.2rem #ccc;
+              box-shadow: 0 0 0.15rem rgba(204, 204, 204, 0.6);
+              border: none;
+              border-radius: 0.625rem;
 
               > .caption {
                 text-align: center;
@@ -355,11 +386,10 @@ body {
               > .content {
                 text-align: center;
               }
-
+              
               &:hover {
                 box-shadow: 0 0 0.2rem #ccc;
               }
-
             }
 
             &:hover {
