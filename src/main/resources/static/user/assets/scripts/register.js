@@ -14,6 +14,7 @@ const $addressLabel = $registerForm['addressPostal'].closest('[data-aeo-object="
 const $termLabel = $registerForm['agreeServiceTerm'].closest('[data-aeo-object="label"]');
 const $privacyLabel = $registerForm['agreePrivacy'].closest('[data-aeo-object="label"]');
 
+
 const $emailCodeVerifyBtn = $registerForm.querySelector('[name="emailCodeVerifyButton"]');
 $emailCodeVerifyBtn.disabled = true;
 
@@ -167,26 +168,12 @@ submitBtn.addEventListener('click', (e) => {
 
     if ($registerForm['password'].validity.valueMissing) {
         $passwordLabel.setInValid(true, '비밀번호를 입력해 주세요.');
-        $registerForm['password'].focus();
-        return;
-    }
-    if ($registerForm['password'].validity.valueMissing) {
-        $passwordLabel.setInValid(true, '비밀번호를 입력해 주세요.');
-        $registerForm['password'].focus();
     } else if (!$registerForm['password'].validity.valid) {
         $passwordLabel.setInValid(true, '올바른 비밀번호를 입력해 주세요.');
-        $registerForm['password'].focus();
-        $registerForm['password'].select();
-        return;
     } else if ($registerForm['passwordCheck'].validity.valueMissing) {
         $passwordLabel.setInValid(true, '비밀번호를 한번 더 입력해 주세요.');
-        $registerForm['passwordCheck'].focus();
-        return;
     } else if ($registerForm['password'].value !== $registerForm['passwordCheck'].value) {
         $passwordLabel.setInValid(true, '비밀번호가 일치하지 않습니다.');
-        $registerForm['passwordCheck'].focus();
-        $registerForm['passwordCheck'].select();
-        return;
     }
 
     if ($registerForm['nickname'].validity.valueMissing) {
@@ -272,6 +259,9 @@ submitBtn.addEventListener('click', (e) => {
         $privacyLabel.setInValid(true, '개인정보 수집 및 이용 동의 약관에 동의해 주세요.');
         $registerForm['agreePrivacy'].focus();
         return;
+    }
+    if (Object.values($labelMap).some($l => $l.isInValid && $l.isInValid())) {
+        return false;
     }
 
     const xhr = new XMLHttpRequest();

@@ -28,17 +28,23 @@ HTMLElement.prototype.isInValid = function () {
  * @returns {HTMLElement} */
 HTMLElement.prototype.setInValid = function (b, warningText = undefined) {
     this.removeAttribute(HTMLElement.VALID_ATTR_NAME);
+
     if (b === true) {
-        const $warning = this.querySelector(':scope > .--warning');
-        if ($warning != null && warningText != null) {
-            $warning.innerText = warningText;
+        // ★ 경고 span 제대로 찾기
+        const $warning = (typeof this.getWarning === 'function')
+            ? this.getWarning()
+            : this.querySelector('[data-aeo-component="label.warning"]');
+
+        if ($warning && typeof warningText === 'string' && warningText.trim()) {
+            $warning.textContent = warningText; // 전달된 문구로 교체
         }
         this.setAttribute(HTMLElement.INVALID_ATTR_NAME, '');
     } else if (b === false) {
         this.removeAttribute(HTMLElement.INVALID_ATTR_NAME);
     }
     return this;
-}
+};
+
 
 
 /**@returns {boolean} */

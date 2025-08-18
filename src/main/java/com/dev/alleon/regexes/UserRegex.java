@@ -10,9 +10,7 @@ public class UserRegex {
     public static final Regex email = new Regex("^(?=.{8,50}$)([\\da-z\\-_.]{4,})@([\\da-z][\\da-z\\-]*[\\da-z]\\.)?([\\da-z][\\da-z\\-]*[\\da-z])\\.([a-z]{2,15})(\\.[a-z]{2,3})?$");
 
     // 패스워드:
-    public static final Regex password =
-            new Regex("^[\\dA-Za-z`~!@#$%^&*()\\-_=+\\[\\]{}\\\\|;:',./?]{8,50}$");
-
+    public static final Regex password = new Regex("^([\\da-zA-Z`~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\",<.>/?]{8,50})$");
 
     // 닉네임: 한글, 영문, 숫자, 특수문자('_') 2~15자
     public static final Regex nickname = new Regex("^([\\w가-힣]{2,15})$");

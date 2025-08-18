@@ -60,11 +60,11 @@
             <label data-aeo-object="label" data-aeo-name="password">
                 <span data-aeo-component="label.caption">비밀번호</span>
                 <span data-aeo-component="label.row">
-                <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="60" minlength="6"
+                <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="8"
                        name="password" placeholder="숫자, 알파벳, 특수기호 6자 이상 50자 이하" type="password"
                        th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}">
                     <!--                TODO th:pattern-->
-                <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="6"
+                <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="50" minlength="8"
                        name="passwordCheck" placeholder="비밀번호 재입력" type="password"
                        th:pattern="${T(com.dev.alleon.regexes.UserRegex).password.pattern}">
                     <!--                TODO th:pattern-->
