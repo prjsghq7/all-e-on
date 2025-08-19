@@ -57,6 +57,9 @@ public class UserController {
         model.addAttribute("houseCode", userService.getCode(CodeEntity.CodeType.trgterIndvdlArray));
         model.addAttribute("interestCode", userService.getCode(CodeEntity.CodeType.IntrsThemaArray));
         model.addAttribute("lifeCode", userService.getCode(CodeEntity.CodeType.lifeArray));
+        if (user != null) {
+            return "redirect:/home";
+        }
         return "user/register";
     }
 
@@ -111,6 +114,9 @@ public class UserController {
 
     @RequestMapping(value = "/login", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getLogin(@SessionAttribute(value = "signedUser", required = false) UserEntity user) {
+        if (user != null) {
+            return "redirect:/home";
+        }
         return "user/login";
     }
 
