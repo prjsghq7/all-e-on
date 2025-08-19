@@ -39,10 +39,50 @@ $radius: .625rem;
         border: 0.0625rem solid #e0e0e0;
         cursor: pointer;
         padding: 1rem 2rem;
+        transition: all 0.2s ease;
+        position: relative;
+        
+        // 선택된 탭 스타일
+        &:has(input:checked) {
+          background-color: #007bff;
+          color: white;
+          border-color: #007bff;
+          font-weight: 600;
+        }
+        
+        // hover 효과
+        &:hover:not(:has(input:checked)) {
+          background-color: #f8f9fa;
+          border-color: #007bff;
+          color: #007bff;
+        }
       }
 
       > input {
         display: none;
+      }
+
+      // radio button이 checked일 때 해당 label 스타일링
+      > input[type="radio"]:checked + label {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+        font-weight: 600;
+      }
+
+      // radio button이 checked가 아닐 때 label 스타일링
+      > input[type="radio"]:not(:checked) + label {
+        background-color: white;
+        color: #333;
+        border-color: #e0e0e0;
+        font-weight: normal;
+      }
+
+      // hover 효과 (checked가 아닌 label에만)
+      > input[type="radio"]:not(:checked) + label:hover {
+        background-color: #f8f9fa;
+        border-color: #007bff;
+        color: #007bff;
       }
     }
 
@@ -57,7 +97,7 @@ $radius: .625rem;
       flex-grow: 1;
 
       > .section {
-        display: none;
+        display: none; // 기본적으로 모든 섹션 숨김
         padding: 1rem;
       }
     }
