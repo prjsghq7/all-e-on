@@ -426,7 +426,7 @@ body {
         //border: 0.0625rem solid #cccccc;
 
         > .item {
-          @include flex(row, center, center);
+          @include flex(row, stretch, stretch);
           height: 3rem;
           border-radius: 0.625rem;
           //background-color: #ECF9F0;
@@ -446,7 +446,13 @@ body {
             }
           }
 
+          &:active {
+            background-color: #134ce4;
+          }
+
           > a {
+            @include flex(row, center, center);
+            width: 100%;
             font-size: 1.5rem;
             font-weight: 600;
 

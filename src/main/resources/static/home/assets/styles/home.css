@@ -527,12 +527,12 @@ body {
   border-radius: 0.625rem;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item {
-  align-items: center;
+  align-items: stretch;
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
   gap: 0;
-  justify-content: center;
+  justify-content: stretch;
   height: 3rem;
   border-radius: 0.625rem;
   background-color: #ffffff;
@@ -554,9 +554,27 @@ body {
   text-align: center;
   color: #ffffff;
 }
+#defaultArea > .search-sec > .search-grid > .list > .item:active {
+  background-color: #134ce4;
+}
 #defaultArea > .search-sec > .search-grid > .list > .item > a {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 0;
+  justify-content: center;
+  width: 100%;
   font-size: 1.5rem;
   font-weight: 600;
+}
+#defaultArea > .search-sec > .search-grid > .list > .item > a > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#defaultArea > .search-sec > .search-grid > .list > .item > a > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
 }
 #defaultArea > .search-sec > .search-grid > .list > .item > a .caption {
   font-family: "Poor Story", system-ui;
