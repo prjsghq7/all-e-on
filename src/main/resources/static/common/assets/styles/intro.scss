@@ -9,6 +9,7 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+
   > section {
     opacity: 0;
     visibility: hidden;
@@ -22,15 +23,27 @@
     }
 
     > .content-box {
-      @include flex(row, center, center, 0.5rem);
+      @include flex(column, center, center, 2rem);
+
+      > .caption {
+        font-size: 9rem;
+        color: pink;
+        font-weight: 800;
+        height: auto;
+      }
+
+      line-height: 8rem;
 
       > .content {
         margin-left: 1rem;
-        font-size: 8rem;
+        font-size: 5rem;
+        color: #FFFFFF;
+        -webkit-text-stroke: 0.05rem #FF7893;
       }
     }
   }
 }
+
 .common {
   //background: linear-gradient(0deg, #f0f9ff, #ccdbff, #afcdfd);
   @include flex(column, center, center);
@@ -38,13 +51,14 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  backdrop-filter: blur(50%);
   padding: 1rem;
   height: 100vh;
   width: 100vw;
   font-size: 15rem;
   font-weight: 800;
-  color:#FFFFFF;
-  -webkit-text-stroke: 0.35rem #000000;
+  color: #FFFFFF;
+  -webkit-text-stroke: 0.25rem pink;
 }
 
 .line {
@@ -52,6 +66,6 @@
   width: 5rem;
   height: 2rem;
   background-color: #ffffff;
-  border: 0.25rem solid #000000;
+  border: 0.125rem solid #000000;
   margin-left: 1rem;
 }
