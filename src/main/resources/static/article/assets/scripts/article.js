@@ -121,19 +121,23 @@ const updateComments = (comments) => {
                     <span class="writer">${comment['nickname']}</span>
                     <span class="timestamp">${comment['createdAt'].split('T').join(' ')}</span>
                     <span class="-flex-stretch"></span>
+                    
+                    <button class="action modify" 
+                        data-comment-mine="${comment['mine']}"
+                        data-comment-type="comment"
+                        data-comment-index="${comment['index']}"
+                        data-comment-content="${comment['content']}">수정</button>
+                    <button class="action delete"
+                        data-comment-mine="${comment['mine']}"
+                        data-comment-type="comment"
+                        data-comment-index="${comment['index']}">삭제</button>
+                        
                     <button class="show-recomments" type="button" data-comment-index="${comment['index']}"
                     aria-expanded="false">
                     <img src="/article/assets/images/down.png" class="down" alt="댓글 더보기">
                     <img src="/article/assets/images/up.png" class="up" alt="댓글 안보기">
                     </button>
                     <button class="write-recomment" type="button">댓글 작성</button>
-                    <button class="action modify" 
-                        data-comment-type="comment"
-                        data-comment-index="${comment['index']}"
-                        data-comment-content="${comment['content']}">수정</button>
-                    <button class="action delete"
-                        data-comment-type="comment"
-                        data-comment-index="${comment['index']}">삭제</button>
                 </div>
                 <div class="body">
                     <span class="comment">${comment['content']}</span>
@@ -190,10 +194,12 @@ const updateRecomments = ($recommentContainer, recomments) => {
                     <span class="timestamp">${recomment['createdAt'].split('T').join(' ')}</span>
                     <span class="-flex-stretch"></span>
                     <button class="action modify" 
+                        data-comment-mine="${recomment['mine']}"
                         data-comment-type="recomment"
                         data-comment-index="${recomment['index']}"
                         data-comment-content="${recomment['content']}">수정</button>
                     <button class="action delete"
+                        data-comment-mine="${recomment['mine']}"
                         data-comment-type="recomment"
                         data-comment-index="${recomment['index']}">삭제</button>
                 </div>
@@ -379,7 +385,6 @@ const deleteComment = (commentIndex, commentType) => {
         }
 
         const response = JSON.parse(xhr.responseText);
-        alert(response.result);
         switch (response.result) {
             case 'success':
                 loadComments(1);
@@ -481,7 +486,11 @@ $modifyForm.addEventListener('submit', (e) => {
         }
 
         const response = JSON.parse(xhr.responseText);
-        alert(response.result);
+        switch (response.result) {
+            case 'success':
+                closeModifyModal();
+                break;
+        }
     };
     xhr.open('PATCH', requestUrl);
     xhr.setRequestHeader(header, token);

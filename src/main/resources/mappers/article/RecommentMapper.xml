@@ -16,11 +16,12 @@
     </insert>
 
     <select id="getWholeRecomments" resultType="com.dev.alleon.dtos.Comment.RecommentDto">
-        select `t0`.`index`      as `index`,
-               `t0`.`content`    as `content`,
-               `t1`.`nickname`   as `nickname`,
-               `t1`.`profile`    as `profile`,
-               `t0`.`created_at` as `createdAt`
+        select `t0`.`index`                            as `index`,
+               `t0`.`content`                          as `content`,
+               `t1`.`nickname`                         as `nickname`,
+               `t1`.`profile`                          as `profile`,
+               `t0`.`created_at`                       as `createdAt`,
+               `t0`.`user_index` = #{currentUserIndex} AS `isMine`
         from `aeo`.`recomments` as `t0`
                  left join `aeo`.`users` as `t1` on `t0`.`user_index` = `t1`.`index`
         where `t0`.`comment_index` = #{commentIndex}

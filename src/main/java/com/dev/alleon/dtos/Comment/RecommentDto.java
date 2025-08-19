@@ -17,4 +17,6 @@ public class RecommentDto {
     private String nickname;
     private byte[] profile;
     private LocalDateTime createdAt;
+
+    private boolean isMine;
 }

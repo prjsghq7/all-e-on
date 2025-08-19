@@ -11,7 +11,8 @@ import java.util.List;
 public interface RecommentMapper {
     int insert(@Param("recomment") RecommentEntity recomment);
 
-    List<RecommentDto> getWholeRecomments(@Param("commentIndex") int commentIndex);
+    List<RecommentDto> getWholeRecomments(@Param("commentIndex") int commentIndex,
+                                          @Param("currentUserIndex") int currentUserIndex);
 
     RecommentEntity selectByIndex(@Param("index") int index);
 

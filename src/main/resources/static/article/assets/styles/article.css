@@ -221,6 +221,9 @@
 #commentContainer .comment .head .action:hover {
   text-decoration: underline;
 }
+#commentContainer .comment .head .action[data-comment-mine=false] {
+  display: none;
+}
 #commentContainer .comment .head .-flex-stretch {
   flex: 1;
 }

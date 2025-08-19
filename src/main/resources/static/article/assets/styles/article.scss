@@ -163,6 +163,10 @@
         }
       }
 
+      .action[data-comment-mine="false"] {
+        display: none;
+      }
+
       .-flex-stretch {
         flex: 1;
       }

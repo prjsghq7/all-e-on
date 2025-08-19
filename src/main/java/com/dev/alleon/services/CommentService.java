@@ -55,6 +55,9 @@ public class CommentService {
         if (dbComment == null || dbComment.isDeleted()) {
             return CommonResult.FAILURE_DOESNT_EXIST;
         }
+        if (signedUser.getIndex() != dbComment.getUserIndex()) {
+            return CommonResult.FAILURE_NOT_SAME;
+        }
 
         dbComment.setContent(comment.getContent());
         dbComment.setModifiedAt(LocalDateTime.now());
@@ -72,6 +75,9 @@ public class CommentService {
         CommentEntity dbComment = this.commentMapper.selectByIndex(comment.getIndex());
         if (dbComment == null || dbComment.isDeleted()) {
             return CommonResult.FAILURE_DOESNT_EXIST;
+        }
+        if (signedUser.getIndex() != dbComment.getUserIndex()) {
+            return CommonResult.FAILURE_NOT_SAME;
         }
 
         dbComment.setDeleted(true);
@@ -95,6 +101,9 @@ public class CommentService {
         if (dbComment == null || dbComment.isDeleted()) {
             return CommentResult.FAILURE_PARENT_DOESNT_EXIST;
         }
+        if (signedUser.getIndex() != dbRecomment.getUserIndex()) {
+            return CommonResult.FAILURE_NOT_SAME;
+        }
 
         dbRecomment.setContent(recomment.getContent());
         dbRecomment.setModifiedAt(LocalDateTime.now());
@@ -116,6 +125,9 @@ public class CommentService {
         CommentEntity dbComment = this.commentMapper.selectByIndex(dbRecomment.getCommentIndex());
         if (dbComment == null || dbComment.isDeleted()) {
             return CommentResult.FAILURE_PARENT_DOESNT_EXIST;
+        }
+        if (signedUser.getIndex() != dbRecomment.getUserIndex()) {
+            return CommonResult.FAILURE_NOT_SAME;
         }
 
         dbRecomment.setDeleted(true);
@@ -142,23 +154,30 @@ public class CommentService {
         return this.recommentMapper.insert(recomment) > 0 ? CommonResult.SUCCESS : CommonResult.FAILURE;
     }
 
-    public List<RecommentDto> getWholeRecomments(int commentIndex) {
+    public List<RecommentDto> getWholeRecomments(int commentIndex,
+                                                 UserEntity signedUser) {
         if (commentIndex < 0) {
             return null;
         }
 
-        List<RecommentDto> wholeRecomments = this.recommentMapper.getWholeRecomments(commentIndex);
+        int currentUserIndex = signedUser == null ? 0 : signedUser.getIndex();
+
+        List<RecommentDto> wholeRecomments = this.recommentMapper.getWholeRecomments(commentIndex, currentUserIndex);
         return wholeRecomments;
     }
 
-    public CommentsResponse getCommentsByArticle(int articleIndex, int page) {
+    public CommentsResponse getCommentsByArticle(int articleIndex,
+                                                 int page,
+                                                 UserEntity signedUser) {
         if (articleIndex < 0) {
             return null;
         }
         int totalCount = this.commentMapper.totalCountByArticleIndex(articleIndex);
         PageVo pageVo = new PageVo(NUM_OF_ROWS, page, totalCount);
 
-        List<CommentDto> comments = this.commentMapper.getCommentByArticleIndex(articleIndex, pageVo);
+        int currentUserIndex = signedUser == null ? 0 : signedUser.getIndex();
+
+        List<CommentDto> comments = this.commentMapper.getCommentByArticleIndex(articleIndex, pageVo, currentUserIndex);
         return new CommentsResponse(comments, pageVo);
     }
 

@@ -17,4 +17,6 @@ public class CommentDto {
     private LocalDateTime createdAt;
     private String nickname;
     private byte[] profileImage;
+
+    private boolean isMine;
 }

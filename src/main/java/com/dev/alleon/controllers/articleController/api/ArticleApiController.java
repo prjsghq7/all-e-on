@@ -67,9 +67,10 @@ public class ArticleApiController {
 
 
     @RequestMapping(value = "/comments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public CommentsResponse getComments(@RequestParam(value = "articleIndex") int articleIndex,
+    public CommentsResponse getComments(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+                                        @RequestParam(value = "articleIndex") int articleIndex,
                                         @RequestParam(value = "page") int page) {
-        return this.commentService.getCommentsByArticle(articleIndex, page);
+        return this.commentService.getCommentsByArticle(articleIndex, page, signedUser);
     }
 
     @RequestMapping(value = "/comment/upload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -108,8 +109,9 @@ public class ArticleApiController {
     }
 
     @RequestMapping(value = "/recomments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<RecommentDto> getRecomments(@RequestParam(value = "commentIndex") int commentIndex) {
-        return this.commentService.getWholeRecomments(commentIndex);
+    public List<RecommentDto> getRecomments(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
+            @RequestParam(value = "commentIndex") int commentIndex) {
+        return this.commentService.getWholeRecomments(commentIndex, signedUser);
     }
 
     @RequestMapping(value = "/recomment/modify", method = RequestMethod.PATCH, produces = MediaType.APPLICATION_JSON_VALUE)

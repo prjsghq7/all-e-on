@@ -13,7 +13,7 @@ import java.util.List;
 public interface CommentMapper {
     int insert(@Param("comment") CommentEntity comment);
 
-    List<CommentDto> getCommentByArticleIndex(@Param("articleIndex") int articleIndex, PageVo pageVo);
+    List<CommentDto> getCommentByArticleIndex(@Param("articleIndex") int articleIndex, PageVo pageVo, @Param("currentUserIndex") int currentUserIndex);
 
     int totalCountByArticleIndex(@Param("articleIndex") int articleIndex);
 
