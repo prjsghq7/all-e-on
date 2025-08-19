@@ -23,28 +23,32 @@ function getMaxOffset() {
     return -($list.scrollWidth - $sliderWrapper.clientWidth);
 }
 
-nextBtn.addEventListener('click', () => {
-    const maxOffset = getMaxOffset();
+if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+        const maxOffset = getMaxOffset();
 
-    // 다음으로 이동한 위치가 maxOffset보다 크면 정상 이동
-    if (offset - moveDistance > maxOffset) {
-        offset -= moveDistance;
-    } else {
-        offset = maxOffset; // 마지막 칸 정확히 맞추기
-    }
+        // 다음으로 이동한 위치가 maxOffset보다 크면 정상 이동
+        if (offset - moveDistance > maxOffset) {
+            offset -= moveDistance;
+        } else {
+            offset = maxOffset; // 마지막 칸 정확히 맞추기
+        }
 
-    $list.style.transform = `translateX(${offset}px)`;
-});
+        $list.style.transform = `translateX(${offset}px)`;
+    });
+}
 
-prevBtn.addEventListener('click', () => {
-    if (offset + moveDistance < 0) {
-        offset += moveDistance;
-    } else {
-        offset = 0; // 처음 위치로 맞추기
-    }
+if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+        if (offset + moveDistance < 0) {
+            offset += moveDistance;
+        } else {
+            offset = 0; // 처음 위치로 맞추기
+        }
 
-    $list.style.transform = `translateX(${offset}px)`;
-});
+        $list.style.transform = `translateX(${offset}px)`;
+    });
+}
 
 let showCaption = true;
 
@@ -124,8 +128,8 @@ const loadAlarmData = () => {
         // 아이템 개수에 따라 버튼 표시/숨김 및 레이아웃 조정
         if (response.length >= 4) {
             // 4개 이상일 때: 버튼 표시, 좌측 정렬
-            prevBtn.style.display = 'block';
-            nextBtn.style.display = 'block';
+            if (prevBtn) prevBtn.style.display = 'block';
+            if (nextBtn) nextBtn.style.display = 'block';
             $list.style.justifyContent = 'flex-start';
             $sliderWrapper.style.justifyContent = 'flex-start';
             $list.style.paddingLeft = '0';
@@ -133,8 +137,8 @@ const loadAlarmData = () => {
             $list.style.marginLeft = '0'; // 슬라이더 모드에서는 margin 제거
         } else {
             // 3개 이하일 때: 버튼 숨김, 중앙 정렬
-            prevBtn.style.display = 'none';
-            nextBtn.style.display = 'none';
+            if (prevBtn) prevBtn.style.display = 'none';
+            if (nextBtn) nextBtn.style.display = 'none';
             $list.style.justifyContent = 'center';
             $sliderWrapper.style.justifyContent = 'center';
             $list.style.paddingLeft = '1rem';
@@ -156,8 +160,8 @@ function showEmptyMessage(message) {
     clearEmptyMessage();
 
     // prevBtn과 nextBtn 숨기기
-    prevBtn.style.display = 'none';
-    nextBtn.style.display = 'none';
+    if (prevBtn) prevBtn.style.display = 'none';
+    if (nextBtn) nextBtn.style.display = 'none';
 
     // 레이아웃 중앙 정렬
     $list.style.justifyContent = 'center';
@@ -181,8 +185,8 @@ function clearEmptyMessage() {
     }
 
     // prevBtn과 nextBtn 다시 보이기
-    prevBtn.style.display = 'block';
-    nextBtn.style.display = 'block';
+    if (prevBtn) prevBtn.style.display = 'block';
+    if (nextBtn) nextBtn.style.display = 'block';
 }
 
 loadAlarmData();

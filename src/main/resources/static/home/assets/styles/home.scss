@@ -1,6 +1,5 @@
 @charset "UTF-8";
 @import "../../../common/assets/styles/_def";
-@import url('https://fonts.googleapis.com/css2?family=Dongle&family=Gaegu&family=Jua&family=Oswald:wght@200..700&display=swap');
 
 $font-size: 1.2rem;
 body {
@@ -163,7 +162,7 @@ body {
           > .alarm-notice {
             margin-top: 1rem;
             font-size: 0.75rem;
-            color: #666;
+            color: #6c757d;
             font-style: italic;
             text-align: center;
           }
