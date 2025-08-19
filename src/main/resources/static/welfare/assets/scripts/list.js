@@ -6,7 +6,6 @@ $searchForm.querySelectorAll('input[name="code"]').forEach($btnRadio => {
         const searchKeyCode = $searchForm['searchKeyCode'].value;
         const keyword = $searchForm['keyword'].value;
         const code = $searchForm['code'].value;
-        // alert(`${origin}/welfare/list?searchType=${searchType}&searchKeyCode=${searchKeyCode}&keyword=${keyword}&code=${code}`);
         location.href = `${origin}/welfare/list?searchType=${searchType}&searchKeyCode=${searchKeyCode}&keyword=${keyword}&code=${code}`;
     });
 });

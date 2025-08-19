@@ -88,7 +88,7 @@ public class WelfareService {
             case trgterIndvdlArray:
                 codeEntities = this.householdTypeMapper.selectAll();
                 break;
-            case IntrsThemaArray:
+            case intrsThemaArray:
                 codeEntities = this.interestSubMapper.selectAll();
                 break;
             default:

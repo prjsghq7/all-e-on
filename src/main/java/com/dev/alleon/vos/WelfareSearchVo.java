@@ -18,6 +18,6 @@ public class WelfareSearchVo {
     public enum SearchType {
         lifeArray,
         trgterIndvdlArray,
-        IntrsThemaArray
+        intrsThemaArray
     }
 }

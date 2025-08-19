@@ -6,6 +6,8 @@
 
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Dongle&family=Gaegu&family=Jua&family=Oswald:wght@200..700&family=Poor+Story&display=swap');
+
 @font-face {
   font-family: 'SUIT-Regular';
   src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
@@ -81,5 +83,12 @@ ol, ul {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   margin: 0 8rem;
   overflow-x: hidden;
+
+  h1.title {
+    font-size: 3rem;
+    font-weight: 400;
+    color: #0a4380;
+    font-family: "Do Hyeon", sans-serif;
+  }
 }
 
