@@ -43,8 +43,12 @@
 }
 #defaultArea > .list-container > .table {
   padding: 4rem;
-  color: #2176d0;
+  color: #000000;
   border-collapse: collapse;
+}
+#defaultArea > .list-container > .table > thead > tr th {
+  color: #2563eb;
+  font-weight: 800;
 }
 #defaultArea > .list-container > .table th,
 #defaultArea > .list-container > .table td {
