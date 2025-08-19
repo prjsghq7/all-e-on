@@ -148,7 +148,7 @@
   pointer-events: none;
 }
 #profile-section > #profileImageForm > .avatar-extra > .avatar-actions .pill {
-  padding: 0.25rem 0.5rem;
+  padding: 0.625rem 0.875rem;
   border-radius: 999rem;
   font-size: 0.875rem;
   border: 0;

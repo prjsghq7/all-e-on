@@ -198,6 +198,7 @@ html {
       }
     }
 
+
     [data-aeo-object="button"] {
       height: 2.5rem;
       padding: 0 .875rem;
@@ -335,5 +336,23 @@ html {
   &:disabled {
     opacity: .55;
     cursor: not-allowed;
+  }
+}
+
+[data-aeo-object="cButton"] {
+  height: 2.5rem;
+  padding: 0 .875rem;
+  border: 0;
+  border-radius: .5rem;
+  cursor: pointer;
+  background: linear-gradient(112deg, $grad-start, $grad-end);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: $shadow;
+  transition: transform .08s ease, filter .2s ease, opacity .2s ease;
+
+  &:hover {
+    transform: translateY(-.0625rem);
+    filter: brightness(1.02);
   }
 }

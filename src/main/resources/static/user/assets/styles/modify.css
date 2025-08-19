@@ -416,4 +416,21 @@ html {
   cursor: not-allowed;
 }
 
+[data-aeo-object=cButton] {
+  height: 2.5rem;
+  padding: 0 0.875rem;
+  border: 0;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  background: linear-gradient(112deg, #e35f5f, #fddc81);
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  transition: transform 0.08s ease, filter 0.2s ease, opacity 0.2s ease;
+}
+[data-aeo-object=cButton]:hover {
+  transform: translateY(-0.0625rem);
+  filter: brightness(1.02);
+}
+
 /*# sourceMappingURL=modify.css.map */
