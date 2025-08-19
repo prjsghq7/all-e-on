@@ -48,11 +48,6 @@ $loginBtn.addEventListener('click', (e) => {
                 break;
             case 'success':
                 location.href = `${origin}/home`
-                if ($loginForm['remember'].checked) {
-                    localStorage.setItem('loginEmail', $loginForm['email'].value);
-                } else {
-                    localStorage.removeItem('loginEmail');
-                }
                 break;
             default:
                 dialog.showSimpleOk('오류', '로그인을 할 수 없습니다. 잠시 후 다시 시도해주세요.');
@@ -64,6 +59,3 @@ $loginBtn.addEventListener('click', (e) => {
     xhr.send(formData);
     loading.show();
 });
-
-$loginForm['email'].value = localStorage.getItem('loginEmail') ?? '';
-$loginForm['remember'].checked = localStorage.getItem('loginEmail') ?? '';
