@@ -52,14 +52,14 @@ public class UserController {
     @RequestMapping(value = "/register", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getRegister(HttpSession session, Model model) {
         UserEntity user = (UserEntity) session.getAttribute("signedUser");
+        if (user != null) {
+            return "redirect:/home";
+        }
         ContactMvnoEntity[] contactMvnos = userService.getContactMvnos();
         model.addAttribute("contactMvnos", contactMvnos);
         model.addAttribute("houseCode", userService.getCode(CodeEntity.CodeType.trgterIndvdlArray));
         model.addAttribute("interestCode", userService.getCode(CodeEntity.CodeType.IntrsThemaArray));
         model.addAttribute("lifeCode", userService.getCode(CodeEntity.CodeType.lifeArray));
-        if (user != null) {
-            return "redirect:/home";
-        }
         return "user/register";
     }
 
