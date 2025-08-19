@@ -11,7 +11,7 @@ window.addEventListener('pageshow', (event) => {
     }
 });
 
-if ($modifyBtn !== null) {
+if (modifyBtn !== null) {
     modifyBtn.addEventListener('click', () => {
         const url = new URL(location.href);
         const index = url.searchParams.get("index");
@@ -19,7 +19,7 @@ if ($modifyBtn !== null) {
     })
 }
 
-if ($deleteBtn !== null) {
+if (deleteBtn !== null) {
     deleteBtn.addEventListener('click', () => {
         const xhr = new XMLHttpRequest();
         const formData = new FormData();
