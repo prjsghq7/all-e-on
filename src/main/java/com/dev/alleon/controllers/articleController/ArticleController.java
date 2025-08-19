@@ -2,12 +2,14 @@ package com.dev.alleon.controllers.articleController;
 
 import com.dev.alleon.dtos.article.ArticleDto;
 import com.dev.alleon.dtos.article.ArticleListResponse;
+import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.notice.ImageEntity;
 import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.services.ArticleService;
 import com.dev.alleon.services.ImageService;
 import com.dev.alleon.vos.ArticleSearchVo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriUtils;
 
 import java.nio.charset.StandardCharsets;
@@ -73,8 +77,16 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "/modify", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public String getModify(Model model, @RequestParam(value = "index") int index) {
+    public String getModify(HttpSession session, Model model, @RequestParam(value = "index") int index) {
+        UserEntity signedUser = (UserEntity) session.getAttribute("signedUser");
+        if (signedUser == null) {
+            return "redirect:/user/login";
+        }
+
         ArticleDto article = this.articleService.getArticleByIndex(index);
+        if (article.getUserIndex() != signedUser.getIndex()) {
+            return "redirect:/article/list";
+        }
         model.addAttribute("article", article);
         return "article/modify";
     }

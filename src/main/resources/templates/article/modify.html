@@ -28,6 +28,9 @@
     <script defer src="/article/assets/scripts/modify-ckeditor.js" type="module"></script>
     <script defer src="/article/assets/scripts/modify.js"></script>
 </head>
+<script th:if="${msg!=null}">
+    alert([[${msg}]]);
+</script>
 <body>
 <div id="defaultArea">
     <form novalidate id="modifyForm">

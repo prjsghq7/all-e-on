@@ -1,5 +1,6 @@
 package com.dev.alleon.controllers.noticeController;
 
+import com.dev.alleon.entities.UserEntity;
 import com.dev.alleon.entities.notice.ImageEntity;
 import com.dev.alleon.entities.notice.NoticeEntity;
 import com.dev.alleon.results.CommonResult;
@@ -7,6 +8,7 @@ import com.dev.alleon.results.ResultTuple;
 import com.dev.alleon.services.ImageService;
 import com.dev.alleon.services.NoticeService;
 import com.dev.alleon.vos.PageVo;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -71,7 +73,7 @@ public class NoticeController {
     }
 
     @RequestMapping(value="/modify",method=RequestMethod.GET,produces=MediaType.TEXT_HTML_VALUE)
-    public String getModify(Model model, @RequestParam(value="index") int index){
+    public String getModify(HttpSession session, Model model, @RequestParam(value="index") int index){
         ResultTuple<NoticeEntity> notice = this.noticeService.getNotice(index);
         model.addAttribute("notice", notice.getPayload());
         return "notice/noticeModify";
