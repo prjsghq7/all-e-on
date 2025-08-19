@@ -33,7 +33,7 @@
                     <ul class="items" th:if="${welfare != null}">
                         <li class="item" th:each="life : ${welfare.lifeArray}" th:text="${life}"></li>
                         <li class="item" th:each="intrs : ${welfare.intrsThemaArray}" th:text="${intrs}">신체건강</li>
-                        <li class="item" th:each="trget : ${welfare.rgterIndvdlArray}" th:text="${trget}">영유아</li>
+                        <li class="item" th:each="trget : ${welfare.trgterIndvdlArray}" th:text="${trget}">영유아</li>
                         <!--                    <li class="item">아동</li>-->
                         <!--                    <li class="item">청소년</li>-->
                     </ul>
@@ -193,7 +193,9 @@
                             <li th:if="${welfare.inquiryLinks != null && welfare.inquiryLinks.size() > 0}"
                                 th:each="link : ${welfare.inquiryLinks}">
                                 <span th:text="${link.name}"></span>
-                                <a th:href="${link.link}" th:text="${link.link}" target="_blank"></a>
+                                <a th:href="${#strings.startsWith(link.link, 'http') ? link.link : 'https://' + link.link}"
+                                   th:text="${link.link}"
+                                   target="_blank" rel="noopener noreferrer"></a>
                                 <img src="/welfare/assets/images/welfare-detail-link.png" alt="">
                             </li>
                         </ul>

@@ -5,7 +5,7 @@
         INSERT INTO `aeo`.`welfares` (`id`, `name`, `ministry_name`, `target_detail_content`,
                                       `selection_criteria_content`,
                                       `allowance_service_content`, `criteria_year`, `summary`, `support_cycle`,
-                                      `service_provision`, `life_array`, `rgter_indvdl_array`, `intrs_thema_array`,
+                                      `service_provision`, `life_array`, `trgter_indvdl_array`, `intrs_thema_array`,
                                       `views`)
         VALUES (#{welfare.id},
                 #{welfare.name},
@@ -18,7 +18,7 @@
                 #{welfare.supportCycle},
                 #{welfare.serviceProvision},
                 #{welfare.lifeArray},
-                #{welfare.rgterIndvdlArray},
+                #{welfare.trgterIndvdlArray},
                 #{welfare.intrsThemaArray},
                 #{welfare.views})
     </insert>
@@ -41,7 +41,7 @@
                `support_cycle`              AS `supportCycle`,
                `service_provision`          AS `serviceProvision`,
                `life_array`                 AS `lifeArray`,
-               `rgter_indvdl_array`         AS `rgterIndvdlArray`,
+               `trgter_indvdl_array`         AS `trgterIndvdlArray`,
                `intrs_thema_array`          AS `intrsThemaArray`,
                `views`                      AS `views`
         FROM `aeo`.`welfares`

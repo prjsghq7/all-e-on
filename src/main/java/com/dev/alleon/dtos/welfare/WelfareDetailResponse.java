@@ -27,7 +27,7 @@ public class WelfareDetailResponse {
     private String serviceProvision;    // 제공유형
 
     private List<String> lifeArray;           // 생애 주기
-    private List<String> rgterIndvdlArray;    // 가구 유형
+    private List<String> trgterIndvdlArray;    // 가구 유형
     private List<String> intrsThemaArray;     // 관심 주제
 
     private int views;                  //조회수
@@ -81,9 +81,9 @@ public class WelfareDetailResponse {
                 : Arrays.stream(welfare.getLifeArray().split(","))
                 .collect(Collectors.toList());
         ;
-        this.rgterIndvdlArray = welfare.getRgterIndvdlArray() == null
+        this.trgterIndvdlArray = welfare.getTrgterIndvdlArray() == null
                 ? null
-                : Arrays.stream(welfare.getRgterIndvdlArray().split(","))
+                : Arrays.stream(welfare.getTrgterIndvdlArray().split(","))
                 .collect(Collectors.toList());
         ;
         this.intrsThemaArray = welfare.getIntrsThemaArray() == null
