@@ -28,6 +28,14 @@
     <script defer src="/notice/assets/scripts/write-ckeditor.js" type="module"></script>
     <script defer src="/notice/assets/scripts/notice-write.js"></script>
 </head>
+<script th:if="${session.signedUser!=null and session.signedUser.activeState>0}">
+    alert('관리자 로그인이 필요합니다.');
+    history.back();
+</script>
+<script th:if="${session.signedUser==null}">
+    alert('로그인이 필요합니다.');
+    location.href = `${origin}/user/login`;
+</script>
 <body>
 <div id="defaultArea">
     <form novalidate id="noticeForm">
