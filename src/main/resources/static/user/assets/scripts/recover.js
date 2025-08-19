@@ -165,6 +165,7 @@ const recoverEmail = () => {
                 break;
             case 'success':
                 dialog.show({
+
                     title: '계정 복구[이메일 찾기]',
                     content: `${$recoverForm['eRecoverName'].value}님의 이메일는 [${response['email']}]입니다.\n확인 버튼 클릭 시 로그인 페이지로 이동합니다.`,
                     buttons: [
