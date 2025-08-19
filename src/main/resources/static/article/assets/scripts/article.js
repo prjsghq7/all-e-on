@@ -4,14 +4,16 @@ const $defaultArea = document.getElementById('defaultArea');
 const $commentForm = document.getElementById("commentForm");
 const $commentContainer = document.getElementById('commentContainer');
 const $pageContainer = document.getElementById('pageContainer');
-const modifyBtn = $defaultArea.querySelector(':scope>.container>.title-container>.adjust-container>.modify');
-const deleteBtn = $defaultArea.querySelector(':scope>.container>.title-container>.adjust-container>.delete');
+const $modifyBtn = $defaultArea.querySelector(':scope>.container>.title-container>.adjust-container>.modify');
+const $deleteBtn = $defaultArea.querySelector(':scope>.container>.title-container>.adjust-container>.delete');
 
-modifyBtn.addEventListener('click', () => {
-    const url = new URL(location.href);
-    const index = url.searchParams.get('index');
-    location.href = `${origin}/article/modify?index=${index}`
-})
+if ($modifyBtn !== null) {
+    $modifyBtn.addEventListener('click', () => {
+        const url = new URL(location.href);
+        const index = url.searchParams.get('index');
+        location.href = `${origin}/article/modify?index=${index}`
+    })
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     loadComments(1);
@@ -347,7 +349,10 @@ const openDeleteArticleModal = (e) => {
         ]
     })
 }
-deleteBtn.addEventListener('click', openDeleteArticleModal);
+
+if ($deleteBtn !== null) {
+    $deleteBtn.addEventListener('click', openDeleteArticleModal);
+}
 
 const deleteComment = (commentIndex, commentType) => {
     let requestUrl;

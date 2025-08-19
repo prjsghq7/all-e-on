@@ -7,7 +7,8 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta th:if="${_csrf != null}" name="_csrf" th:content="${_csrf.token}">
     <meta th:if="${_csrf != null}" name="_csrf_header" th:content="${_csrf.headerName}">
-    <title>AEO | 게시판</title>
+    <title>AEO | 상세</title>
+    <link rel="icon" href="/common/assets/images/favicon.png">
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
     <link rel="stylesheet" href="/article/assets/styles/article.min.css">
     <script src="/common/assets/scripts/common.js"></script>
@@ -20,7 +21,7 @@
     <div class="container">
         <div class="title-container">
             <div class="title" th:text="${article.title}"></div>
-            <div class="adjust-container" th:if="${session.signedUser.getIndex()==article.getUserIndex()}">
+            <div class="adjust-container" th:if="${session.signedUser != null && session.signedUser.getIndex()==article.getUserIndex()}">
                 <button type="button" class="modify">수정하기</button>
                 <button type="button" class="delete">삭제하기</button>
             </div>

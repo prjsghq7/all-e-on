@@ -5,15 +5,16 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}">
+    <meta name="_csrf_header" th:content="${_csrf.headerName}">
     <link rel="stylesheet" href="/user/assets/styles/register.min.css">
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
+    <link rel="icon" href="/common/assets/images/favicon.png">
     <title>AEO | 회원가입</title>
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script defer src="/user/assets/scripts/oauth.js"></script>
     <script defer src="/common/assets/scripts/common.js" type="module"></script>
     <script defer src="/common/assets/scripts/object/dialog.js"></script>
-    <meta name="_csrf" th:content="${_csrf.token}">
-    <meta name="_csrf_header" th:content="${_csrf.headerName}">
 </head>
 <body>
 <div id="addressFindDialog" class="">
