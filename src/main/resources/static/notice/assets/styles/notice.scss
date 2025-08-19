@@ -5,7 +5,7 @@
 #defaultArea {
   @include flex(column, flex-start, flex-start, 3.5rem);
   height: 100vh;
-  padding: 1rem;
+  padding: 2rem 2.5rem;
 
   > .caption {
     font-size: 3rem;

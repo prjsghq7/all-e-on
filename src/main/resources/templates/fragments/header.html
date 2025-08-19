@@ -7,7 +7,7 @@
     <span role="none" data-aeo-stretch></span>
     <ul class="menu">
         <li class="item">
-            <span class="link">검색</span>
+            <span class="link">SEARCH</span>
             <ul class="submenu">
                 <li class="submenu-item">
                     <a href="/welfare/list?searchType=lifeArray" class="submenu-link">생애주기</a>
@@ -21,7 +21,7 @@
             </ul>
         </li>
         <li class="item">
-            <span class="link">커뮤니티</span>
+            <span class="link">COMMUNITY</span>
             <ul class="submenu">
                 <li class="submenu-item">
                     <a href="/notice/" class="submenu-link">공지사항</a>
@@ -32,11 +32,11 @@
             </ul>
         </li>
         <li class="item">
-            <a href="/user/info" class="link">마이페이지</a>
+            <a href="/user/info" class="link">MYPAGE</a>
         </li>
     </ul>
     <span role="none" data-aeo-stretch></span>
-    <a href="/user/login" class="account-link" th:if="${session.signedUser==null}">로그인</a>
-    <a href="/user/logout" class="account-link" th:if="${session.signedUser!=null}">로그아웃</a>
+    <a href="/user/login" class="account-link" th:if="${session.signedUser==null}">LOGIN</a>
+    <a href="/user/logout" class="account-link" th:if="${session.signedUser!=null}">LOGOUT</a>
 </header>
 </html>

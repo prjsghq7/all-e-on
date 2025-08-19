@@ -7,7 +7,7 @@
   gap: 3.5rem;
   justify-content: flex-start;
   height: 100vh;
-  padding: 1rem;
+  padding: 2rem 2.5rem;
 }
 #defaultArea > * {
   flex-grow: 0;

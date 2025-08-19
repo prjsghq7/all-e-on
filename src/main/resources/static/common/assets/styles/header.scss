@@ -3,7 +3,7 @@
 @import "./_def";
 
 $header-height: 4.5rem;
-$header-font-size: 1.875rem;
+$header-font-size: 1.575rem;
 
 #header {
   @include flex(row, center, flex-start);
@@ -21,6 +21,8 @@ $header-font-size: 1.875rem;
 
   font-size: $header-font-size;
   font-weight: 600;
+  font-family: "Gaegu", sans-serif;
+
 
   > .logo {
     > .title {
@@ -59,16 +61,23 @@ $header-font-size: 1.875rem;
     gap: 2rem;
     justify-content: flex-start;
 
-    .item {
+    >.item {
       position: relative; // 하위 메뉴 위치 기준점
-      
+
       > .link {
+        display: inline-block;
         padding: 0.5rem 1rem;
         border-radius: 0.25rem;
-        transition: background-color 0.2s ease;
-        
+        transform: scale(1);
+        transition: transform 175ms ease, background-color 0.2s ease;
+
         &:hover {
-          background-color: #f8f9fa;
+          transform: scale(1.2);
+          // background-color: #f8f9fa;
+        }
+
+        &:active {
+          transform: scale(0.99);
         }
       }
       
@@ -122,5 +131,16 @@ $header-font-size: 1.875rem;
 
   > .account-link {
     margin-right: 3rem;
+    transform: scale(1);
+    transition: transform 175ms ease, background-color 0.2s ease;
+
+    &:hover {
+      transform: scale(1.2);
+      // background-color: #f8f9fa;
+    }
+
+    &:active {
+      transform: scale(0.99);
+    }
   }
 }
