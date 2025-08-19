@@ -23,7 +23,7 @@ public class WelfareEntity {
     private String serviceProvision;    // 제공유형
 
     private String lifeArray;           // 생애 주기
-    private String rgterIndvdlArray;    // 가구 유형
+    private String trgterIndvdlArray;    // 가구 유형
     private String intrsThemaArray;     // 관심 주제
     
     private int views;                  //조회수
