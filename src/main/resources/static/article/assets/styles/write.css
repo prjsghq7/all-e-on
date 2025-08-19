@@ -52,7 +52,11 @@ body {
   align-self: end;
   margin-right: 0.0625rem;
 }
+#writeForm > #name {
+  font-size: 2rem;
+}
 #writeForm > #name > .title {
+  font-size: 2rem;
   width: 25rem;
   border-radius: 0.625rem;
 }

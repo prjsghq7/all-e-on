@@ -19,6 +19,10 @@
 <th:block th:replace="~{/fragments/header :: header}">
 </th:block>
 <div id="defaultArea">
+    <h1 class="title" th:if="${searchVo.searchType.name() == 'lifeArray'}">SEARCH-생애주기</h1>
+    <h1 class="title" th:if="${searchVo.searchType.name() == 'intrsThemaArray'}">SEARCH-관심유형</h1>
+    <h1 class="title" th:if="${searchVo.searchType.name() == 'trgterIndvdlArray'}">SEARCH-가족유형</h1>
+
     <form id="searchForm">
         <input name="searchType" type="hidden" th:value="${searchVo.getSearchType()}">
         <div class="search-container">

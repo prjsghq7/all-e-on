@@ -10,7 +10,7 @@ body {
   @include flex(column, flex-start, stretch, 3rem);
   //background-color: transparent;
   background-color: #F8FBFE;
-  padding-top: 3rem;
+  padding: 3rem 0;
   box-shadow: 0 0;
 
   > .alarm-sec {
