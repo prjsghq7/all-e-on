@@ -158,7 +158,7 @@ const recoverEmail = () => {
         const response = JSON.parse(xhr.responseText);
         switch (response['result']) {
             case 'failure_absent':
-                dialog.showSimpleOk('계정 복구[이메일 찾기]', '입력한 데이터와 일치하는 데이터를 찾지 못 하였습니다.\n다시 확인해 주세요.');
+                dialog.showSimpleOk('계정 복구[이메일 찾기]', '회원정보를 찾을 수 없습니다.\n다시 확인해 주세요.');
                 break;
             case 'failure_suspended':
                 dialog.showSimpleOk('계정 복구[이메일 찾기]', `해당 계정[${response['email']}]은/는 정지된 상태입니다.\n관리자에게 문의 해주세요.`);
