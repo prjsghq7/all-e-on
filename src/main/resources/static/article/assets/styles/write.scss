@@ -1,9 +1,10 @@
 @charset "UTF-8";
 @import "../../../common/assets/styles/_def";
 
-body{
+body {
   background-color: #f8fbfe !important;
 }
+
 #defaultArea {
   height: 100vh;
   background-color: #f8fbfe;
@@ -14,7 +15,8 @@ body{
   width: inherit;
   height: inherit;
   @include flex(column, flex-start, space-evenly);
-  >.title {
+
+  > .title {
     @include flex(row, center, space-between);
     width: 100%;
 
@@ -24,9 +26,17 @@ body{
       //-webkit-text-stroke: 0.05rem #2563eb;
       color: #000;
     }
-    >.submitBtn{
+
+    > .submitBtn {
       align-self: end;
       margin-right: 0.0625rem;
+    }
+  }
+
+  > #name {
+    > .title {
+      width: 25rem;
+      border-radius: 0.625rem;
     }
   }
 
