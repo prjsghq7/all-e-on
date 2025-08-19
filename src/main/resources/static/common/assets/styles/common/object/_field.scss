@@ -3,10 +3,24 @@
 @use "sass:color";
 @import "../../_def";
 
-[data-aeo-object="field"] {
-  border: 0.0625rem solid #454545;
-  transition-duration: 175ms;
-  transition-property: color;
-  transition-timing-function: ease;
-  padding: 0.5rem 0.75rem;
+[data-aeo-component="label.field"] {
+  font: inherit;
+  color: #272727;
+  background: #f8fafc;
+  border: .0625rem solid #d9d9df;
+  outline: none;
+  border-radius: .5rem;
+  padding: .625rem .75rem;
+  transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
+
+  &:focus {
+    border-color: #126ac9;
+    background: #ffffff;
+  }
+
+  &:disabled {
+    background: #f1f5f9;
+    color: #969aa1;
+  }
+
 }

@@ -126,44 +126,89 @@
 }
 
 [data-aeo-object=button] {
+  display: inline-flex;
   align-items: center;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-  gap: 0.0625rem;
-  justify-content: space-evenly;
-  width: 6rem;
-  border-radius: 9rem;
-  background-color: white;
+  justify-content: center;
+  padding: 0.875rem 0.925rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+  color: #ffffff;
+  background-color: #0a4380;
+  border: 0;
+  border-radius: 0.5rem;
   cursor: pointer;
-  padding: 0.225rem;
-  box-shadow: rgba(33, 118, 208, 0.6274509804) 0.0625rem 0.0625rem 0.125rem;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: background-color 0.18s ease, box-shadow 0.18s ease, transform 0.06s ease, filter 0.18s ease, opacity 0.18s ease;
 }
-[data-aeo-object=button] > * {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-[data-aeo-object=button] > [data-aeo-stretch] {
-  flex-grow: 1;
-  flex-shrink: 1;
+[data-aeo-object=button] > .--icon {
+  width: 1.125rem;
+  height: 1.125rem;
+  flex: 0 0 auto;
 }
 [data-aeo-object=button] > img {
   width: 1.125rem;
   height: 1.125rem;
-}
-[data-aeo-object=button] > .caption {
-  color: #2176D0;
-  font-weight: 800;
+  flex: 0 0 auto;
 }
 [data-aeo-object=button]:hover {
-  border: solid 0.0625rem #2176D0;
-  box-shadow: #2176D0 0.0625rem 0.0625rem;
+  background-color: #126ac9;
+  filter: brightness(1.02);
 }
 [data-aeo-object=button]:active {
-  background-color: #2176D0;
+  background-color: #07315d;
+  transform: translateY(0);
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+  filter: none;
 }
-[data-aeo-object=button]:active > .caption {
-  color: #fff;
+[data-aeo-object=button]:focus {
+  outline: none;
+}
+[data-aeo-object=button]:focus-visible {
+  box-shadow: 0 0 0 0.18rem rgba(10, 67, 128, 0.28), 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+[data-aeo-object=button]:disabled, [data-aeo-object=button][aria-disabled=true] {
+  background-color: #c9d8ea;
+  color: rgba(0, 0, 0, 0.45);
+  cursor: not-allowed;
+  opacity: 0.8;
+  box-shadow: none;
+  transform: none;
+}
+
+[data-aeo-object=button][data-variant=cancel] {
+  background-color: #f3f4f6;
+  color: #374151;
+  border: 0.0625rem solid #cbd5e1;
+  box-shadow: none;
+}
+[data-aeo-object=button][data-variant=cancel]:hover {
+  background-color: #e5e7eb;
+}
+[data-aeo-object=button][data-variant=cancel]:active {
+  background-color: #d1d5db;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.06);
+}
+[data-aeo-object=button][data-variant=cancel]:focus-visible {
+  box-shadow: 0 0 0 0.18rem rgba(55, 65, 81, 0.28);
+}
+
+[data-aeo-object=button][data-variant=danger] {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+[data-aeo-object=button][data-variant=danger]:hover {
+  background-color: #f87171;
+}
+[data-aeo-object=button][data-variant=danger]:active {
+  background-color: #c52f2f;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.12);
+}
+[data-aeo-object=button][data-variant=danger]:focus-visible {
+  box-shadow: 0 0 0 0.18rem rgba(239, 68, 68, 0.28);
 }
 
 [data-aeo-object=categoryLabel] {
@@ -339,12 +384,23 @@
   background: linear-gradient(112deg, #ef4444, #f7a4a4);
 }
 
-[data-aeo-object=field] {
-  border: 0.0625rem solid #454545;
-  transition-duration: 175ms;
-  transition-property: color;
-  transition-timing-function: ease;
-  padding: 0.5rem 0.75rem;
+[data-aeo-component="label.field"] {
+  font: inherit;
+  color: #272727;
+  background: #f8fafc;
+  border: 0.0625rem solid #d9d9df;
+  outline: none;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.75rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+[data-aeo-component="label.field"]:focus {
+  border-color: #126ac9;
+  background: #ffffff;
+}
+[data-aeo-component="label.field"]:disabled {
+  background: #f1f5f9;
+  color: #969aa1;
 }
 
 [data-aeo-object=label] {

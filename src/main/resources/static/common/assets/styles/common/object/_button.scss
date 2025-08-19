@@ -1,39 +1,137 @@
 @charset "UTF-8";
-
 @use "sass:color";
 @import "../../_def";
 
+$btn-bg: #0a4380;
+$btn-hover: #126ac9;
+$btn-active: #07315d;
+$btn-focus: rgba(10,67,128,.28);
+$btn-disabled: #c9d8ea;
+$btn-text: #ffffff;
+$btn-disabled-text: rgba(0,0,0,.45);
+
+$btn-cancel-bg: #f3f4f6;
+$btn-cancel-hover: #e5e7eb;
+$btn-cancel-active: #d1d5db;
+$btn-cancel-text: #374151;
+$btn-cancel-border: #cbd5e1;
+$btn-cancel-focus: rgba(55,65,81,.28);
+
+$btn-danger-bg: #ef4444;
+$btn-danger-hover: #f87171;
+$btn-danger-active: #c52f2f;
+$btn-danger-text: #ffffff;
+$btn-danger-focus: rgba(239,68,68,.28);
 
 [data-aeo-object="button"] {
-  @include flex(row, center, space-evenly, 0.0625rem);
-  width: 6rem;
-  border-radius: 9rem;
-  background-color: white;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .875rem .925rem;
+
+  font-size: .9rem;
+  font-weight: 700;
+  line-height: 1;
+  text-decoration: none;
+  user-select: none;
+  white-space: nowrap;
+
+  color: $btn-text;
+  background-color: $btn-bg;
+
+  border: 0;
+  border-radius: .5rem;
   cursor: pointer;
-  padding: 0.225rem;
-  box-shadow: #2176D0a0 0.0625rem 0.0625rem 0.125rem;
+
+  box-shadow: 0 6px 16px rgba(0,0,0,.08);
+
+  transition:
+          background-color .18s ease,
+          box-shadow .18s ease,
+          transform .06s ease,
+          filter .18s ease,
+          opacity .18s ease;
+
+  > .--icon {
+    width: 1.125rem;
+    height: 1.125rem;
+    flex: 0 0 auto;
+  }
 
   > img {
     width: 1.125rem;
     height: 1.125rem;
-  }
-
-  > .caption {
-    color: #2176D0;
-    font-weight: 800;
+    flex: 0 0 auto;
   }
 
   &:hover {
-    border: solid 0.0625rem #2176D0;
-    box-shadow: #2176D0 0.0625rem 0.0625rem;
+    background-color: $btn-hover;
+    filter: brightness(1.02);
   }
 
   &:active {
-    background-color: #2176D0;
-
-    > .caption {
-      color: #fff;
-    }
+    background-color: $btn-active;
+    transform: translateY(0);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.12);
+    filter: none;
   }
 
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    box-shadow:
+            0 0 0 .18rem $btn-focus,
+            0 6px 16px rgba(0,0,0,.08);
+  }
+
+  &:disabled,
+  &[aria-disabled="true"] {
+    background-color: $btn-disabled;
+    color: $btn-disabled-text;
+    cursor: not-allowed;
+    opacity: .8;
+    box-shadow: none;
+    transform: none;
+  }
+}
+
+[data-aeo-object="button"][data-variant="cancel"] {
+  background-color: $btn-cancel-bg;
+  color: $btn-cancel-text;
+
+  border: .0625rem solid $btn-cancel-border;
+  box-shadow: none;
+
+  &:hover {
+    background-color: $btn-cancel-hover;
+  }
+
+  &:active {
+    background-color: $btn-cancel-active;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.06);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 .18rem $btn-cancel-focus;
+  }
+}
+
+[data-aeo-object="button"][data-variant="danger"] {
+  background-color: $btn-danger-bg;
+  color: $btn-danger-text;
+
+  &:hover {
+    background-color: $btn-danger-hover;
+  }
+
+  &:active {
+    background-color: $btn-danger-active;
+    box-shadow: inset 0 2px 6px rgba(0,0,0,.12);
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 .18rem $btn-danger-focus;
+  }
 }
