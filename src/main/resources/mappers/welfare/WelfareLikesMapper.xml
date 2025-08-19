@@ -40,7 +40,7 @@
         LIMIT 1
     </select>
 
-    <select id="selectAllByWelfareIdAndUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
+    <select id="selectAllByUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
         SELECT `l`.`index`         AS `index`,
                `l`.`welfare_id`    AS `welfareId`,
                `w`.`name`          AS `welfareName`,
@@ -70,7 +70,7 @@
           AND `l`.`alarm_at` IS NOT NULL
     </select>
 
-    <select id="selectAllAlarmByWelfareIdAndUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
+    <select id="selectAllAlarmByUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
         SELECT `l`.`index`         AS `index`,
                `l`.`welfare_id`    AS `welfareId`,
                `w`.`name`          AS `welfareName`,
@@ -84,6 +84,23 @@
         WHERE `l`.`user_index` = #{userIndex}
         AND `l`.`alarm_at` IS NOT NULL
         ORDER BY `l`.`alarm_at` DESC
+    </select>
+
+    <select id="selectAllHomeAlarmByUser" resultType="com.dev.alleon.dtos.welfare.WelfareFavoriteDto">
+        SELECT `l`.`index`         AS `index`,
+               `l`.`welfare_id`    AS `welfareId`,
+               `w`.`name`          AS `welfareName`,
+               `w`.`ministry_name` AS `ministryName`,
+               `w`.`summary`       AS `summary`,
+               `w`.`support_cycle` AS `supportCycle`,
+               `w`.`life_array`    AS `lifeArray`,
+               `l`.`alarm_at`      AS `alarmAt`
+        FROM `aeo`.`welfare_likes` AS `l`
+                 LEFT JOIN `aeo`.`welfares` AS `w` ON `l`.`welfare_id` = `w`.`id`
+        WHERE `l`.`user_index` = #{userIndex}
+          AND `l`.`alarm_at` IS NOT NULL
+          AND `l`.`alarm_at` >= DATE_SUB(NOW(), INTERVAL 7 DAY) -- 7일 이내
+        ORDER BY `l`.`alarm_at`
     </select>
 
 </mapper>

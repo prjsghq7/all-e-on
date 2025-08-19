@@ -482,6 +482,21 @@ $radius: .625rem;
               border-left: 1px solid #333333;
 
               > .date-button {
+                background-color: transparent;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                border-radius: 0.5rem;
+                padding: 0.5rem;
+
+                &:hover {
+                  background-color: rgba(0, 0, 0, 0.05);
+                }
+
+                &.selected {
+                  background-color: rgba(0, 123, 255, 0.1);
+                  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+                }
+
                 > .other {
                   opacity: 0.3;
                 }
@@ -684,6 +699,38 @@ $radius: .625rem;
                     border-bottom: none;
                   }
 
+                  &.empty {
+                    @include flex(column, center, center);
+                    padding: 2rem 1rem;
+                    text-align: center;
+                    border-bottom: none;
+                    cursor: default;
+
+                    &:hover {
+                      background-color: transparent;
+                      transform: none;
+                      box-shadow: none;
+                    }
+
+                    > .service-label {
+                      @include flex(column, center, center, 0.5rem);
+                      width: 100%;
+
+                      > .service-name {
+                        font-size: 1rem;
+                        font-weight: 600;
+                        color: $muted;
+                        margin-bottom: 0;
+                      }
+
+                      > .service-category {
+                        font-size: 0.875rem;
+                        color: lighten($muted, 15%);
+                        line-height: 1.4;
+                      }
+                    }
+                  }
+
                   > .service-radio {
                     width: 18px;
                     height: 18px;
@@ -812,6 +859,36 @@ $radius: .625rem;
 
         &:last-child {
           border-bottom: none;
+        }
+
+        &.empty {
+          @include flex(column, center, center);
+          padding: 3rem 1.5rem;
+          text-align: center;
+          border-bottom: none;
+
+          > .favorite-content {
+            @include flex(column, center, center, 1rem);
+            width: 100%;
+
+            > .favorite-title {
+              font-size: 1.125rem;
+              font-weight: 600;
+              color: $muted;
+              white-space: normal;
+              overflow: visible;
+              text-overflow: unset;
+            }
+
+            > .favorite-summary {
+              font-size: 0.875rem;
+              color: lighten($muted, 15%);
+              white-space: normal;
+              overflow: visible;
+              text-overflow: unset;
+              line-height: 1.4;
+            }
+          }
         }
 
         > .favorite-link {

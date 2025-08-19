@@ -48,7 +48,7 @@ prevBtn.addEventListener('click', () => {
 
 let showCaption = true;
 
-// // 초기 상태: 캡션 보이기
+// 초기 상태: 캡션 보이기
 $contentContainer.classList.add('show-caption');
 setInterval(() => {
     showCaption = !showCaption;
@@ -65,11 +65,18 @@ const loadAlarmData = () => {
         }
 
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert('알람 데이터를 불러오는데 실패했습니다.');
+            showEmptyMessage('저장된 알람이 없습니다. MYPAGE에서 복지 알람을 등록해보세요.');
             return;
         }
 
         const response = JSON.parse(xhr.responseText);
+
+        // 응답이 null이거나 빈 배열인 경우
+        if (!response || response.length === 0) {
+            showEmptyMessage('저장된 알람이 없습니다. MYPAGE에서 복지 알람을 등록해보세요.');
+            return;
+        }
+
         let $listHTML = ``;
         for (const item of response) {
             // D+/- 계산
@@ -82,24 +89,24 @@ const loadAlarmData = () => {
             let statusClass = '';
             let statusText = '';
             if (daysDiff < 0) {
-                statusText = `${Math.abs(daysDiff)}일 전`;
+                statusText = `${Math.abs(daysDiff)}일 지남`;
                 statusClass = 'past';      // 파랑색
             } else if (daysDiff === 0) {
-                statusText = '오늘';
+                statusText = `오늘`;
                 statusClass = 'today';     // 초록색
             } else {
-                statusText = `${daysDiff}일 후`;
+                statusText = `${daysDiff}일 남음`;
                 statusClass = 'future';    // 빨강색
             }
 
-// HTML에 클래스 추가
+            // HTML에 클래스 추가
             $listHTML += `
                     <li class="item">
                         <a href="/welfare/detail?id=${item['welfareId']}" class="link">
                             <span class="text title">${item['welfareName']}</span>
-                            <span class="text ministry"><span class="label">부처 :</span> ${item['ministryName']}</span>
-                            <span class="text summary"><span class="label">요약 :</span> ${item['summary']}</span>
-                            <span class="text cycle"><span class="label">지원주기 :</span> ${item['supportCycle']}</span>
+                            <span class="text ministry"><span class="label">부처 :</span> ${item['ministryName'] || '정보 없음'}</span>
+                            <span class="text summary"><span class="label">요약 :</span> ${item['summary'] || '정보 없음'}</span>
+                            <span class="text cycle"><span class="label">지원주기 :</span> ${item['supportCycle'] || '정보 없음'}</span>
                             <span role="none" data-aeo-stretch></span>
                             <div class="day-box">
                                 <span class="day"><span class="label">알람 :</span> ${item['alarmAt']}</span>
@@ -110,17 +117,72 @@ const loadAlarmData = () => {
                 `;
         }
 
+        // 기존 empty 메시지 제거하고 실제 알람 데이터 표시
+        clearEmptyMessage();
+        $list.innerHTML = $listHTML;
+
+        // 아이템 개수에 따라 버튼 표시/숨김 및 레이아웃 조정
+        if (response.length >= 4) {
+            // 4개 이상일 때: 버튼 표시, 좌측 정렬
+            prevBtn.style.display = 'block';
+            nextBtn.style.display = 'block';
+            $list.style.justifyContent = 'flex-start';
+            $sliderWrapper.style.justifyContent = 'flex-start';
+            $list.style.paddingLeft = '0';
+            $sliderWrapper.style.padding = '0';
+            $list.style.marginLeft = '0'; // 슬라이더 모드에서는 margin 제거
+        } else {
+            // 3개 이하일 때: 버튼 숨김, 중앙 정렬
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+            $list.style.justifyContent = 'center';
+            $sliderWrapper.style.justifyContent = 'center';
+            $list.style.paddingLeft = '1rem';
+            $sliderWrapper.style.padding = '0 1rem';
+            $list.style.marginLeft = '2rem'; // 중앙 정렬 모드에서는 margin 유지
+        }
+
         // TODO
-        // 로그인 처리
-        // null 처리
-        // order by 처리
         // 날짜 limit 처리
-        $list.innerHTML += $listHTML;
     };
 
-    xhr.open('GET', '/api/home/alarmList');  // 기존 API 엔드포인트 사용
+    xhr.open('GET', '/api/home/alarmList');
     xhr.setRequestHeader(header, token);
     xhr.send();
 };
+
+// 빈 상태 메시지 표시 함수
+function showEmptyMessage(message) {
+    clearEmptyMessage();
+
+    // prevBtn과 nextBtn 숨기기
+    prevBtn.style.display = 'none';
+    nextBtn.style.display = 'none';
+
+    // 레이아웃 중앙 정렬
+    $list.style.justifyContent = 'center';
+    $sliderWrapper.style.justifyContent = 'center';
+
+    const emptyHTML = `
+        <div class="empty-message">
+            <span class="caption">알람 등록 서비스</span>
+            <span class="content">${message}</span>
+        </div>
+    `;
+
+    $alarmContainer.insertAdjacentHTML('beforeend', emptyHTML);
+}
+
+// 빈 상태 메시지 제거 함수
+function clearEmptyMessage() {
+    const existingEmpty = $alarmContainer.querySelector('.empty-message');
+    if (existingEmpty) {
+        existingEmpty.remove();
+    }
+
+    // prevBtn과 nextBtn 다시 보이기
+    prevBtn.style.display = 'block';
+    nextBtn.style.display = 'block';
+}
 
 loadAlarmData();

@@ -434,6 +434,20 @@
   border-bottom: 1px solid #333333;
   border-left: 1px solid #333333;
 }
+#alarm-section > .calendar-layout > .center-panel > .calendar > .main > .dates > .date > .date-button {
+  background-color: transparent;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+}
+#alarm-section > .calendar-layout > .center-panel > .calendar > .main > .dates > .date > .date-button:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+#alarm-section > .calendar-layout > .center-panel > .calendar > .main > .dates > .date > .date-button.selected {
+  background-color: rgba(0, 123, 255, 0.1);
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3);
+}
 #alarm-section > .calendar-layout > .center-panel > .calendar > .main > .dates > .date > .date-button > .other {
   opacity: 0.3;
 }
@@ -601,6 +615,59 @@
 #alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item:last-child {
   border-bottom: none;
 }
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0;
+  justify-content: center;
+  padding: 2rem 1rem;
+  text-align: center;
+  border-bottom: none;
+  cursor: default;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty:hover {
+  background-color: transparent;
+  transform: none;
+  box-shadow: none;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > .service-label {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  justify-content: center;
+  width: 100%;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > .service-label > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > .service-label > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > .service-label > .service-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #969aa1;
+  margin-bottom: 0;
+}
+#alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item.empty > .service-label > .service-category {
+  font-size: 0.875rem;
+  color: rgb(190.364321608, 192.8266331658, 197.135678392);
+  line-height: 1.4;
+}
 #alarm-section > .calendar-layout > .right-panel > .detail-container > .detail-body > .notification-registration > .favorited-list-section > .favorited-services-list > .favorited-service-item > .service-radio {
   width: 18px;
   height: 18px;
@@ -743,6 +810,58 @@
 }
 #favorite-section > .favorite-container > .favorite-list > .favorite-item:last-child {
   border-bottom: none;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 0;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+  text-align: center;
+  border-bottom: none;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > .favorite-content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  gap: 1rem;
+  justify-content: center;
+  width: 100%;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > .favorite-content > * {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > .favorite-content > [data-aeo-stretch] {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > .favorite-content > .favorite-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #969aa1;
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+}
+#favorite-section > .favorite-container > .favorite-list > .favorite-item.empty > .favorite-content > .favorite-summary {
+  font-size: 0.875rem;
+  color: rgb(190.364321608, 192.8266331658, 197.135678392);
+  white-space: normal;
+  overflow: visible;
+  text-overflow: unset;
+  line-height: 1.4;
 }
 #favorite-section > .favorite-container > .favorite-list > .favorite-item > .favorite-link {
   height: 100%;

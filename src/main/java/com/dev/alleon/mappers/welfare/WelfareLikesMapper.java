@@ -24,12 +24,13 @@ public interface WelfareLikesMapper {
     WelfareLikesEntity selectByWelfareIdAndUserIndex(@Param(value = "welfareId") String welfareId,
                                                      @Param(value = "userIndex") int userIndex);
 
-    WelfareFavoriteDto[] selectAllByWelfareIdAndUser(@Param(value = "userIndex") int userIndex);
+    WelfareFavoriteDto[] selectAllByUser(@Param(value = "userIndex") int userIndex);
 
 
     WelfareFavoriteDto selectAlarmByWelfareIdAndUser(@Param(value = "welfareId") String welfareId,
                                                      @Param(value = "userIndex") int userIndex);
 
-    WelfareFavoriteDto[] selectAllAlarmByWelfareIdAndUser(@Param(value = "userIndex") int userIndex);
+    WelfareFavoriteDto[] selectAllAlarmByUser(@Param(value = "userIndex") int userIndex);
 
+    WelfareFavoriteDto[] selectAllHomeAlarmByUser(@Param(value = "userIndex") int userIndex);
 }

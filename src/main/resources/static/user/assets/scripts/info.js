@@ -430,6 +430,15 @@ const renderCalender = () => {
     const dateButtons = document.querySelectorAll('#alarm-section .dates > .date > .date-button');
     dateButtons.forEach(($item, index) => {
         $item.addEventListener('click', () => {
+            // 이전에 선택된 버튼의 선택 상태 제거
+            const prevSelected = document.querySelector('#alarm-section .date-button.selected');
+            if (prevSelected) {
+                prevSelected.classList.remove('selected');
+            }
+            
+            // 현재 클릭된 버튼에 선택 상태 추가
+            $item.classList.add('selected');
+            
             const dateText = $item.querySelector('span').textContent;
             const clickedDate = parseInt(dateText);
 
@@ -798,15 +807,27 @@ const showNotificationRegistration = (year, month, day) => {
         }
         const welfareFavoriteList = JSON.parse(xhr.responseText);
         let favoritedList = ``;
-        for (const welfareFavorite of welfareFavoriteList) {
-            favoritedList += `
-            <div class="favorited-service-item" data-service-id="${welfareFavorite['welfareId']}">
-                <input type="radio" name="selectedService" id="service-${welfareFavorite['welfareId']}" class="service-radio"  onchange="selectService('${welfareFavorite['welfareId']}')">
-                <label for="service-${welfareFavorite['welfareId']}" class="service-label">
-                    <div class="service-name">${welfareFavorite['welfareName']}</div>
-                    <div class="service-category">${welfareFavorite['ministryName']}</div>
-                </label>
+        
+        // 즐겨찾기 리스트가 비어있는 경우 처리
+        if (!welfareFavoriteList || welfareFavoriteList.length === 0) {
+            favoritedList = `
+            <div class="favorited-service-item empty">
+                <div class="service-label">
+                    <div class="service-name">저장된 즐겨찾기가 없습니다.</div>
+                    <div class="service-category">복지 서비스를 즐겨찾기에 추가해보세요.</div>
+                </div>
             </div>`;
+        } else {
+            for (const welfareFavorite of welfareFavoriteList) {
+                favoritedList += `
+                <div class="favorited-service-item" data-service-id="${welfareFavorite['welfareId']}">
+                    <input type="radio" name="selectedService" id="service-${welfareFavorite['welfareId']}" class="service-radio"  onchange="selectService('${welfareFavorite['welfareId']}')">
+                    <label for="service-${welfareFavorite['welfareId']}" class="service-label">
+                        <div class="service-name">${welfareFavorite['welfareName']}</div>
+                        <div class="service-category">${welfareFavorite['ministryName']}</div>
+                    </label>
+                </div>`;
+            }
         }
 
         detailBody.innerHTML = `
@@ -1159,7 +1180,29 @@ const favoriteDelete = (welfareId) => {
         const response = JSON.parse(xhr.responseText);
         if (response.result === true) {
             console.log(response.result.toString());
-            location.href = `${origin}/user/info`
+            
+            // 즐겨찾기 목록 갱신
+            favoriteSectionList();
+            
+            // 달력의 마크 데이터도 함께 갱신
+            initializeMarkedDates();
+            
+            // 현재 알림 설정 화면이 열려있다면 함께 갱신
+            const detailBody = document.getElementById('detailBody');
+            if (detailBody && detailBody.querySelector('.notification-registration')) {
+                // 현재 선택된 날짜 정보 가져오기
+                const selectedDateText = detailBody.querySelector('.selected-date').textContent;
+                const dateMatch = selectedDateText.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);
+                
+                if (dateMatch) {
+                    const year = parseInt(dateMatch[1]);
+                    const month = parseInt(dateMatch[2]);
+                    const day = parseInt(dateMatch[3]);
+                    
+                    // 알림 설정 화면 새로고침
+                    showNotificationRegistration(year, month, day);
+                }
+            }
         } else {
             console.log(response.result.toString());
         }
@@ -1171,17 +1214,32 @@ const favoriteDelete = (welfareId) => {
 
 const favoriteSectionList = () => {
     const xhr = new XMLHttpRequest();
+    $list.innerHTML = ``;
 
     xhr.onreadystatechange = () => {
         if (xhr.readyState !== XMLHttpRequest.DONE) {
             return;
         }
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert(`[${xhr.status}] 알림 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.`);
+            alert(`[${xhr.status}] 즐겨찾기 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.`);
             return;
         }
 
         const response = JSON.parse(xhr.responseText);
+        
+        // 즐겨찾기한 서비스가 없는 경우
+        if (!response || response.length === 0) {
+            $list.innerHTML = `
+                <li class="favorite-item empty">
+                    <div class="favorite-content">
+                        <span class="favorite-title">즐겨찾기된 서비스가 없습니다.</span>
+                        <span class="favorite-summary">복지 서비스를 즐겨찾기에 추가해보세요.</span>
+                    </div>
+                </li>
+            `;
+            return;
+        }
+        
         let $listHTML = ``;
         for (const item of response) {
             $listHTML += `
@@ -1201,11 +1259,11 @@ const favoriteSectionList = () => {
                         </li>
                     `;
         }
-        $list.innerHTML += $listHTML;
+        $list.innerHTML = $listHTML; // += 대신 = 사용하여 기존 내용 교체
 
+        // 이벤트 리스너 다시 등록
         $list.querySelectorAll(':scope > .favorite-item > .favorite-action > .favorite-remove-btn').forEach($item => {
             $item.addEventListener('click', () => {
-                alert($item.getAttribute('data-id'));
                 favoriteDelete($item.getAttribute('data-id'));
             });
         });

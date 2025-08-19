@@ -524,11 +524,11 @@ public class WelfareService {
     }
 
     public WelfareFavoriteDto[] getAll(UserEntity signedUser) {
-        return this.welfareLikesMapper.selectAllByWelfareIdAndUser(signedUser.getIndex());
+        return this.welfareLikesMapper.selectAllByUser(signedUser.getIndex());
     }
 
     public WelfareFavoriteDto[] getAllAlarm(UserEntity signedUser) {
-        return this.welfareLikesMapper.selectAllAlarmByWelfareIdAndUser(signedUser.getIndex());
+        return this.welfareLikesMapper.selectAllAlarmByUser(signedUser.getIndex());
     }
 
     public WelfareFavoriteDto[] getHomeAlarms(UserEntity signedUser) {
@@ -538,7 +538,7 @@ public class WelfareService {
         }
 
         // 기존 메서드 사용
-        WelfareFavoriteDto[] alarms = this.welfareLikesMapper.selectAllAlarmByWelfareIdAndUser(signedUser.getIndex());
+        WelfareFavoriteDto[] alarms = this.welfareLikesMapper.selectAllHomeAlarmByUser(signedUser.getIndex());
 
         // daysDiff 계산
         for (WelfareFavoriteDto alarm : alarms) {

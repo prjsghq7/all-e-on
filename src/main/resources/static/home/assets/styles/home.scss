@@ -103,15 +103,36 @@ body {
     > .alarm-container {
       @include flex(row, center, center);
       width: 100%;
-      height: 25rem;
-      //background-color: #FFFFFF;
-      //background: linear-gradient(112deg, #e35f5f, #fddc81);
-      //background-color: #f8ede3;
       background-color: #ffffff;
       border-radius: 1rem;
-      //box-shadow: gray 0 0 .2rem;
       box-shadow: 0 6px 20px rgba(0, 0, 0, .06);
       overflow: hidden;
+      position: relative;
+
+      > .empty-message {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        @include flex(column, center, center, 1.5rem);
+        background-color: transparent;
+        box-shadow: 0 0 0.2rem #ccc;
+        z-index: 10;
+
+        > .caption {
+          text-align: center;
+          font-size: 2rem;
+        }
+
+        > .content {
+          text-align: center;
+        }
+
+        &:hover {
+          box-shadow: 0 0 0.2rem #ccc;
+        }
+      }
 
       > .prevBtn {
         width: 2rem;
@@ -124,17 +145,28 @@ body {
       }
 
       > .slider-wrapper {
-        @include flex(row, center, flex-start);
+        @include flex(column, center, center);
         width: 66rem;
         overflow: hidden;
-        position: relative; // empty-message 위치 기준점
+        padding: 0 1rem;
 
         > .list {
-          @include flex(row, center, flex-start, 2rem);
-          width: auto;
+          @include flex(row, center, center, 2rem);
+          //width: auto;
+          width: 100%;
           height: 20rem;
+          padding: 0;
+          margin-left: 2rem;
           transition: transform 0.4s ease;
           will-change: transform; // 브라우저가 성능 최적화를 미리 준비하게 도와주는 CSS 속성
+
+          > .alarm-notice {
+            margin-top: 1rem;
+            font-size: 0.75rem;
+            color: #666;
+            font-style: italic;
+            text-align: center;
+          }
 
           > .item {
             width: 20rem;
@@ -243,32 +275,6 @@ body {
             }
           }
         }
-
-        // Empty 메시지 스타일
-        > .empty-message {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: calc(100% - 2rem); // 좌우 여백 확보
-          height: calc(100% - 2rem); // 상하 여백 확보
-          margin: 1rem; // 중앙 정렬을 위한 여백
-          @include flex(column, center, center, 1.5rem);
-          background-color: transparent;
-          box-shadow: 0 0 0.15rem rgba(204, 204, 204, 0.6);
-          
-          > .caption {
-            text-align: center;
-            font-size: 2rem;
-          }
-          
-          > .content {
-            text-align: center;
-          }
-          
-          &:hover {
-            box-shadow: 0 0 0.15rem rgba(204, 204, 204, 0.6);
-          }
-        }
       }
     }
   }
@@ -369,14 +375,10 @@ body {
             }
 
             &.empty {
-              position: relative;
-              width: 100%;
-              height: 100%;
               @include flex(column, center, center, 1.5rem);
+              height: 100%;
               background-color: transparent;
-              box-shadow: 0 0 0.15rem rgba(204, 204, 204, 0.6);
-              border: none;
-              border-radius: 0.625rem;
+              box-shadow: 0 0 0.2rem #ccc;
 
               > .caption {
                 text-align: center;
@@ -386,10 +388,11 @@ body {
               > .content {
                 text-align: center;
               }
-              
+
               &:hover {
                 box-shadow: 0 0 0.2rem #ccc;
               }
+
             }
 
             &:hover {

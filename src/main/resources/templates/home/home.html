@@ -18,20 +18,16 @@
 <div id="defaultArea">
     <section data-aeo-object="section" class="alarm-sec">
         <div class="alarm-container">
-            <span class="prevBtn" th:if="${session.signedUser!=null}">
+            <span class="prevBtn">
                 <img src="/home/assets/images/prev.png" alt="">
             </span>
             <div class="slider-wrapper">
                 <ul class="list">
                     <!-- li 태그 자리 -->
-                    <li class="item empty" th:if="${session.signedUser==null}">
-                        <span class="caption">알람 등록 서비스</span>
-                        <span class="content">복지 알람을 등록하고 관리하시기 위해서는 회원가입을 부탁드립니다.</span>
-                    </li>
                 </ul>
+                <p class="alarm-notice" th:if="${session.signedUser!=null}">* 7일이 지난 알람은 자동으로 제외됩니다</p>
             </div>
-
-            <span class="nextBtn" th:if="${session.signedUser!=null}">
+            <span class="nextBtn">
                 <img src="/home/assets/images/next.png" alt="">
             </span>
         </div>
