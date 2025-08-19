@@ -1,3 +1,4 @@
+@import url("https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Dongle&family=Gaegu&family=Jua&family=Oswald:wght@200..700&family=Poor+Story&display=swap");
 #defaultArea {
   align-items: stretch;
   display: flex;
@@ -5,6 +6,12 @@
   gap: 1.5rem;
   justify-content: flex-start;
   padding: 2rem 2.5rem;
+}
+#defaultArea > .caption {
+  font-size: 3rem;
+  font-weight: 400;
+  color: #0a4380;
+  font-family: "Do Hyeon", sans-serif;
 }
 
 #searchForm {
