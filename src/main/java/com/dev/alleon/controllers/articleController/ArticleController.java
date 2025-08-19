@@ -38,8 +38,11 @@ public class ArticleController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getIndex(@RequestParam(value = "index", required = false) int index,
                            Model model) {
-        this.articleService.incrementView(index);
         ArticleDto article = this.articleService.getArticleByIndex(index);
+        if (article == null || article.isDeleted()) {
+            return "redirect:/article/list";
+        }
+        this.articleService.incrementView(index);
         model.addAttribute("article", article);
         return "article/article";
     }

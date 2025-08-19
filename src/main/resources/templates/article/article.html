@@ -14,6 +14,10 @@
     <script src="/common/assets/scripts/common.js"></script>
     <script defer src="/common/assets/scripts/object/dialog.js"></script>
     <script defer src="/article/assets/scripts/article.js"></script>
+    <script th:if="${article.deleted}">
+        alert('삭제된 게시글 입니다.');
+        location.replace('/article/list');
+    </script>
 </head>
 <body>
 <th:block th:replace="~{fragments/header :: header}"></th:block>
