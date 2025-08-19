@@ -397,7 +397,7 @@ ol, ul {
   gap: 0.375rem;
 }
 .tts .tts-icon {
-  width: 100%;
+  width: 2rem;
   height: auto;
   display: block;
   user-select: none;
@@ -427,16 +427,8 @@ ol, ul {
   white-space: nowrap;
   text-align: center;
 }
-.tts:hover {
-  filter: brightness(0.98);
-}
 .tts:active {
   transform: translateY(1px);
-}
-.tts:focus-visible {
-  outline: 2px solid #2a6ef1;
-  outline-offset: 2px;
-  border-radius: 0.5rem;
 }
 .tts:disabled, .tts[aria-disabled=true] {
   opacity: 0.45;

@@ -362,18 +362,16 @@ ol, ul {
 
   // 아이콘 사이즈
   .tts-icon {
-    width: 100%;
+    width: 2rem;
     height: auto;
     display: block;
     user-select: none;
     pointer-events: none; // 클릭 타깃은 버튼 자신
   }
 
-  // 기본: 스피커/음성안내
   .tts-icon.cancel { display: none; }
   .caption.cancel  { display: none; }
 
-  // 재생 중: cancel 아이콘/중지 캡션 표시
   &.is-speaking,
   &[aria-pressed="true"] {
     .tts-icon.speak  { display: none; }
@@ -389,13 +387,7 @@ ol, ul {
     text-align: center;
   }
 
-  &:hover { filter: brightness(0.98); }
   &:active { transform: translateY(1px); }
-  &:focus-visible {
-    outline: 2px solid #2a6ef1;
-    outline-offset: 2px;
-    border-radius: .5rem;
-  }
 
   &:disabled,
   &[aria-disabled="true"] {

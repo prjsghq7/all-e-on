@@ -127,15 +127,15 @@ $text-color: #FFFFFF;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: .625rem;
+        gap: .25rem;
         cursor: pointer;
-        background-color: #fff;
         border: none;
-        padding: 0;
+        padding-top: 1.2rem;
         outline: none;
+        background-color: #FFFFFF;
 
         .tts-icon {
-          width: 3rem;
+          width: 2rem;
           height: auto;
           display: block;
           user-select: none;
@@ -159,7 +159,6 @@ $text-color: #FFFFFF;
           white-space: nowrap;
         }
 
-        &:hover { filter: brightness(0.98); }
         &:active { transform: translateY(1px); }
 
         &:focus-visible {
@@ -186,32 +185,6 @@ $text-color: #FFFFFF;
         font-size: 1.25rem;
         flex: 1 1 auto;
         min-width: 0;
-      }
-      .tts {
-        position: absolute;
-        top: 50%;
-        right: 0;
-        transform: translateY(-50%);
-        display: inline-flex;
-        align-items: center;
-        gap: .375rem;
-        height: 2rem;
-        padding: 0 .5rem;
-        background: #fff;
-        border: 1px solid #d0d7e2;
-        border-radius: .5rem;
-        font-size: .875rem;
-        cursor: pointer;
-
-        img {
-          width: 1rem;
-          height: 1rem;
-          object-fit: contain; /* 이미지 비율 유지 */
-        }
-
-        .caption {
-          white-space: nowrap;
-        }
       }
 
     }
@@ -248,12 +221,6 @@ $text-color: #FFFFFF;
 
       .stretch {
         flex-grow: 1;
-      }
-
-      .regi-date {
-        color: #0a0825;
-        font-size: 0.875rem;
-        font-weight: 500;
       }
     }
     &:hover > .tooltip-container {
@@ -390,4 +357,8 @@ $text-color: #FFFFFF;
 
   cursor: default;
   pointer-events: none;
+}
+.regi-date {
+  color: #606060;
+  font-size: .875rem;
 }
