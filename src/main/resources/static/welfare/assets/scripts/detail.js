@@ -22,32 +22,22 @@ $likeButton.addEventListener('click', function () {
         }
 
         if (xhr.status < 200 || xhr.status >= 300) {
-            console.log("에러");
-            // dialog.showSimpleOk('오류', '요청을 처리하는 도중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
+            dialog.showSimpleOk('오류', '요청을 처리하는 도중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        if (response.result === true) {
-            console.log(response.result.toString());
-        } else if (response.result === false) {
-            console.log(response.result.toString());
-        } else {
-            console.log(response.result.toString());
-        }
+        // if (response['result'] === true) {
+        //     dialog.showSimpleOk('즐겨찾기', '즐겨찾기 추가 되었습니다.');
+        //     // console.log(response.result.toString());
+        // } else if (response.result === false) {
+        //     dialog.showSimpleOk('즐겨찾기', '즐겨찾기 해제 되었습니다.');
+        //     // console.log(response.result.toString());
+        // } else {
+        //     dialog.showSimpleOk('즐겨찾기', '처리하는 도중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
+        //     // console.log(response.result.toString());
+        // }
     };
     xhr.open('PATCH', '/welfare/like');
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
-
-
-
-
-    /*// 좋아요 상태에 따른 처리
-    if (this.classList.contains('active')) {
-        console.log(`복지 ID ${welfareId} 좋아요 추가`);
-        // 여기에 서버로 좋아요 추가 요청을 보내는 로직을 추가할 수 있습니다
-    } else {
-        console.log(`복지 ID ${welfareId} 좋아요 취소`);
-        // 여기에 서버로 좋아요 취소 요청을 보내는 로직을 추가할 수 있습니다
-    }*/
 });

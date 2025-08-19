@@ -59,7 +59,6 @@ public class WelfareController {
     @ResponseBody
     public String patchLike(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                             @RequestParam(value = "welfareId", required = false) String welfareId) {
-        System.out.println(welfareId + " 컨트롤러 도착");
         Boolean result = this.welfareService.toggleLike(signedUser, welfareId);
         JSONObject response = new JSONObject();
         if (result == null) {
@@ -88,7 +87,6 @@ public class WelfareController {
     public String patchAlarm(@SessionAttribute(value = "signedUser", required = false) UserEntity signedUser,
                              @RequestParam(value = "welfareId", required = false) String welfareId,
                              @RequestParam(value = "alarmAt", required = false) LocalDate alarmAt) {
-        System.out.println(welfareId + " 컨트롤러 도착");
         Boolean result = this.welfareService.updateAlarm(welfareId, signedUser, alarmAt);
         JSONObject response = new JSONObject();
         if (result == null) {

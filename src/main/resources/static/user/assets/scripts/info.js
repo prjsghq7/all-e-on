@@ -8,78 +8,6 @@ let date = new Date();
 let markedDates = []; // 마크된 날짜들을 저장할 배열
 let selectedDate = null; // 현재 선택된 날짜
 
-// 즐겨찾기된 복지 서비스 목록 (임의 데이터)
-let favoriteServices = [
-    {id: 1, name: '기초생활수급자', category: '생활지원', description: '최저생활을 보장하기 위한 수급자 선정 및 급여 지급'},
-    {id: 2, name: '장애인연금', category: '연금지원', description: '장애인에게 지급되는 연금으로 생활안정 지원'},
-    {id: 3, name: '한부모가족지원', category: '가족지원', description: '한부모가족의 생활안정과 복지증진을 위한 지원'},
-    {id: 4, name: '국민기초생활보장', category: '생활지원', description: '생활이 어려운 사람에게 필요한 급여를 제공'},
-    {id: 5, name: '장애인활동지원', category: '활동지원', description: '장애인의 자립생활 및 사회활동 참여 지원'},
-    {id: 6, name: '아동수당', category: '아동지원', description: '만 8세 이하 아동을 양육하는 가정에 지급'},
-    {id: 7, name: '출산장려금', category: '출산지원', description: '출산을 장려하기 위한 지원금 지급'},
-    {id: 8, name: '주거급여', category: '주거지원', description: '주거가 어려운 사람에게 주거비용 지원'},
-];
-
-// 즐겨찾기한 복지 서비스 목록 (임의 데이터)
-let favoritedWelfareServices = [
-    {
-        id: 1,
-        name: '기초생활수급자',
-        category: '생활지원',
-        description: '최저생활을 보장하기 위한 수급자 선정 및 급여 지급',
-        amount: '월 1,200,000원',
-        status: '신청완료'
-    },
-    {
-        id: 2,
-        name: '장애인연금',
-        category: '연금지원',
-        description: '장애인에게 지급되는 연금으로 생활안정 지원',
-        amount: '월 800,000원',
-        status: '승인완료'
-    },
-    {
-        id: 3,
-        name: '한부모가족지원',
-        category: '가족지원',
-        description: '한부모가족의 생활안정과 복지증진을 위한 지원',
-        amount: '월 500,000원',
-        status: '심사중'
-    },
-    {
-        id: 4,
-        name: '아동수당',
-        category: '아동지원',
-        description: '만 8세 이하 아동을 양육하는 가정에 지급',
-        amount: '월 300,000원',
-        status: '지급중'
-    },
-    {
-        id: 5,
-        name: '출산장려금',
-        category: '출산지원',
-        description: '출산을 장려하기 위한 지원금 지급',
-        amount: '1회 2,000,000원',
-        status: '신청완료'
-    },
-    {
-        id: 6,
-        name: '한부모가족지원',
-        category: '가족지원',
-        description: '한부모가족의 생활안정과 복지증진을 위한 지원',
-        amount: '월 500,000원',
-        status: '심사중'
-    },
-    {
-        id: 7,
-        name: '아동수당',
-        category: '아동지원',
-        description: '만 8세 이하 아동을 양육하는 가정에 지급',
-        amount: '월 300,000원',
-        status: '지급중'
-    },
-];
-
 // Controller나 DB에서 받아올 데이터를 시뮬레이션하는 임의의 날짜들 (한 날짜에 여러 건 포함)
 const initializeMarkedDates = () => {
     const xhr = new XMLHttpRequest();
@@ -89,12 +17,11 @@ const initializeMarkedDates = () => {
             return;
         }
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert(`[${xhr.status}] 알림 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.`);
+            dialog.showSimpleOk('오류', '알림 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
 
         const response = JSON.parse(xhr.responseText);
-        console.log('response:', response);
 
         // DB에서 받은 알림 데이터로 markedDates 배열 초기화
         markedDates = []; // 배열 초기화
@@ -115,8 +42,6 @@ const initializeMarkedDates = () => {
             });
         }
 
-        console.log('markedDates:', markedDates);
-
         // 데이터 로딩 완료 후 UI 업데이트
         renderCalender();
         updateMarkedList();
@@ -126,252 +51,6 @@ const initializeMarkedDates = () => {
     xhr.setRequestHeader(header, token);
     xhr.send();
 };
-
-/*// Controller나 DB에서 받아올 데이터를 시뮬레이션하는 임의의 날짜들 (한 날짜에 여러 건 포함)
-const initializeMarkedDates = () => {
-    markedDates = [
-        {
-            year: 2024,
-            month: 12,
-            day: 15,
-            type: '복지 서비스 신청일',
-            title: '기초생활수급자 신청',
-            description: '기초생활수급자 자격 신청을 위한 서류 제출',
-            status: '완료',
-            amount: '월 1,200,000원',
-            documents: ['신분증 사본', '소득증빙서류', '재산증빙서류'],
-            notes: '신청 후 15일 이내 심사 예정'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 15,
-            type: '장애인연금 신청일',
-            title: '장애인연금 신청',
-            description: '장애인연금 신청을 위한 서류 제출',
-            status: '신청',
-            amount: '월 800,000원',
-            documents: ['장애진단서', '소득증빙서류'],
-            notes: '장애등급 1-3급 대상'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 20,
-            type: '서류 심사일',
-            title: '기초생활수급자 심사',
-            description: '제출된 서류에 대한 심사 및 검토',
-            status: '진행중',
-            amount: '월 1,200,000원',
-            documents: ['소득조사서', '재산조사서'],
-            notes: '추가 서류 요청 가능'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 20,
-            type: '장애인연금 심사일',
-            title: '장애인연금 심사',
-            description: '장애인연금 자격 심사',
-            status: '심사중',
-            amount: '월 800,000원',
-            documents: ['장애정도 재심사'],
-            notes: '의료기관 재검진 필요'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 25,
-            type: '승인일',
-            title: '기초생활수급자 승인',
-            description: '기초생활수급자 자격 승인 및 통지',
-            status: '승인',
-            amount: '월 1,200,000원',
-            documents: ['승인통지서'],
-            notes: '2025년 1월부터 지급 시작'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 25,
-            type: '장애인연금 승인일',
-            title: '장애인연금 승인',
-            description: '장애인연금 자격 승인',
-            status: '승인',
-            amount: '월 800,000원',
-            documents: ['승인통지서'],
-            notes: '2025년 2월부터 지급'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 28,
-            type: '지급일',
-            title: '기초생활수급자 지급',
-            description: '기초생활수급자 수급금 지급',
-            status: '완료',
-            amount: '월 1,200,000원',
-            documents: ['지급내역서'],
-            notes: '매월 25일 지급 예정'
-        },
-        {
-            year: 2024,
-            month: 12,
-            day: 28,
-            type: '장애인연금 지급일',
-            title: '장애인연금 지급',
-            description: '장애인연금 수급금 지급',
-            status: '완료',
-            amount: '월 800,000원',
-            documents: ['지급내역서'],
-            notes: '매월 25일 지급'
-        },
-        {
-            year: 2025,
-            month: 1,
-            day: 5,
-            type: '다음 달 신청일',
-            title: '한부모가족지원 신청',
-            description: '한부모가족지원금 신청',
-            status: '신청',
-            amount: '월 500,000원',
-            documents: ['가족관계증명서', '소득증빙서류'],
-            notes: '18세 미만 자녀가 있는 한부모 대상'
-        },
-        {
-            year: 2025,
-            month: 1,
-            day: 12,
-            type: '다음 달 심사일',
-            title: '한부모가족지원 심사',
-            description: '한부모가족지원 자격 심사',
-            status: '심사중',
-            amount: '월 500,000원',
-            documents: ['소득조사서'],
-            notes: '소득 기준 확인 중'
-        },
-        {
-            year: 2025,
-            month: 1,
-            day: 18,
-            type: '다음 달 승인일',
-            title: '한부모가족지원 승인',
-            description: '한부모가족지원 자격 승인',
-            status: '승인',
-            amount: '월 500,000원',
-            documents: ['승인통지서'],
-            notes: '2025년 3월부터 지급'
-        },
-        {
-            year: 2025,
-            month: 1,
-            day: 25,
-            type: '다음 달 지급일',
-            title: '한부모가족지원 지급',
-            description: '한부모가족지원금 지급',
-            status: '완료',
-            amount: '월 500,000원',
-            documents: ['지급내역서'],
-            notes: '매월 25일 지급'
-        },
-        {
-            year: 2025,
-            month: 2,
-            day: 25,
-            type: '승인일',
-            title: '기초생활수급자 승인',
-            description: '기초생활수급자 자격 승인 및 통지',
-            status: '승인',
-            amount: '월 1,200,000원',
-            documents: ['승인통지서'],
-            notes: '2025년 1월부터 지급 시작'
-        },
-        {
-            year: 2025,
-            month: 3,
-            day: 25,
-            type: '장애인연금 승인일',
-            title: '장애인연금 승인',
-            description: '장애인연금 자격 승인',
-            status: '승인',
-            amount: '월 800,000원',
-            documents: ['승인통지서'],
-            notes: '2025년 2월부터 지급'
-        },
-        {
-            year: 2025,
-            month: 4,
-            day: 28,
-            type: '지급일',
-            title: '기초생활수급자 지급',
-            description: '기초생활수급자 수급금 지급',
-            status: '완료',
-            amount: '월 1,200,000원',
-            documents: ['지급내역서'],
-            notes: '매월 25일 지급 예정'
-        },
-        {
-            year: 2025,
-            month: 5,
-            day: 28,
-            type: '장애인연금 지급일',
-            title: '장애인연금 지급',
-            description: '장애인연금 수급금 지급',
-            status: '완료',
-            amount: '월 800,000원',
-            documents: ['지급내역서'],
-            notes: '매월 25일 지급'
-        },
-        {
-            year: 2025,
-            month: 6,
-            day: 5,
-            type: '다음 달 신청일',
-            title: '한부모가족지원 신청',
-            description: '한부모가족지원금 신청',
-            status: '신청',
-            amount: '월 500,000원',
-            documents: ['가족관계증명서', '소득증빙서류'],
-            notes: '18세 미만 자녀가 있는 한부모 대상'
-        },
-        {
-            year: 2025,
-            month: 7,
-            day: 12,
-            type: '다음 달 심사일',
-            title: '한부모가족지원 심사',
-            description: '한부모가족지원 자격 심사',
-            status: '심사중',
-            amount: '월 500,000원',
-            documents: ['소득조사서'],
-            notes: '소득 기준 확인 중'
-        },
-        {
-            year: 2025,
-            month: 7,
-            day: 18,
-            type: '다음 달 승인일',
-            title: '한부모가족지원 승인',
-            description: '한부모가족지원 자격 승인',
-            status: '승인',
-            amount: '월 500,000원',
-            documents: ['승인통지서'],
-            notes: '2025년 3월부터 지급'
-        },
-        {
-            year: 2025,
-            month: 7,
-            day: 25,
-            type: '다음 달 지급일',
-            title: '한부모가족지원 지급',
-            description: '한부모가족지원금 지급',
-            status: '완료',
-            amount: '월 500,000원',
-            documents: ['지급내역서'],
-            notes: '매월 25일 지급'
-        },
-    ];
-};*/
 
 const renderCalender = () => {
     const viewYear = date.getFullYear();
@@ -435,10 +114,10 @@ const renderCalender = () => {
             if (prevSelected) {
                 prevSelected.classList.remove('selected');
             }
-            
+
             // 현재 클릭된 버튼에 선택 상태 추가
             $item.classList.add('selected');
-            
+
             const dateText = $item.querySelector('span').textContent;
             const clickedDate = parseInt(dateText);
 
@@ -477,6 +156,27 @@ const renderCalender = () => {
         todayElements.forEach(el => {
             if (+el.innerText === today.getDate()) {
                 el.classList.add('today');
+            }
+        });
+    }
+
+    // 선택된 날짜가 있고 현재 표시된 달력에 해당 날짜가 있다면 선택 상태 복원
+    if (selectedDate &&
+        selectedDate.year === viewYear &&
+        selectedDate.month === viewMonth + 1) {
+
+        const dateButtons = document.querySelectorAll('#alarm-section .dates > .date > .date-button');
+        dateButtons.forEach(button => {
+            const dateSpan = button.querySelector('span');
+            if (dateSpan && dateSpan.textContent == selectedDate.day) {
+                // 이전 선택 상태 제거
+                const prevSelected = document.querySelector('#alarm-section .date-button.selected');
+                if (prevSelected) {
+                    prevSelected.classList.remove('selected');
+                }
+
+                // 현재 버튼에 선택 상태 추가
+                button.classList.add('selected');
             }
         });
     }
@@ -523,41 +223,6 @@ const showMarkedListForDate = (targetDate) => {
         });
     });
 };
-
-/*// 특정 날짜의 마크된 데이터만 표시
-const showMarkedListForDate = (targetDate) => {
-    const container = document.getElementById('markedListContainer');
-    const markedList = document.getElementById('markedList');
-    const backBtn = container.querySelector('.back-btn');
-
-    const filtered = markedDates.filter(d => d.year === targetDate.year && d.month === targetDate.month && d.day === targetDate.day);
-
-    if (filtered.length === 0) {
-        markedList.innerHTML = '<div class="marked-date-item"><span class="marked-date-text">해당 날짜에 마크된 데이터가 없습니다.</span></div>';
-        return;
-    }
-
-    container.querySelector('.marked-list-header h3').textContent = `${targetDate.year}년 ${targetDate.month}월 ${targetDate.day}일 마크 목록`;
-
-    // 뒤로가기 버튼 표시
-    backBtn.style.display = 'flex';
-
-    markedList.innerHTML = filtered.map((d, index) => `
-    <div class="marked-date-item" data-index="${index}">
-      <div class="marked-date-dot"></div>
-      <span class="marked-date-text">${d.title}</span>
-      <span class="marked-date-type">${d.type}</span>
-    </div>
-  `).join('');
-
-    // 이벤트 리스너 추가
-    const items = container.querySelectorAll('.marked-date-item');
-    items.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            showDateDetail(filtered[index]);
-        });
-    });
-};*/
 
 // 전체 목록 표시 (날짜 묶음)
 const updateMarkedList = () => {
@@ -606,45 +271,6 @@ const updateMarkedList = () => {
         });
     });
 };
-/*const updateMarkedList = () => {
-    const markedList = document.getElementById('markedList');
-    const header = document.querySelector('#alarm-section .marked-list-header h3');
-    const backBtn = document.querySelector('#alarm-section .marked-list-header .back-btn');
-
-    header.textContent = '마크된 날짜 목록';
-
-    // 뒤로가기 버튼 숨기기
-    backBtn.style.display = 'none';
-
-    if (markedDates.length === 0) {
-        markedList.innerHTML = '<div class="marked-date-item"><span class="marked-date-text">마크된 날짜가 없습니다.</span></div>';
-        return;
-    }
-
-    const unique = [...new Set(markedDates.map(d => `${d.year}-${d.month}-${d.day}`))].sort();
-
-    markedList.innerHTML = unique.map((str, index) => {
-        const [year, month, day] = str.split('-').map(Number);
-        const items = markedDates.filter(d => d.year === year && d.month === month && d.day === day);
-        return `
-      <div class="marked-date-item" data-index="${index}">
-        <div class="marked-date-dot"></div>
-        <span class="marked-date-text">${year}년 ${month}월 ${day}일</span>
-        <span class="marked-date-type">${items.length}개 항목</span>
-      </div>
-    `;
-    }).join('');
-
-    // 이벤트 리스너 추가
-    const items = markedList.querySelectorAll('.marked-date-item');
-    items.forEach((item, index) => {
-        item.addEventListener('click', () => {
-            const str = unique[index];
-            const [year, month, day] = str.split('-').map(Number);
-            showMarkedListForDate({year: year, month: month, day: day});
-        });
-    });
-};*/
 
 // 상세 정보 표시 (우측 패널)
 const showDateDetail = (data) => {
@@ -681,6 +307,13 @@ const showDateDetail = (data) => {
 // 달력 네비게이션 함수들
 const prevMonth = () => {
     date.setMonth(date.getMonth() - 1);
+
+    // 선택된 날짜가 다른 달로 이동한 경우 선택 상태 초기화
+    if (selectedDate &&
+        (selectedDate.year !== date.getFullYear() || selectedDate.month !== date.getMonth() + 1)) {
+        selectedDate = null;
+    }
+
     renderCalender();
 
     // 다른 달로 이동한 후 today 클래스 확인 및 적용
@@ -697,6 +330,13 @@ const prevMonth = () => {
 
 const nextMonth = () => {
     date.setMonth(date.getMonth() + 1);
+
+    // 선택된 날짜가 다른 달로 이동한 경우 선택 상태 초기화
+    if (selectedDate &&
+        (selectedDate.year !== date.getFullYear() || selectedDate.month !== date.getMonth() + 1)) {
+        selectedDate = null;
+    }
+
     renderCalender();
 
     // 다른 달로 이동한 후 today 클래스 확인 및 적용
@@ -713,6 +353,13 @@ const nextMonth = () => {
 
 const goToday = () => {
     date = new Date();
+
+    // 선택된 날짜가 다른 달로 이동한 경우 선택 상태 초기화
+    if (selectedDate &&
+        (selectedDate.year !== date.getFullYear() || selectedDate.month !== date.getMonth() + 1)) {
+        selectedDate = null;
+    }
+
     renderCalender();
 
     // 오늘 날짜로 이동한 후 today 클래스 강제 적용
@@ -802,12 +449,12 @@ const showNotificationRegistration = (year, month, day) => {
             return;
         }
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert(`[${xhr.status}] 즐겨찾기를 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.`);
+            dialog.showSimpleOk('오류', '겨찾기를 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
         const welfareFavoriteList = JSON.parse(xhr.responseText);
         let favoritedList = ``;
-        
+
         // 즐겨찾기 리스트가 비어있는 경우 처리
         if (!welfareFavoriteList || welfareFavoriteList.length === 0) {
             favoritedList = `
@@ -849,40 +496,6 @@ const showNotificationRegistration = (year, month, day) => {
     xhr.open('GET', `/welfare/list`);
     xhr.send();
 };
-/*const showNotificationRegistration = (year, month, day) => {
-    const detailBody = document.getElementById('detailBody');
-
-    // 즐겨찾기한 복지 서비스 목록 생성
-    const favoritedList = favoritedWelfareServices.map((service, index) => `
-         <div class="favorited-service-item" data-service-id="${service.id}">
-             <input type="radio" name="selectedService" id="service-${service.id}" class="service-radio" onchange="selectService(${service.id}, '${service.name}', '${service.category}', '${service.amount}', '${service.status}')">
-             <label for="service-${service.id}" class="service-label">
-                 <div class="service-name">${service.name}</div>
-                 <div class="service-category">${service.category}</div>
-             </label>
-         </div>
-     `).join('');
-
-    detailBody.innerHTML = `
-               <div class="notification-registration">
-                   <h4>알림 등록하기</h4>
-                   <p class="selected-date">${year}년 ${month}월 ${day}일</p>
-
-                   <div class="favorited-list-section">
-                       <h5>즐겨찾기한 리스트</h5>
-                       <div class="favorited-services-list">
-                           ${favoritedList}
-                       </div>
-                   </div>
-
-
-
-                   <div class="save-section" style="display: none;">
-                       <button class="save-notification-btn" onclick="saveNotification(${year}, ${month}, ${day})">저장</button>
-                   </div>
-               </div>
-           `;
-};*/
 
 // 서비스 선택 함수
 const selectService = (serviceId) => {
@@ -909,37 +522,12 @@ const selectService = (serviceId) => {
         saveSection.style.display = 'none';
     }
 };
-/*const selectService = (serviceId, name, category, amount, status) => {
-    // 모든 서비스 항목에서 선택 상태 제거
-    const allItems = document.querySelectorAll('.favorited-service-item');
-    allItems.forEach(item => {
-        item.classList.remove('selected');
-    });
-
-    // 선택된 항목에 선택 상태 추가
-    const selectedRadio = document.querySelector(`#service-${serviceId}`);
-    if (selectedRadio && selectedRadio.checked) {
-        const serviceItem = selectedRadio.closest('.favorited-service-item');
-        if (serviceItem) {
-            serviceItem.classList.add('selected');
-        }
-    }
-
-    // 선택된 항목이 있으면 저장 버튼 표시
-    const saveSection = document.querySelector('.save-section');
-    if (selectedRadio && selectedRadio.checked) {
-        saveSection.style.display = 'block';
-    } else {
-        saveSection.style.display = 'none';
-    }
-};*/
-
 
 // 알림 저장 함수
 const saveNotification = (year, month, day) => {
     const selectedRadio = document.querySelector('.service-radio:checked');
     if (!selectedRadio) {
-        alert('저장할 서비스를 선택해주세요.');
+        dialog.showSimpleOk('오류', '저장할 서비스를 선택해주세요.');
         return;
     }
 
@@ -957,7 +545,7 @@ const saveNotification = (year, month, day) => {
             return;
         }
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert(`[${xhr.status}] 알림 등록에 실패했습니다. 잠시 후 다시 시도해 주세요.`);
+            dialog.showSimpleOk('오류', '알림 등록에 실패했습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
 
@@ -970,7 +558,7 @@ const saveNotification = (year, month, day) => {
             initializeMarkedDates();
 
             // 성공 메시지 표시
-            alert('선택된 서비스의 알림이 성공적으로 등록되었습니다!');
+            dialog.showSimpleOk('알림', '선택된 서비스의 알림이 성공적으로 등록되었습니다!');
 
             // 우측 패널을 선택된 날짜의 마크 목록으로 변경
             showMarkedListForDate({year: year, month: month, day: day});
@@ -993,7 +581,7 @@ const saveNotification = (year, month, day) => {
             saveSection.style.display = 'none';
         } else {
             // 서버 저장 실패 시
-            alert('알림 등록에 실패했습니다: ' + (response.message || '알 수 없는 오류'));
+            dialog.showSimpleOk('에러', '알림 등록에 실패했습니다.');
         }
     };
 
@@ -1001,63 +589,6 @@ const saveNotification = (year, month, day) => {
     xhr.setRequestHeader(header, token);
     xhr.send(formData);
 };
-/*// 알림 저장 함수
-const saveNotification = (year, month, day) => {
-    const selectedRadio = document.querySelector('.service-radio:checked');
-    if (!selectedRadio) {
-        alert('저장할 서비스를 선택해주세요.');
-        return;
-    }
-
-    // 선택된 서비스에 대해 알림 등록
-    const serviceId = selectedRadio.id.replace('service-', '');
-    const selectedService = favoritedWelfareServices.find(service => service.id == serviceId);
-
-    if (selectedService) {
-        // 새로운 마크 데이터 생성
-        const newMark = {
-            year: year,
-            month: month,
-            day: day,
-            type: '복지 서비스 알림',
-            title: `${selectedService.name} 알림`,
-            description: `${selectedService.name} 서비스에 대한 알림 등록`,
-            status: '등록완료',
-            amount: selectedService.amount,
-            documents: ['알림 등록서'],
-            notes: `${selectedService.category} 카테고리의 ${selectedService.name} 서비스 알림`
-        };
-
-        // markedDates 배열에 추가
-        markedDates.push(newMark);
-
-        // 달력 다시 렌더링하여 마크 표시
-        renderCalender();
-
-        // 성공 메시지 표시
-        alert('선택된 서비스의 알림이 성공적으로 등록되었습니다!');
-
-        // 우측 패널을 선택된 날짜의 마크 목록으로 변경
-        showMarkedListForDate({year: year, month: month, day: day});
-
-        // 전역 등록하기 버튼 다시 표시
-        const globalAddMarkBtn = document.getElementById('globalAddMarkBtn');
-        globalAddMarkBtn.style.display = 'block';
-
-        // 라디오 버튼 초기화
-        selectedRadio.checked = false;
-
-        // 선택 상태 제거
-        const allItems = document.querySelectorAll('.favorited-service-item');
-        allItems.forEach(item => {
-            item.classList.remove('selected');
-        });
-
-        // 저장 버튼 숨기기
-        const saveSection = document.querySelector('.save-section');
-        saveSection.style.display = 'none';
-    }
-};*/
 
 // 전체 마크된 리스트 보기 함수
 const showAllMarkedList = () => {
@@ -1145,6 +676,70 @@ initializeMarkedDates();
 renderCalender();
 initializeMarkedList();
 
+// 탭 변경 이벤트 리스너 추가 - 선택된 날짜 상태 유지
+const tabInputs = document.querySelectorAll('input[name="tab"]');
+tabInputs.forEach(input => {
+    input.addEventListener('change', () => {
+        // 알림설정 탭(2번)으로 이동할 때 선택된 날짜 상태 복원
+        if (input.value === '2' && selectedDate) {
+            // 약간의 지연을 두어 DOM이 완전히 렌더링된 후 실행
+            setTimeout(() => {
+                restoreSelectedDate();
+            }, 100);
+        }
+    });
+});
+
+// 선택된 날짜 상태 복원 함수
+const restoreSelectedDate = () => {
+    if (!selectedDate) return;
+
+    // 현재 표시된 달력에서 선택된 날짜 버튼 찾기
+    const dateButtons = document.querySelectorAll('#alarm-section .dates > .date > .date-button');
+    dateButtons.forEach(button => {
+        const dateSpan = button.querySelector('span');
+        if (dateSpan) {
+            const dateText = dateSpan.textContent;
+            const clickedDate = parseInt(dateText);
+
+            // 선택된 날짜와 일치하는 버튼 찾기
+            if (clickedDate === selectedDate.day &&
+                date.getMonth() === selectedDate.month - 1 &&
+                date.getFullYear() === selectedDate.year) {
+
+                // 이전 선택 상태 제거
+                const prevSelected = document.querySelector('#alarm-section .date-button.selected');
+                if (prevSelected) {
+                    prevSelected.classList.remove('selected');
+                }
+
+                // 현재 버튼에 선택 상태 추가
+                button.classList.add('selected');
+
+                // 전역 등록하기 버튼 표시 및 이벤트 설정
+                const globalAddMarkBtn = document.getElementById('globalAddMarkBtn');
+                if (globalAddMarkBtn) {
+                    globalAddMarkBtn.style.display = 'block';
+                    globalAddMarkBtn.onclick = () => showNotificationRegistration(selectedDate.year, selectedDate.month, selectedDate.day);
+                }
+
+                // 우측 패널에 해당 날짜의 마크 목록 표시
+                showMarkedListForDate(selectedDate);
+
+                // 해당 날짜의 첫 번째 마크된 항목을 우측 패널에 표시
+                const firstMarkedItem = markedDates.find(md =>
+                    md.year === selectedDate.year &&
+                    md.month === selectedDate.month &&
+                    md.day === selectedDate.day
+                );
+                if (firstMarkedItem) {
+                    showDateDetail(firstMarkedItem);
+                }
+            }
+        }
+    });
+};
+
 // 초기 로드 시 뒤로가기 버튼 숨기기
 const backBtn = document.querySelector('#alarm-section .marked-list-header .back-btn');
 if (backBtn) {
@@ -1174,37 +769,35 @@ const favoriteDelete = (welfareId) => {
         }
 
         if (xhr.status < 200 || xhr.status >= 300) {
-            console.log("에러");
+            dialog.showSimpleOk('오류', '요청을 처리하는 도중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
         const response = JSON.parse(xhr.responseText);
         if (response.result === true) {
-            console.log(response.result.toString());
-            
             // 즐겨찾기 목록 갱신
             favoriteSectionList();
-            
+
             // 달력의 마크 데이터도 함께 갱신
             initializeMarkedDates();
-            
+
             // 현재 알림 설정 화면이 열려있다면 함께 갱신
             const detailBody = document.getElementById('detailBody');
             if (detailBody && detailBody.querySelector('.notification-registration')) {
                 // 현재 선택된 날짜 정보 가져오기
                 const selectedDateText = detailBody.querySelector('.selected-date').textContent;
                 const dateMatch = selectedDateText.match(/(\d+)년\s*(\d+)월\s*(\d+)일/);
-                
+
                 if (dateMatch) {
                     const year = parseInt(dateMatch[1]);
                     const month = parseInt(dateMatch[2]);
                     const day = parseInt(dateMatch[3]);
-                    
+
                     // 알림 설정 화면 새로고침
                     showNotificationRegistration(year, month, day);
                 }
             }
         } else {
-            console.log(response.result.toString());
+            dialog.showSimpleOk('오류', '요청을 처리하는 도중 오류가 발생하였습니다. 잠시 후 다시 시도해 주세요.');
         }
     };
     xhr.open('DELETE', '/welfare/like');
@@ -1221,12 +814,12 @@ const favoriteSectionList = () => {
             return;
         }
         if (xhr.status < 200 || xhr.status >= 300) {
-            alert(`[${xhr.status}] 즐겨찾기 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.`);
+            dialog.showSimpleOk('오류', '즐겨찾기 목록을 불러오지 못하였습니다. 잠시 후 다시 시도해 주세요.');
             return;
         }
 
         const response = JSON.parse(xhr.responseText);
-        
+
         // 즐겨찾기한 서비스가 없는 경우
         if (!response || response.length === 0) {
             $list.innerHTML = `
@@ -1239,7 +832,7 @@ const favoriteSectionList = () => {
             `;
             return;
         }
-        
+
         let $listHTML = ``;
         for (const item of response) {
             $listHTML += `

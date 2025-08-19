@@ -468,12 +468,10 @@ public class WelfareService {
     }
 
     public boolean getLikeStatus(UserEntity signedUser, String welfareId) {
-        if (signedUser == null) {
-            System.out.println("에러 - 로그인 안됨");
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
             return false;
         }
         if (welfareId.isEmpty()) {
-            System.out.println("에러 - 복지 ID 값이 비어있음");
             return false;
         } else {
             return this.welfareLikesMapper.selectCountByWelfareIdAndUserIndex(welfareId, signedUser.getIndex()) > 0;
@@ -481,8 +479,10 @@ public class WelfareService {
     }
 
     public Boolean toggleLike(UserEntity signedUser, String welfareId) {
-        if (signedUser == null || welfareId.isEmpty()) {
-            System.out.println("여기 에러인거같음");
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
+            return null;
+        }
+        if (welfareId.isEmpty()) {
             return null;
         }
 
@@ -494,18 +494,18 @@ public class WelfareService {
                     .userIndex(signedUser.getIndex())
                     .createdAt(LocalDateTime.now())
                     .build();
-            System.out.println("좋아요 추가");
             return this.welfareLikesMapper.insert(welfareLike) > 0 ? true : null;
         } else {
             // 좋아요 취소
-            System.out.println("좋아요 취소");
             return this.welfareLikesMapper.delete(welfareId, signedUser.getIndex()) > 0 ? false : null;
         }
     }
 
     public boolean deleteLike(UserEntity signedUser, String welfareId) {
-        if (signedUser == null || welfareId.isEmpty()) {
-            System.out.println("여기 에러인거같음");
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
+            return false;
+        }
+        if (welfareId.isEmpty()) {
             return false;
         }
 
@@ -518,22 +518,34 @@ public class WelfareService {
     }
 
     public Boolean updateAlarm(String welfareId, UserEntity signedUser, LocalDate alarmAt) {
-        System.out.println("서비스 도착" + welfareId + " / " + alarmAt);
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
+            return null;
+        }
+        if (welfareId.isEmpty()) {
+            return null;
+        }
 
         return this.welfareLikesMapper.updateAlarmAt(welfareId, signedUser.getIndex(), alarmAt) > 0;
     }
 
     public WelfareFavoriteDto[] getAll(UserEntity signedUser) {
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
+            return new WelfareFavoriteDto[0];
+        }
+
         return this.welfareLikesMapper.selectAllByUser(signedUser.getIndex());
     }
 
     public WelfareFavoriteDto[] getAllAlarm(UserEntity signedUser) {
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
+            return new WelfareFavoriteDto[0];
+        }
+
         return this.welfareLikesMapper.selectAllAlarmByUser(signedUser.getIndex());
     }
 
     public WelfareFavoriteDto[] getHomeAlarms(UserEntity signedUser) {
-        if (signedUser == null) {
-            System.out.println("에러 - 로그인 안됨");
+        if (signedUser == null || signedUser.getActiveState() >= 2) {
             return new WelfareFavoriteDto[0];
         }
 

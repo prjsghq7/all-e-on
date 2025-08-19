@@ -45,7 +45,6 @@ if (prevBtn) {
         } else {
             offset = 0; // 처음 위치로 맞추기
         }
-
         $list.style.transform = `translateX(${offset}px)`;
     });
 }
@@ -145,9 +144,6 @@ const loadAlarmData = () => {
             $sliderWrapper.style.padding = '0 1rem';
             $list.style.marginLeft = '2rem'; // 중앙 정렬 모드에서는 margin 유지
         }
-
-        // TODO
-        // 날짜 limit 처리
     };
 
     xhr.open('GET', '/api/home/alarmList');
