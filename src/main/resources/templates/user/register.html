@@ -74,7 +74,7 @@
             </label>
             <label data-aeo-object="label" data-aeo-name="nickname">
                 <span data-aeo-component="label.caption">닉네임</span>
-                <span data-aeo-component="label.row">
+                <span data-aeo-component="label.row" class="nicknameLabel">
                     <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="10"
                            minlength="1" name="nickname" type="text"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).nickname.pattern}">
@@ -111,7 +111,7 @@
                         <option th:each="mvon:${contactMvnos}" th:value="${mvon.code}"
                                 th:text="${mvon.displayText}"></option>
                     </select>
-                    <select required data-aeo-object="field" data-aeo-stretch name="contactFirst">
+                    <select required data-aeo-object="field" name="contactFirst">
                         <option selected value="010">010</option>
                         <option value="011">011</option>
                         <option value="016">016</option>

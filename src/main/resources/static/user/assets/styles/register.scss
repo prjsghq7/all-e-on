@@ -417,3 +417,27 @@ $shadow: 0 8px 24px rgba(0,0,0,.08);
   height: 100%;
 
 }
+
+.nicknameLabel {
+  width: 30rem;
+}
+[name="contactSecond"],
+[name="contactThird"] {
+  width: 10rem;
+  flex: 0 0 auto;
+  text-align: center;
+}
+
+[name="contactFirst"] {
+  width: 5rem;
+  flex: 0 0 auto;
+}
+
+[name="contactMvno"] {
+  min-width: 7rem;
+  flex: 0 0 auto;
+}
+
+[name="contactCheckButton"] {
+  flex: 0 0 auto;
+}
