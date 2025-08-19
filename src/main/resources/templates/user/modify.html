@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta name="_csrf" th:content="${_csrf.token}">
     <meta name="_csrf_header" th:content="${_csrf.headerName}">
-    <title>Re:Book</title>
+    <title>AEO</title>
+    <link rel="icon" href="/common/assets/images/favicon.png">
     <link rel="stylesheet" href="/common/assets/styles/common.min.css">
     <link rel="stylesheet" href="/user/assets/styles/modify.min.css">
     <script defer src="/common/assets/scripts/common.js" type="module"></script>
@@ -33,7 +34,7 @@
                            minlength="1" maxlength="10"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).nickname.pattern}"
                            th:value="${user.nickname}">
-                    <button data-aeo-object="button" name="nicknameCheckButton" type="button" disabled>중복 확인</button>
+                    <button data-aeo-object="cButton" name="nicknameCheckButton" type="button" disabled>중복 확인</button>
                 </span>
                 <span data-aeo-component="label.warning">닉네임 중복을 확인해 주세요.</span>
             </label>
@@ -83,7 +84,7 @@
                            required minlength="3" maxlength="4" placeholder="0000"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactThirdRegex.pattern}"
                            th:value="${user.contactThird}">
-                    <button data-aeo-object="button -color-blue" name="contactCheckButton" type="button" disabled>중복 확인</button>
+                    <button data-aeo-object="button" name="contactCheckButton" type="button" disabled>중복 확인</button>
                 </span>
                 <span data-aeo-component="label.warning">연락처를 입력해 주세요.</span>
             </label>
