@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="/user/assets/styles/recover.min.css">
     <script defer src="/user/assets/scripts/recover.js"></script>
     <script defer src="/common/assets/scripts/common.js" type="module"></script>
-    <title>계정복구</title>
+    <title>AEO | 계정복구</title>
 </head>
 <body>
 <th:block th:replace="~{fragments/header :: header}">
@@ -56,15 +56,15 @@
                     <option th:each="mvon:${contactMvnos}" th:value="${mvon.code}"
                             th:text="${mvon.displayText}"></option>
                         </select>
-                    <select required data-aeo-object="field" data-aeo-stretch name="eRecoverContactFirst">
+                    <select required data-aeo-object="field" name="eRecoverContactFirst">
                         <option selected value="010">010</option>
                     <option value="011">011</option>
                     <option value="016">016</option>
                     <option value="017">017</option>
                     <option value="019">019</option>
                     </select>
-                    <input required data-aeo-object="field" class="tel-input" maxlength="4" minlength="3" name="eRecoverContactSecond" placeholder="0000" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactSecondRegex.pattern}">
-                    <input required data-aeo-object="field" class="tel-input" maxlength="4" minlength="3" name="eRecoverContactThird" placeholder="0000" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactThirdRegex.pattern}">
+                    <input required data-aeo-object="field" data-aeo-stretch class="tel-input" maxlength="4" minlength="3" name="eRecoverContactSecond" placeholder="0000" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactSecondRegex.pattern}">
+                    <input required data-aeo-object="field" data-aeo-stretch class="tel-input" maxlength="4" minlength="3" name="eRecoverContactThird" placeholder="0000" type="text" th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactThirdRegex.pattern}">
                 </span>
                 <span data-aeo-component="label.warning">연락처를 입력해 주세요.</span>
             </label>
