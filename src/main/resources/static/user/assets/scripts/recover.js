@@ -2,6 +2,9 @@ const token = document.querySelector('meta[name="_csrf"]').getAttribute('content
 const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
 const $recoverForm = document.getElementById('recoverForm');
 
+const $emailCodeVerifyBtn = $recoverForm.querySelector('[name="pRecoverEmailCodeVerifyButton"]');
+$emailCodeVerifyBtn.disabled = true;
+
 $recoverForm['pRecoverEmailCodeSendButton'].addEventListener('click', () => {
     const $emailLabel = $recoverForm['pRecoverEmail'].closest('[data-aeo-object="label"]');
     $emailLabel.setInValid(false);
