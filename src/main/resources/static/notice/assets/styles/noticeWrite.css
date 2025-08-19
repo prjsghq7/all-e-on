@@ -52,7 +52,11 @@ body {
   align-self: end;
   margin-right: 0.0625rem;
 }
+#noticeForm > #name {
+  font-size: 2rem;
+}
 #noticeForm > #name > .title {
+  font-size: 2rem;
   width: 25rem;
   border-radius: 0.625rem;
 }
