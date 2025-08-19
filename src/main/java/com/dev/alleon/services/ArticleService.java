@@ -45,6 +45,10 @@ public class ArticleService {
                 : CommonResult.FAILURE;
     }
 
+    public void incrementView(int index) {
+        this.articleMapper.increaseView(index);
+    }
+
     public ArticleDto getArticleByIndex(int index) {
         return articleMapper.selectByIndex(index);
     }

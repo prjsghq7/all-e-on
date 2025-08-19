@@ -105,4 +105,11 @@
         FROM `aeo`.`articles`
         WHERE `index` = #{index}
     </select>
+
+    <update id="increaseView">
+        UPDATE `aeo`.`articles`
+        SET `view` = `view` + 1
+        WHERE `index` = #{index}
+        LIMIT 1
+    </update>
 </mapper>

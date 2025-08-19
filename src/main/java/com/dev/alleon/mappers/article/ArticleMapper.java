@@ -23,4 +23,6 @@ public interface ArticleMapper {
     ArticleEntity selectArticleEntityByIndex(@Param("index") int index);
 
     int update(@Param("article") ArticleEntity article);
+
+    int increaseView(@Param("index") int index);
 }

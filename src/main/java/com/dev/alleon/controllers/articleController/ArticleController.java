@@ -34,6 +34,7 @@ public class ArticleController {
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
     public String getIndex(@RequestParam(value = "index", required = false) int index,
                            Model model) {
+        this.articleService.incrementView(index);
         ArticleDto article = this.articleService.getArticleByIndex(index);
         model.addAttribute("article", article);
         return "article/article";
