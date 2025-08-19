@@ -48,7 +48,7 @@
             </tr>
             </tbody>
         </table>
-        <div id="pageContainer">
+        <div id="pageContainer" th:if="${notices.size()> 0 && notices != null}">
             <a class="page"
                th:each="pageNum:${#numbers.sequence(pageVo.startPage,pageVo.endPage)}"
                th:text="${pageNum}"
