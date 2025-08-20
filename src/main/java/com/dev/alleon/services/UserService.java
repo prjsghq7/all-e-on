@@ -298,11 +298,11 @@ public class UserService {
             return ResultTuple.<UserEntity>builder().result(CommonResult.FAILURE).build();
         }
 
-        Result result = updateLoginHistory(dbUser, userAgent);
+        Result result = updateLoginHistory(dbUser);
         return ResultTuple.<UserEntity>builder().result(CommonResult.SUCCESS).payload(dbUser).build();
     }
 
-    public Result updateLoginHistory(UserEntity user, String lastLogin) {
+    public Result updateLoginHistory(UserEntity user) {
         user.setLastLogin(LocalDateTime.now());
         return this.userMapper.update(user) > 0 ? CommonResult.FAILURE : CommonResult.FAILURE;
     }
