@@ -21,13 +21,13 @@
     <div class="modal">
     </div>
 </div>
-<div id="defaultArea" data-aeo-object="div">
+<!--<div id="defaultArea" data-aeo-object="div">-->
     <form novalidate id="registerForm" class="register">
         <h1 class="title">회원가입</h1>
         <label data-aeo-object="label" data-aeo-name="name">
             <span data-aeo-component="label.caption">이름</span>
             <span data-aeo-component="label.row">
-                <input disabled required autocomplete="off" data-aeo-object="field" maxlength="5" minlength="2"
+                <input disabled required autocomplete="off" data-aeo-component="label.field" maxlength="5" minlength="2"
                        name="name"
                        placeholder="성 + 이름(공백없음)" type="text"
                        th:pattern="${T(com.dev.alleon.regexes.UserRegex)._name.pattern}" th:value="${oauthUser.getName()}">
@@ -37,7 +37,7 @@
         <label data-aeo-object="label" data-aeo-name="email">
             <span data-aeo-component="label.caption">이메일</span>
             <span data-aeo-component="label.row" class="register">
-                <input disabled required type="email" name="email" autocomplete="email" data-aeo-object=,"field"
+                <input disabled required type="email" name="email" autocomplete="email" data-aeo-component="label.field"
                        data-aeo-stretch
                        th:value="${oauthUser.getEmail()}"
                        maxlength="50" minlength="8" placeholder="user@sample.com"
@@ -46,43 +46,43 @@
         </label>
         <label data-aeo-object="label" data-aeo-name="gender">
             <span data-aeo-component="label.caption">생년월일/성별</span>
-            <span class="--row">
-                    <input disabled required autocomplete="off" data-aeo-object="field" name="birth" type="date"
+            <span class="--row" data-aeo-component="label.row">
+                    <input disabled required autocomplete="off" data-aeo-component="label.field"name="birth" type="date"
                            th:value="${oauthUser.getBirthyear() + '-' + oauthUser.getBirthday()}"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).birth.pattern}">
                 <!--                    TODO th:pattern-->
-                    <span class="-object-radio-group">
-                        <label class="--radio-selector">
+                    <span class="-object-radio-group" data-aeo-object="radio">
+                        <label class="--radio-selector" data-aeo-object="categoryLabel">
                             <input disabled type="radio" name="gender" th:checked="${oauthUser.getGender() =='M'}" value="M" checked>
-                            <span class="caption">남</span>
+                            <span class="caption" data-aeo-component="categoryLabel.caption">남</span>
                         </label>
-                        <label class="--radio-selector">
+                        <label class="--radio-selector" data-aeo-object="categoryLabel">
                             <input disabled type="radio" name="gender" th:checked="${oauthUser.getGender() =='F'}" value="F" checked>
-                            <span class="caption">여</span>
+                            <span class="caption" data-aeo-component="categoryLabel.caption">여</span>
                         </label>
                     </span>
                     <span class="-flex-stretch" role="none"></span>
                 </span>
         </label>
-        <label data-aeo-object="label">
-            <span class="--caption">연락처</span>
+        <label data-aeo-object="label" data-aeo-name="contact">
+            <span class="--caption" data-aeo-component="label.caption">연락처</span>
             <span data-aeo-component="label.row">
-                    <select required data-aeo-object="field" name="contactMvno">
+                    <select required data-aeo-component="label.field" name="contactMvno">
                         <option disabled hidden selected value="-1">통신사</option>
                         <option th:each="mvon:${contactMvnos}" th:value="${mvon.code}"
                                 th:text="${mvon.displayText}"></option>
                     </select>
-                    <select required disabled data-aeo-object="field" data-aeo-stretch name="contactFirst">
+                    <select required disabled data-aeo-component="label.field"  name="contactFirst">
                         <option th:selected="${oauthUser.getMobile().split('-')[0]=='010'}" value="010">010</option>
                         <option th:selected="${oauthUser.getMobile().split('-')[0]=='011'}" value="011">011</option>
                         <option th:selected="${oauthUser.getMobile().split('-')[0]=='016'}" value="016">016</option>
                         <option th:selected="${oauthUser.getMobile().split('-')[0]=='017'}" value="017">017</option>
                         <option th:selected="${oauthUser.getMobile().split('-')[0]=='019'}" value="019">019</option>
                     </select>
-                    <input required disabled data-aeo-object="field" maxlength="4" minlength="3" name="contactSecond"
+                    <input required disabled data-aeo-component="label.field" maxlength="4" minlength="3" name="contactSecond"
                            placeholder="0000" type="text" th:value="${oauthUser.getMobile().split('-')[1]}"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactSecondRegex.pattern}">
-                    <input required disabled data-aeo-object="field" maxlength="4" minlength="3" name="contactThird"
+                    <input required disabled data-aeo-component="label.field" maxlength="4" minlength="3" name="contactThird"
                            placeholder="0000" type="text" th:value="${oauthUser.getMobile().split('-')[2]}"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).contactThirdRegex.pattern}">
             </span>
@@ -91,7 +91,7 @@
         <label data-aeo-object="label" data-aeo-name="nickname">
             <span data-aeo-component="label.caption">닉네임</span>
             <span data-aeo-component="label.row">
-                    <input required autocomplete="off" data-aeo-object="field" data-aeo-stretch maxlength="10"
+                    <input required autocomplete="off" data-aeo-component="label.field" data-aeo-stretch maxlength="10"
                            minlength="1" name="nickname" type="text"
                            th:pattern="${T(com.dev.alleon.regexes.UserRegex).nickname.pattern}">
                 <!--                    TODO th:pattern-->
@@ -102,14 +102,14 @@
         <label data-aeo-object="label" data-aeo-name="address">
             <span data-aeo-component="label.caption">주소</span>
             <span class="--row">
-                    <input readonly required data-aeo-object="field" data-aeo-stretch maxlength="5" minlength="5"
+                    <input readonly required data-aeo-component="label.field" data-aeo-stretch maxlength="5" minlength="5"
                            name="addressPostal"
                            placeholder="우편 번호(주소 찾기 버튼을 클릭해 주세요.)">
-                    <button data-aeo-object="button -color -blue" name="addressFindButton" type="button">주소 찾기</button>
+                    <button data-aeo-object="button"  name="addressFindButton" type="button">주소 찾기</button>
                 </span>
-            <input readonly required data-aeo-object="field" maxlength="100" minlength="10"
+            <input readonly required data-aeo-component="label.field" maxlength="100" minlength="10"
                    name="addressPrimary" placeholder="기본 주소 (주소 찾기 버튼을 클릭해 주세요.)" type="text">
-            <input required data-aeo-object="field" maxlength="100" minlength="0" name="addressSecondary"
+            <input required data-aeo-component="label.field" maxlength="100" minlength="0" name="addressSecondary"
                    placeholder="상세 주소 (건물 이름, 동, 호)" type="text">
             <span data-aeo-component="label.warning">주소를 입력해 주세요.</span>
         </label>
@@ -117,7 +117,7 @@
             <span class="title">코드 선택</span>
             <label data-aeo-object="label" data-aeo-name="house">
                 <span data-aeo-component="label.caption">가구 유형</span>
-                <select name="houseCode" data-aeo-object="field" required>
+                <select name="houseCode" data-aeo-component="label.field" required>
                     <option disabled selected hidden value="">선택하세요</option>
                     <option th:each="item : ${houseCode}"
                             th:value="${item.code}"
@@ -128,7 +128,7 @@
 
             <label data-aeo-object="label" data-aeo-name="interest">
                 <span data-aeo-component="label.caption">관심 분야</span>
-                <select name="interestCode" data-aeo-object="field" required>
+                <select name="interestCode" data-aeo-component="label.field" required>
                     <option disabled selected hidden value="">선택하세요</option>
                     <option th:each="item : ${interestCode}"
                             th:value="${item.code}"
@@ -139,7 +139,7 @@
 
             <label data-aeo-object="label" data-aeo-name="lifeCode">
                 <span data-aeo-component="label.caption">생애주기</span>
-                <select name="lifeCode" data-aeo-object="field" required>
+                <select name="lifeCode" data-aeo-component="label.field" required>
                     <option disabled selected hidden value="">선택하세요</option>
                     <option th:each="item : ${lifeCode}"
                             th:value="${item.code}"
@@ -225,17 +225,17 @@
             </div>
         </div>
         <div class="button-container">
-            <a href="/user/login" data-aeo-object="button -color-black" data-rb-visible>
+            <a href="/user/login" data-aeo-object="button" data-variant="cancel"  data-rb-visible>
                 <img alt="" class="--icon" src="/common/assets/images/button-images/cancel.png">
                 <span data-aeo-component="label.caption">취소</span>
             </a>
             <div data-aeo-stretch role="none"></div>
-            <button class="register" name="submit" type="submit" data-aeo-object="button -color -blue" data-aeo-visible>
+            <button class="register" name="submit" type="submit" data-aeo-object="button"  data-aeo-visible>
                 <img alt="" class="--icon" src="/common/assets/images/button-images/next.png">
                 <span data-aeo-component="label.caption">회원가입</span>
             </button>
         </div>
     </form>
-</div>
+<!--</div>-->
 </body>
 </html>
