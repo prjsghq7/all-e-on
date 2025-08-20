@@ -18,6 +18,7 @@
 #defaultArea > .container {
   width: 100%;
   min-height: 50rem;
+  border-bottom: 0.0625rem solid #cccccc;
 }
 #defaultArea > .container > .title-container {
   align-items: flex-start;
@@ -104,6 +105,10 @@
 #defaultArea > .container > .content-container > [data-aeo-stretch] {
   flex-grow: 1;
   flex-shrink: 1;
+}
+
+h2.sub-title {
+  margin-top: 1.5rem;
 }
 
 #commentForm {
@@ -386,7 +391,7 @@
   justify-content: center;
   padding: 1rem;
   background: rgba(0, 0, 0, 0.45);
-  z-index: 9999;
+  z-index: 999;
 }
 #modifyModal.-show {
   display: flex;

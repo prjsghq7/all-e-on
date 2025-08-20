@@ -48,6 +48,11 @@ $commentForm.addEventListener('submit', (e) => {
                 loadComments(1);
                 $commentForm['content'].value = '';
                 break;
+            case'failure_absent':
+                dialog.showSimpleOk('오류', '로그인이 필요한 작업입니다.');
+                break;
+            default:
+                dialog.showSimpleOk('오류', '댓글 등록중 오류가 발생하였습니다.\n잠시후 재시도 부탁드립니다.');
         }
     };
     xhr.open('POST', '/api/article/comment/upload');
@@ -286,7 +291,14 @@ const uploadRecomment = (e) => {
                 $replyForm['content'].value = '';
                 $replyForm.style.display = 'none';
                 break;
+            case'failure_absent':
+                dialog.showSimpleOk('오류', '로그인이 필요한 작업입니다.');
+                break;
+            case'failure_doesnt_exist':
+                dialog.showSimpleOk('오류', '상위 댓글이 삭제되었거나 존재하지 않습니다.');
+                break;
             default:
+                dialog.showSimpleOk('오류', '대댓글 작성중 오류가 발생하였습니다.\n잠시후 재시도 부탁드립니다.');
         }
     };
     xhr.open('POST', '/api/article/recomments/upload');
@@ -308,8 +320,7 @@ const deleteArticle = (articleIndex) => {
             return;
         }
         const response = JSON.parse(xhr.responseText);
-        const result = response.result;
-        switch (result) {
+        switch (response.result) {
             case'success':
                 dialog.showSimpleOk('게시글', '게시글 삭제에 성공하였습니다.', () => {
                     location.href = `${origin}/article/list`;
@@ -325,7 +336,7 @@ const deleteArticle = (articleIndex) => {
                 dialog.showSimpleOk('게시글', '게시글 삭제할 권한이 없습니다.');
                 break;
             default:
-                break;
+                dialog.showSimpleOk('게시글', '게시글 삭제에 실패하였습니다.');
         }
     };
     xhr.open('DELETE', '/api/article/delete');
@@ -336,23 +347,14 @@ const openDeleteArticleModal = (e) => {
     const url = new URL(location.href);
     const index = url.searchParams.get('index');
     dialog.show({
-        title: '게시글 삭제',
-        content: '게시글 삭제 시, 복구가 불가능 합니다.\n정말로 삭제하시겠습니까?',
-        buttons: [
-            {
-                caption: '취소',
-                color: 'gray',
-                onClickCallback: ($modal) => dialog.hide($modal)
-            },
-            {
-                caption: '삭제',
-                color: 'blue',
-                onClickCallback: ($modal) => {
-                    dialog.hide($modal);
-                    deleteArticle(index);
-                }
+        title: '게시글 삭제', content: '게시글 삭제 시, 복구가 불가능 합니다.\n정말로 삭제하시겠습니까?', buttons: [{
+            caption: '취소', color: 'gray', onClickCallback: ($modal) => dialog.hide($modal)
+        }, {
+            caption: '삭제', color: 'blue', onClickCallback: ($modal) => {
+                dialog.hide($modal);
+                deleteArticle(index);
             }
-        ]
+        }]
     })
 }
 
@@ -389,7 +391,14 @@ const deleteComment = (commentIndex, commentType) => {
             case 'success':
                 loadComments(1);
                 break;
+            case'failure_absent':
+                dialog.showSimpleOk('오류', '로그인이 필요한 작업입니다.');
+                break;
+            case'failure_not_same':
+                dialog.showSimpleOk('오류', '수정을 하고자 하는 댓글에 대한 권한이 없습니다.');
+                break;
             default:
+                dialog.showSimpleOk('오류', '댓글 수정중 오류가 발생하였습니다.\n잠시후 재시도 부탁드립니다.');
         }
     };
     xhr.open('DELETE', requestUrl);
@@ -403,23 +412,14 @@ const openDeleteModal = (e) => {
     const commentIndex = $btn.dataset.commentIndex;
 
     dialog.show({
-        title: '댓글 삭제',
-        content: '댓글 삭제 시, 복구가 불가능 합니다.\n정말로 삭제하시겠습니까?',
-        buttons: [
-            {
-                caption: '취소',
-                color: 'gray',
-                onClickCallback: ($modal) => dialog.hide($modal)
-            },
-            {
-                caption: '삭제',
-                color: 'blue',
-                onClickCallback: ($modal, $btn) => {
-                    dialog.hide($modal);
-                    deleteComment(commentIndex, commentType);
-                }
+        title: '댓글 삭제', content: '댓글 삭제 시, 복구가 불가능 합니다.\n정말로 삭제하시겠습니까?', buttons: [{
+            caption: '취소', color: 'gray', onClickCallback: ($modal) => dialog.hide($modal)
+        }, {
+            caption: '삭제', color: 'blue', onClickCallback: ($modal, $btn) => {
+                dialog.hide($modal);
+                deleteComment(commentIndex, commentType);
             }
-        ]
+        }]
     })
 }
 
@@ -490,6 +490,17 @@ $modifyForm.addEventListener('submit', (e) => {
             case 'success':
                 closeModifyModal();
                 break;
+            case'failure_absent':
+                dialog.showSimpleOk('오류', '로그인이 필요한 작업입니다.');
+                break;
+            case'failure_doesnt_exist':
+                dialog.showSimpleOk('오류', '게시글이 삭제되었거나 존재하지 않습니다.');
+                break;
+            case'failure_not_same':
+                dialog.showSimpleOk('오류', '수정을 하고자 하는 댓글에 대한 권한이 없습니다.');
+                break;
+            default:
+                dialog.showSimpleOk('오류', '댓글 수정중 오류가 발생하였습니다.\n잠시후 재시도 부탁드립니다.');
         }
     };
     xhr.open('PATCH', requestUrl);

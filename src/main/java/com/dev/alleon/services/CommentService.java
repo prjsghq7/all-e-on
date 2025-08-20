@@ -32,11 +32,13 @@ public class CommentService {
 
     public Result addComment(UserEntity signedUser, CommentEntity comment) {
         if (signedUser == null
-                || signedUser.getActiveState() >= 2
-                || comment == null
+                || signedUser.getActiveState() >= 2) {
+            return CommonResult.FAILURE_ABSENT;
+        }
+        if (comment == null
                 || comment.getArticleIndex() == null
                 || comment.getArticleIndex() < 0) {
-            return CommonResult.FAILURE_ABSENT;
+            return CommonResult.FAILURE;
         }
         comment.setUserIndex(signedUser.getIndex());
         comment.setDeleted(false);
@@ -138,14 +140,17 @@ public class CommentService {
     }
 
     public Result addRecomment(UserEntity signedUser, RecommentEntity recomment) {
-        if (signedUser == null || recomment == null ||
-                signedUser.getActiveState() >= 2 ||
-                recomment.getCommentIndex() < 0) {
+        if (signedUser == null
+                || signedUser.getActiveState() >= 2) {
             return CommonResult.FAILURE_ABSENT;
+        }
+        if (recomment == null
+                || recomment.getCommentIndex() < 0) {
+            return CommonResult.FAILURE;
         }
         CommentEntity parentComment = this.commentMapper.selectByIndex(recomment.getCommentIndex());
         if (parentComment == null || parentComment.isDeleted()) {
-            return CommonResult.FAILURE_ABSENT;
+            return CommonResult.FAILURE_DOESNT_EXIST;
         }
         recomment.setUserIndex(signedUser.getIndex());
         recomment.setCreatedAt(LocalDateTime.now());
