@@ -8,14 +8,15 @@ $modifyForm.addEventListener('submit', (e) => {
     const $birthLabel = $modifyForm['birth'].closest('[data-aeo-object="label"]');
     const $contactLabel = $modifyForm['contactSecond'].closest('[data-aeo-object="label"]');
     const $addressLabel = $modifyForm['addressPostal'].closest('[data-aeo-object="label"]');
-    const $houseCodeLabel    = $modifyForm.querySelector('[data-aeo-name="house"] select[data-aeo-object="field"]');
-    const $interestCodeLabel = $modifyForm.querySelector('[data-aeo-name="interest"] select[data-aeo-object="field"]');
-    const $lifeCodeLabel     = $modifyForm.querySelector('[data-aeo-name="lifeCode"] select[data-aeo-object="field"]');
+    const $houseLabel    = $modifyForm.querySelector('[data-aeo-name="house"][data-aeo-object="label"]');
+    const $interestLabel = $modifyForm.querySelector('[data-aeo-name="interest"][data-aeo-object="label"]');
+    const $lifeLabel     = $modifyForm.querySelector('[data-aeo-name="lifeCode"][data-aeo-object="label"]');
+
     const $houseSelect    = $modifyForm.querySelector('[data-aeo-name="house"] select');
     const $interestSelect = $modifyForm.querySelector('[data-aeo-name="interest"] select');
     const $lifeSelect     = $modifyForm.querySelector('[data-aeo-name="lifeCode"] select');
 
-    const $labels = [$nicknameLabel, $birthLabel, $contactLabel, $addressLabel, $houseCodeLabel, $interestCodeLabel, $lifeCodeLabel];
+    const $labels = [$nicknameLabel, $birthLabel, $contactLabel, $addressLabel, $houseLabel, $interestLabel, $lifeLabel];
     $labels.forEach(($label) => {
         $label.setInValid(false);
     });
