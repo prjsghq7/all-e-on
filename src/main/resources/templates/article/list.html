@@ -36,7 +36,7 @@
         </div>
     </form>
 
-    <div id="buttonContainer">
+    <div id="buttonContainer" th:if="${session.signedUser != null}">
         <a data-aeo-object="button" type="submit" href="/article/write">글쓰기</a>
     </div>
 
