@@ -1,27 +1,17 @@
 @charset "UTF-8";
 @import "../../../common/assets/styles/_def";
 
-$grad-start: #e35f5f;
-$grad-end: #fddc81;
-$gradient: linear-gradient(112deg, $grad-start, $grad-end);
-$card-bg: #ffffff;
-$ink: #272727;
-$muted: #969aa1;
-$line: #d9d9df;
-$ok: #22c55e;
-$warn: #ef4444;
-
-$radius: .625rem;
-$shadow: 0 .5rem 1.5rem rgba(0,0,0,.08);
-
 html {
   min-width: 90rem;
 }
 
+$radius: .625rem;
+$shadow: 0 .5rem 1.5rem rgba(0,0,0,.08);
+
 #recoverForm {
   @include flex(column, stretch, flex-start, 1rem);
   width: 45rem;
-  background: $card-bg;
+  background: #ffffff;
   border-radius: $radius;
   box-shadow: $shadow;
   padding: 1.875rem;
@@ -31,10 +21,7 @@ html {
   > .title {
     font-size: 2rem;
     margin-bottom: .5rem;
-    background: $gradient;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    color: #e35f5f;
     letter-spacing: .02rem;
   }
 
@@ -46,7 +33,7 @@ html {
     @include flex(column, flex-start, flex-start, .5rem);
     flex: 1 1 0;
     background: #f8fafc;
-    border: .0625rem solid $line;
+    border: .0625rem solid #d9d9df;
     border-radius: $radius;
     padding: 1rem;
     position: relative;
@@ -65,12 +52,12 @@ html {
 
     > [data-aeo-component="label.title"] {
       font-weight: 800;
-      color: $ink;
+      color: #272727;
       font-size: 1.25rem;
     }
 
     > [data-aeo-component="label.description"] {
-      color: $muted;
+      color: #969aa1;
       font-size: 1rem;
       line-height: 1.5rem;
     }
@@ -81,144 +68,23 @@ html {
     }
 
     &:has(input[type="radio"]:checked) {
-      border-color: mix($grad-start, $grad-end, 50%);
-      background: linear-gradient(112deg, rgba($grad-start,.06), rgba($grad-end,.06));
-      box-shadow: 0 0 0 .2rem rgba($grad-start,.12);
+      border-color: #126ac9;
+      background: #f1f7ff;
+      box-shadow: 0 0 0 .2rem rgba(18,106,201,.12);
     }
   }
 
   [data-aeo-component="label.message"] {
     margin-top: .25rem;
-    color: $muted;
+    color: #969aa1;
     font-size: .95rem;
   }
 
   .container.input-recover,
   .input-recover.password {
     @include flex(column, stretch, flex-start, 1rem);
+    display: none;
   }
-
-  [data-aeo-object="label"] {
-    @include flex(column, stretch, flex-start, .5rem);
-
-    > [data-aeo-component="label.caption"] {
-      color: $ink;
-      font-weight: 800;
-      font-size: 1rem;
-      letter-spacing: .01rem;
-    }
-
-    > [data-aeo-component="label.row"] {
-      @include flex(row, center, flex-start, .5rem);
-      flex-wrap: wrap;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    input[type="date"],
-    select,
-    textarea {
-      font: inherit;
-      color: $ink;
-      background: #f8fafc;
-      border: .0625rem solid $line;
-      border-radius: .5rem;
-      padding: .625rem .75rem;
-      outline: none;
-      transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
-
-      &:focus {
-        border-color: mix($grad-start, $grad-end, 50%);
-        box-shadow: 0 0 0 .2rem rgba($grad-start,.15);
-        background: #ffffff;
-      }
-
-      &:disabled {
-        background: #f1f5f9;
-        color: $muted;
-      }
-    }
-
-    select[data-aeo-object="field"] { min-width: 7rem; }
-    .tel-input { width: 6.5rem; text-align: center; }
-
-    > [data-aeo-component="label.warning"] {
-      display: none;
-      color: $muted;
-      font-size: .875rem;
-    }
-
-    &[data-aeo-invalid] {
-      input, select, textarea {
-        border-color: $warn !important;
-        box-shadow: 0 0 0 .2rem rgba($warn,.08);
-        background: #fff5f5;
-      }
-      > [data-aeo-component="label.warning"] {
-        display: block;
-        color: $warn;
-      }
-    }
-
-    &[data-aeo-valid] {
-      input, select, textarea {
-        border-color: $ok !important;
-        box-shadow: 0 0 0 .2rem rgba($ok,.08);
-        background: #fbfffb;
-      }
-    }
-
-    [data-aeo-object="button"] {
-      width: 5rem;
-      height: 2.5rem;
-      padding: 0 .875rem;
-      border: 0;
-      border-radius: .5rem;
-      cursor: pointer;
-      background: $gradient;
-      color: #ffffff;
-      font-weight: 700;
-      box-shadow: $shadow;
-      transition: transform .08s ease, filter .2s ease, opacity .2s ease;
-
-      &:hover { transform: translateY(-.0625rem); filter: brightness(1.02); }
-      &:active { transform: translateY(0); }
-      &:disabled { opacity: .55; cursor: not-allowed; }
-    }
-  }
-
-  .button-container {
-    @include flex(row, center, center, .75rem);
-    margin-top: 1rem;
-
-    > a[data-aeo-object="button"],
-    > button[data-aeo-object="button"] {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: .5rem;
-      min-width: 8.5rem;
-      height: 2.75rem;
-      padding: 0 .875rem;
-      border: 0;
-      border-radius: .5rem;
-      cursor: pointer;
-      background: $gradient;
-      color: #ffffff;
-      font-weight: 700;
-      box-shadow: $shadow;
-      text-decoration: none;
-      transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
-
-      &:hover { transform: translateY(-.0625rem); box-shadow: 0 .625rem 2rem rgba(0,0,0,.12); }
-      &:active { transform: translateY(0); }
-      &:disabled { opacity: .5; cursor: not-allowed; }
-    }
-  }
-
-  .container.input-recover,
-  .input-recover.password { display: none; }
 
   &:has(.type-container input[name="type"][value="email"]:checked) {
     .container.input-recover { display: flex; }
@@ -230,5 +96,15 @@ html {
     .container.input-recover { display: none; }
     .input-recover.password { display: flex; }
     [data-aeo-component="label.message"] { display: none; }
+  }
+
+  .button-container {
+    @include flex(row, center, center, .75rem);
+    margin-top: 1rem;
+  }
+
+  .tel-input {
+    width: 6.5rem;
+    text-align: center;
   }
 }

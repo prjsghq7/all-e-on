@@ -282,9 +282,4 @@ html {
   flex: 0 0 auto;
 }
 
-[data-aeo-object=radio] {
-  display: flex;
-  gap: 0.375rem;
-}
-
 /*# sourceMappingURL=register.css.map */

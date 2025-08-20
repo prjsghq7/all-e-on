@@ -457,6 +457,11 @@
   text-align: justify;
 }
 
+[data-aeo-object=radio] {
+  display: flex;
+  gap: 0.375rem;
+}
+
 [data-aeo-object=loading] {
   align-items: center;
   display: flex;

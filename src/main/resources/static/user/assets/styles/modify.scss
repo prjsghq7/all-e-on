@@ -1,22 +1,14 @@
 @charset "UTF-8";
 @import "../../../common/assets/styles/_def";
 
-$grad-start: #e35f5f;
-$grad-end: #fddc81;
-$card-bg: #ffffff;
-$ink: #272727;
-$muted: #969aa1;
-$line: #d9d9df;
-$ok: #22c55e;
-$warn: #ef4444;
-
-$radius: .625rem;
-$shadow: 0 8px 24px rgba(0, 0, 0, .08);
-
 html {
   min-width: 90rem;
 }
 
+$radius: .625rem;
+$shadow: 0 8px 24px rgba(0, 0, 0, .08);
+
+/* Address dialog */
 #addressFindDialog {
   align-items: center;
   display: flex;
@@ -27,7 +19,7 @@ html {
   inset: 0;
   z-index: 60;
   backdrop-filter: blur(.5rem);
-  background: linear-gradient(112deg, rgba($grad-start, .35), rgba($grad-end, .35));
+  background: rgba(0, 0, 0, .35);
   opacity: 0;
   pointer-events: none;
   transition: opacity .2s ease;
@@ -40,7 +32,7 @@ html {
   > .modal {
     width: 22.5rem;
     aspect-ratio: 3/4;
-    background: $card-bg;
+    background: #ffffff;
     border-radius: $radius;
     overflow: hidden;
     box-shadow: $shadow;
@@ -53,21 +45,12 @@ html {
   }
 }
 
+/* Page wrapper */
 #defaultArea.modify {
   @include flex(column, stretch, flex-start, 0);
-
-  .title {
-    font-family: "Jua", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-    font-size: 2rem;
-    letter-spacing: .2rem;
-    margin: 1rem 0 .75rem;
-    background: linear-gradient(112deg, $grad-start, $grad-end);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
 }
 
+/* Card form */
 #modifyForm {
   @include flex(column, stretch, flex-start, 1rem);
   min-height: calc(100vh - var(--header-height));
@@ -75,173 +58,40 @@ html {
   margin: 0 auto 2rem;
   padding: 1.875rem;
   box-sizing: border-box;
-  background: $card-bg;
+  background: #ffffff;
   border-radius: $radius;
-  box-shadow: $shadow;
 
   .input-wrapper {
     @include flex(column, stretch, flex-start, 1.25rem);
   }
 
-  [data-aeo-object="label"] {
-    @include flex(column, stretch, flex-start, .5rem);
-
-    > [data-aeo-component="label.caption"] {
-      font-weight: 800;
-      color: $ink;
-      letter-spacing: .06rem;
-    }
-
-    > [data-aeo-component="label.row"] {
-      @include flex(row, center, flex-start, .5rem);
-      flex-wrap: wrap;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    input[type="email"],
-    input[type="date"],
-    select,
-    textarea,
-    [data-aeo-object="field"] {
-      font: inherit;
-      color: $ink;
-      background: #f8fafc;
-      border: .0625rem solid $line;
-      outline: none;
-      border-radius: .5rem;
-      padding: .625rem .75rem;
-      transition: border-color .15s ease, box-shadow .15s ease, background-color .15s ease;
-
-      &:focus {
-        border-color: mix($grad-start, $grad-end, 50%);
-        box-shadow: 0 0 0 .2rem rgba($grad-start, .15);
-        background: #fff;
-      }
-
-      &:disabled {
-        background: #f1f5f9;
-        color: $muted;
-      }
-
-      &[readonly] {
-        background: #f3f5f8;
-      }
-    }
-
-    select[data-aeo-object="field"] {
-      min-width: 7rem;
-    }
-
-    > [data-aeo-component="label.warning"] {
-      display: none;
-      color: $muted;
-      font-size: .875rem;
-    }
-
-    &[data-aeo-invalid] {
-      input, select, textarea {
-        border-color: $warn !important;
-        box-shadow: 0 0 0 .2rem rgba($warn, .08);
-        background: #fff5f5;
-      }
-
-      > [data-aeo-component="label.warning"] {
-        display: block;
-        color: $warn;
-      }
-    }
-
-    &[data-aeo-valid] {
-      input, select, textarea {
-        border-color: $ok !important;
-        box-shadow: 0 0 0 .2rem rgba($ok, .08);
-        background: #fbfffb;
-      }
-    }
-
-    .-object-radio-group {
-      @include flex(row, center, flex-start, .75rem);
-
-      .--radio-selector {
-        @include flex(row, center, flex-start, .5rem);
-        padding: .375rem .5rem;
-        border: .0625rem solid $line;
-        border-radius: .5rem;
-        transition: border-color .15s ease, background-color .15s ease;
-
-        input[type="radio"] {
-          appearance: none;
-          width: 1rem;
-          height: 1rem;
-          border-radius: 999rem;
-          border: .125rem solid $line;
-          background: #fff;
-          outline: none;
-          transition: border-color .15s ease, box-shadow .15s ease;
-
-          &:checked {
-            border-color: mix($grad-start, $grad-end, 50%);
-            box-shadow: inset 0 0 0 .25rem mix($grad-start, $grad-end, 50%);
-          }
-        }
-
-        .caption {
-          color: $ink;
-          font-weight: 600;
-        }
-
-        &:has(input[type="radio"]:checked) {
-          border-color: mix($grad-start, $grad-end, 50%);
-          background: linear-gradient(112deg, rgba($grad-start, .06), rgba($grad-end, .06));
-        }
-      }
-    }
-
-
-    [data-aeo-object="button"] {
-      height: 2.5rem;
-      padding: 0 .875rem;
-      border: 0;
-      border-radius: .5rem;
-      cursor: pointer;
-      background: linear-gradient(112deg, $grad-start, $grad-end);
-      color: #fff;
-      font-weight: 700;
-      box-shadow: $shadow;
-      transition: transform .08s ease, filter .2s ease, opacity .2s ease;
-
-      &:hover {
-        transform: translateY(-.0625rem);
-        filter: brightness(1.02);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-
-      &:disabled {
-        opacity: .55;
-        cursor: not-allowed;
-      }
-    }
+  /* Field tweaks (base field styles come from common.scss) */
+  [data-aeo-component="label.field"][readonly] {
+    background: #f3f5f8;
   }
 
+  select[data-aeo-component="label.field"] {
+    min-width: 7rem;
+  }
+
+  .tel-input {
+    width: 6.5rem;
+    text-align: center;
+  }
+
+
+  /* Code selection box */
   .container[data-aeo-visible] {
     margin-top: .5rem;
     padding: 1.25rem;
-    border: 1px solid $line;
+    border: 1px solid #d9d9df;
     border-radius: $radius;
     background: #fafbfd;
 
     .title {
       font-weight: 700;
-      color: $ink;
-      margin-bottom: .75rem;
-      background: linear-gradient(112deg, $grad-start, $grad-end);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
+      color: #0a4380;
+      margin-bottom: .875rem;
     }
 
     [data-aeo-object="label"] {
@@ -249,110 +99,23 @@ html {
     }
   }
 
+  /* Bottom buttons layout only (visuals are in common.scss) */
   .button-container {
     @include flex(row, center, flex-end, .75rem);
     margin-top: 1rem;
 
-    [data-aeo-object~="button"] {
-      @include flex(row, center, center, .5rem);
-      min-width: 6rem;
-      height: 2.75rem;
-      padding: 0 1rem;
-      border: 0;
-      border-radius: .5rem;
-      cursor: pointer;
-      background: linear-gradient(112deg, $grad-start, $grad-end);
-      color: #fff;
-      font-weight: 700;
-      box-shadow: $shadow;
-      transition: transform .08s ease, box-shadow .2s ease, opacity .2s ease;
-
-      .--icon {
-        width: 1.125rem;
-        height: 1.125rem;
-      }
-
-      &:hover {
-        transform: translateY(-.0625rem);
-        box-shadow: 0 10px 32px rgba(0, 0, 0, .12);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-
-      &:disabled {
-        opacity: .5;
-        cursor: not-allowed;
-      }
+    .--icon {
+      width: 1.125rem;
+      height: 1.125rem;
+      flex: 0 0 auto;
     }
 
     a[data-aeo-object~="button"] {
       text-decoration: none;
-      background: #111;
-      color: #fff;
-
-      .--caption {
-        color: #fff;
-      }
     }
   }
 }
 
-[data-aeo-object="label"][data-aeo-invalid] [data-aeo-object="checkLabel"] .--box {
-  border-color: $warn;
-  box-shadow: 0 0 0 .2rem rgba($warn, .08);
-  background: #fff5f5;
-}
-
-[data-aeo-object="label"][data-aeo-valid] [data-aeo-object="checkLabel"] .--box {
-  border-color: $ok;
-  box-shadow: 0 0 0 .2rem rgba($ok, .08);
-  background: #fbfffb;
-}
-
-#modifyForm [name="addressFindButton"],
-#modifyForm .-object-button {
-  height: 2.5rem;
-  padding: 0 .875rem;
-  border: 0;
-  border-radius: .5rem;
-  cursor: pointer;
-  background: linear-gradient(112deg, $grad-start, $grad-end);
-  color: #fff;
-  font-weight: 700;
-  box-shadow: $shadow;
-  transition: transform .08s ease, filter .2s ease, opacity .2s ease;
-
-  &:hover {
-    transform: translateY(-.0625rem);
-    filter: brightness(1.02);
-  }
-
-  &:active {
-    transform: translateY(0);
-  }
-
-  &:disabled {
-    opacity: .55;
-    cursor: not-allowed;
-  }
-}
-
-[data-aeo-object="cButton"] {
-  height: 2.5rem;
-  padding: 0 .875rem;
-  border: 0;
-  border-radius: .5rem;
-  cursor: pointer;
-  background: linear-gradient(112deg, $grad-start, $grad-end);
-  color: #fff;
-  font-weight: 700;
-  box-shadow: $shadow;
-  transition: transform .08s ease, filter .2s ease, opacity .2s ease;
-
-  &:hover {
-    transform: translateY(-.0625rem);
-    filter: brightness(1.02);
-  }
+[data-aeo-name="house"] {
+  margin-top: 1rem;
 }
