@@ -84,9 +84,9 @@
   border-color: #007bff;
   color: #007bff;
 }
-#defaultArea > .container > .tab:has(input[value="1"]:checked) ~ .content > [data-mt-radio="1"],
-#defaultArea > .container > .tab:has(input[value="2"]:checked) ~ .content > [data-mt-radio="2"],
-#defaultArea > .container > .tab:has(input[value="3"]:checked) ~ .content > [data-mt-radio="3"] {
+#defaultArea > .container > .tab:has(input[value="1"]:checked) ~ .content > [data-aeo-radio="1"],
+#defaultArea > .container > .tab:has(input[value="2"]:checked) ~ .content > [data-aeo-radio="2"],
+#defaultArea > .container > .tab:has(input[value="3"]:checked) ~ .content > [data-aeo-radio="3"] {
   display: grid;
 }
 #defaultArea > .container > .content {
@@ -417,7 +417,7 @@
   height: 30px;
   border: 1px solid #333333;
   border-radius: 5px;
-  background-color: #007bff;
+  background-color: #0a4380;
   color: white;
   cursor: pointer;
   font-size: 14px;
@@ -425,7 +425,7 @@
   transition: background-color 0.3s;
 }
 #alarm-section > .calendar-layout > .center-panel > .calendar > .header > .nav-right > .add-mark-btn:hover {
-  background-color: #0056b3;
+  background-color: #126ac9;
 }
 #alarm-section > .calendar-layout > .center-panel > .calendar > .header > .nav-right > .nav-btn {
   width: 75px;

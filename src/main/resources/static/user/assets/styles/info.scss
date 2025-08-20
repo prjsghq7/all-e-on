@@ -86,9 +86,9 @@ $radius: .625rem;
       }
     }
 
-    > .tab:has(input[value="1"]:checked) ~ .content > [data-mt-radio="1"],
-    > .tab:has(input[value="2"]:checked) ~ .content > [data-mt-radio="2"],
-    > .tab:has(input[value="3"]:checked) ~ .content > [data-mt-radio="3"] {
+    > .tab:has(input[value="1"]:checked) ~ .content > [data-aeo-radio="1"],
+    > .tab:has(input[value="2"]:checked) ~ .content > [data-aeo-radio="2"],
+    > .tab:has(input[value="3"]:checked) ~ .content > [data-aeo-radio="3"] {
       display: grid;
     }
 
@@ -464,7 +464,7 @@ $radius: .625rem;
               height: 30px;
               border: 1px solid #333333;
               border-radius: 5px;
-              background-color: #007bff;
+              background-color: #0a4380;
               color: white;
               cursor: pointer;
               font-size: 14px;
@@ -472,7 +472,7 @@ $radius: .625rem;
               transition: background-color 0.3s;
 
               &:hover {
-                background-color: #0056b3;
+                background-color: #126ac9;
               }
             }
 
