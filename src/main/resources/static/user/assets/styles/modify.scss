@@ -99,7 +99,6 @@ $shadow: 0 8px 24px rgba(0, 0, 0, .08);
     }
   }
 
-  /* Bottom buttons layout only (visuals are in common.scss) */
   .button-container {
     @include flex(row, center, flex-end, .75rem);
     margin-top: 1rem;
@@ -118,4 +117,8 @@ $shadow: 0 8px 24px rgba(0, 0, 0, .08);
 
 [data-aeo-name="house"] {
   margin-top: 1rem;
+}
+[data-aeo-object=label]>[data-aeo-component="label.row"]>* {
+  flex-grow: 0;
+  flex-shrink: 0;
 }

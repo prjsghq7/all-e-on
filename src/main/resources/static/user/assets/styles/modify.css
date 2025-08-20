@@ -71,7 +71,6 @@ html {
   border-radius: 0.625rem;
   /* Field tweaks (base field styles come from common.scss) */
   /* Code selection box */
-  /* Bottom buttons layout only (visuals are in common.scss) */
 }
 #modifyForm > * {
   flex-grow: 0;
@@ -150,6 +149,11 @@ html {
 
 [data-aeo-name=house] {
   margin-top: 1rem;
+}
+
+[data-aeo-object=label] > [data-aeo-component="label.row"] > * {
+  flex-grow: 0;
+  flex-shrink: 0;
 }
 
 /*# sourceMappingURL=modify.css.map */
